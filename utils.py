@@ -57,6 +57,7 @@ def refold_tf(X, shape, n):
   """
   X: tf variable
   shape: desired shape of output tensor
+         for 3d [matricies, rows, cols]
   n: assume X is unrolled along shape[n]
   """
   # subtracts one from each element in shape list
@@ -87,14 +88,44 @@ def khatri_rao(A,B):
   column-wise kronecker-product.
   A & B: two matricies with the same number of columns
   """
-  rank = A.shape[1]
-  rows = A.shape[0] * B.shape[0]
-  # khatri row product of A and B will be rows x rank matrix
-  P = np.zeros((rows,rank))
-  for i in range(rank):
-  	# kronecker product of two vectors is the outer product
-  	# of the two
-    ab = np.outer(A[:, i], B[:, i])
-    # ab is vectorized before assigned to the i'th column of P
-    P[:,i] = ab.flatten()
-  return P
+  if(A.shape[1] == B.shape[1]):
+    rank = A.shape[1]
+    rows = A.shape[0] * B.shape[0]
+    # khatri row product of A and B will be rows x rank matrix
+    P = np.zeros((rows,rank))
+    for i in range(rank):
+  	  # kronecker product of two vectors is the outer product
+  	  # of the two
+      ab = np.outer(A[:, i], B[:, i])
+      # ab is vectorized before assigned to the i'th column of P
+      P[:,i] = ab.flatten()
+    return P
+  else: 
+    raise ValueError("Matricies must have the same # of columns")
+
+def n_mode_prod(X, A, n):
+  """
+  Calculates the n-mode product of a tensor and matrix A
+  """
+  shape = list(X.shape)
+  # check that dimensions allows for matrix multiplication
+  if(shape[n] == A.shape[1]):
+    Xn = unfold_np(X, n)
+    Xn = np.dot(A, Xn)
+
+    # the folded tensor will have nth dimension A.shape[0]
+    shape[n] = A.shape[0]
+    
+    return refold_tf(Xn, shape, n)
+
+  else:
+  	raise ValueError("Xn and A does not allow for matrix multiplication")
+
+
+
+def kruskal(G, list_pcs):
+  """
+  Kruskal operator, takes core matrix and list och 
+  unfolded matricies.
+  """
+
