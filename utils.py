@@ -1,6 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from scipy.linalg import eigh
+from scipy.linalg import kron
 
 """
 Helper methods for the main classes used in the other
@@ -16,9 +17,17 @@ def top_components(X, rank, n):
 
   Important note: any tf.tensor returned by .eval() is a numpy.ndarray
   """
+  # for a 2d tensor the unfolding leaves the matrix intact so no
+  # need to do any input validation in terms of shape
   X_ = unfold_np(X, n)
   A = X_.dot(X_.T)
+  # A is square symmetric
   N = A.shape[0]
+  # take the N-rank to N-1 eigenvalues
+  _, U = eigh(A, eigvals = (N - rank, N - 1))
+  # ::-1 returns the reversed order
+  U = np.array(U[: , ::-1])
+  return U
 
 def unfold_np(arr, ax):
   """
@@ -58,9 +67,34 @@ def refold_tf(X, shape, n):
   new_idxs = idxs[1:(n+1)] + [0] + idxs[(n+1):]
   return tf.transpose(B, new_idxs)
 
-"""
-Functions to add
-# Outer product as in the PARAFAC type model
-# mode-n multiplication
-# 
-"""
+def get_fit(X, Y):
+  """
+  Compute squared frobenius norm:
+    ||X - Y||_F^2  = <X,X> + <Y,Y> - 2 <X,Y>
+    run within a tf.Session() so we have numpy arrays
+  """
+  normX = (X ** 2).sum()
+  normY = (Y ** 2).sum()
+  norm_inner = (X * Y).sum()
+
+  norm_residual = normX + normY - norm_inner
+  # fit as percentage, lower values for closer fit
+  return 1 - (norm_residual / normX)
+
+def khatri_rao(A,B):
+  """
+  following the outline of Kolda & Bader (2009),
+  column-wise kronecker-product.
+  A & B: two matricies with the same number of columns
+  """
+  rank = A.shape[1]
+  rows = A.shape[0] * B.shape[0]
+  # khatri row product of A and B will be rows x rank matrix
+  P = np.zeros((rows,rank))
+  for i in range(rank):
+  	# kronecker product of two vectors is the outer product
+  	# of the two
+    ab = np.outer(A[:, i], B[:, i])
+    # ab is vectorized before assigned to the i'th column of P
+    P[:,i] = ab.flatten()
+  return P
