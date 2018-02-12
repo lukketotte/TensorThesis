@@ -19,8 +19,10 @@ from scipy.linalg import eigh
 # a = tf.constant(np.arange(1, 13, dtype=np.int32),
 #                 shape=[2, 2, 3])
 a = tf.constant([
-  	            [[1,2,3], [4,5,6]], 
-  	            [[7,8,9], [10, 11, 12]]
+  	            [[1,2,3], 
+  	            [4,5,6]], 
+  	            [[7,8,9], 
+  	            [10, 11, 12]]
   	            ])
 
 X = np.array([[[1,4,7,10],
@@ -34,8 +36,8 @@ print(X.shape) # 2 3 by 4s
 
 U = np.array([[1,3,5], [2,4,6]])
 
-
-
+X = tf.constant(X)
+U = tf.constant(U)
 
 
 sess = tf.Session()
@@ -43,17 +45,10 @@ sess = tf.Session()
 with sess.as_default():
   assert tf.get_default_session() is sess
   # print(a.get_shape())
-  # print(unfold_tf(a,2).eval().shape)
-  print(a.eval()) # numpy.ndarray
-  x = unfold_tf(a,2).eval()
-  y = unfold_np(a.eval(),2)
   # print(x.dot(x.T).shape)
   # print(top_components(x.dot(x.T), 2, 0))
+  print(X.eval())
+  print(X.get_shape())
+  print(unfold_tf(X, 1).eval())
   print(n_mode_prod(X, U, 1).eval())
-
-  # assuming xy is the mode-1 unfolding of a 
-  # 3d tensor, we fold it back to 2,3,3 
-  # print(refold_tf(xy, [3,3,2], 0).eval())
-
-
 

@@ -51,7 +51,7 @@ def unfold_tf(X, n):
 
   dim = shape[n]
 
-  return tf.reshape(X, [dim, -1])
+  return tf.reshape(B, [dim, -1])
 
 def refold_tf(X, shape, n):
   """
@@ -107,11 +107,13 @@ def n_mode_prod(X, A, n):
   """
   Calculates the n-mode product of a tensor and matrix A
   """
-  shape = list(X.shape)
+  shape = list(X.get_shape())
   # check that dimensions allows for matrix multiplication
   if(shape[n] == A.shape[1]):
-    Xn = unfold_np(X, n)
-    Xn = np.dot(A, Xn)
+    Xn = unfold_tf(X, n)
+    Xn = tf.matmul(A, Xn)
+    # alternatively
+    # Xn = np.matmul(Xn, A.T)
 
     # the folded tensor will have nth dimension A.shape[0]
     shape[n] = A.shape[0]
@@ -123,9 +125,21 @@ def n_mode_prod(X, A, n):
 
 
 
-def kruskal(G, list_pcs):
+def kruskal(G, list_mat):
   """
   Kruskal operator, takes core matrix and list och 
   unfolded matricies.
+
+  G: tensor 
+  list_mat: list of factor matricies
+
+  (Might hard code for three dimensions)
   """
+  # need to keep in mind that the shape returns
+  # the dimension in a completely different order in 
+  # comparison with the litterature. 
+  N = len(list_mat)
+  for i in range(N):
+  	Gn = unfold_np
+
 
