@@ -14,6 +14,8 @@ def top_components(X, rank, n):
     Based on algorithm 1 in 
     T. Kolda, 2006, Multilinear Operators for Higher-Order Decompositions, Sandia
     Formula is A^(n) <- J_n leading eigenvalues of X_n * X_n'
+    Not sure if correctly interpreted, but for now it returns the 
+    eigenvectors corresponding to the highest eigenvalues
 
     Important note: any tf.tensor returned by .eval() is a numpy.ndarray
     """

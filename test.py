@@ -26,17 +26,13 @@ U3 = tf.constant(U3)
 matList = [U1, U2, U3]
 print(len(matList))
 
+X1 = unfold_tf(X, 1)
+
 sess = tf.Session()
 
 with sess.as_default():
   assert tf.get_default_session() is sess
-  # print(a.get_shape())
-  # print(x.dot(x.T).shape)
-  # print(top_components(x.dot(x.T), 2, 0))
-  #print(X.eval())
-  print(matList[0].get_shape())
-  print(X.get_shape())
-  print(unfold_tf(X, 2).get_shape())
-  #print(n_mode_prod(X, U2, 1).eval())
-  print(kruskal(X, matList).eval())
+  print(X1.eval())
+  print(top_components(X.eval(), 3, 1))
+  
 
