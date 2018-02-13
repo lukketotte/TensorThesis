@@ -106,6 +106,7 @@ def khatri_rao(A,B):
 def n_mode_prod(X, A, n):
   """
   Calculates the n-mode product of a tensor and matrix A
+  Takes tf.tensors
   """
   shape = list(X.get_shape())
   # check that dimensions allows for matrix multiplication
