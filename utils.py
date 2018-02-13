@@ -106,7 +106,6 @@ def khatri_rao(A,B):
 def n_mode_prod(X, A, n):
   """
   Calculates the n-mode product of a tensor and matrix A
-  Takes tf.tensors
   """
   shape = list(X.get_shape())
   # check that dimensions allows for matrix multiplication
@@ -126,21 +125,22 @@ def n_mode_prod(X, A, n):
 
 
 
-def kruskal(G, list_mat):
+def kruskal(G, U):
   """
   Kruskal operator, takes core matrix and list och 
   unfolded matricies.
 
   G: tensor 
-  list_mat: list of factor matricies
+  U: list of factor matricies
 
-  (Might hard code for three dimensions)
+  X = G times1 U1 times2 U2 ... timesN UN
   """
   # need to keep in mind that the shape returns
   # the dimension in a completely different order in 
   # comparison with the litterature. 
-  N = len(list_mat)
-  for i in range(N):
-  	Gn = unfold_np
-
+  N = len(U)
+  for n in range(N):
+  	# n_mode_prod does the unfolding and refolding
+  	X = n_mode_prod(G, U[n], n)
+  return(X)
 
