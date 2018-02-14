@@ -32,9 +32,12 @@ print(len(matList))
 # X1 = unfold_tf(X, 1)
 
 
-
 test = td(X_data = X, shape = [2,3,4], ranks = [2,2,2])
-test.hosvd(X)
+hosvd = test.hosvd(X)
+# print(hosvd)
+decomp = test.hooi(hosvd)
+print(decomp)
+
 """
 sess = tf.Session()
 with sess.as_default():

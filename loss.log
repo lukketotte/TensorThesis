@@ -2,3 +2,726 @@ DEBUG:decomp:[U  0] fit : 0.01021
 DEBUG:decomp:[U  1] fit : 0.00109
 DEBUG:decomp:[U  2] fit : -0.00002
 DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.00280
+DEBUG:decomp:[U  1] fit : -0.00465
+DEBUG:decomp:[U  2] fit : -0.00071
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.01903
+DEBUG:decomp:[U  1] fit : 0.00578
+DEBUG:decomp:[U  2] fit : 0.00100
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : 0.00406
+DEBUG:decomp:[U  1] fit : 0.00278
+DEBUG:decomp:[U  2] fit : 0.00011
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.00816
+DEBUG:decomp:[U  1] fit : -0.00467
+DEBUG:decomp:[U  2] fit : -0.00005
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.00989
+DEBUG:decomp:[U  1] fit : 0.00302
+DEBUG:decomp:[U  2] fit : 0.00262
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.00427
+DEBUG:decomp:[U  1] fit : -0.01806
+DEBUG:decomp:[U  2] fit : -0.00455
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.00289
+DEBUG:decomp:[U  1] fit : 0.00277
+DEBUG:decomp:[U  2] fit : 0.00037
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.00683
+DEBUG:decomp:[U  1] fit : 0.00527
+DEBUG:decomp:[U  2] fit : 0.00039
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : 0.00066
+DEBUG:decomp:[U  1] fit : 0.00031
+DEBUG:decomp:[U  2] fit : -0.00086
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.01265
+DEBUG:decomp:[U  1] fit : -0.00136
+DEBUG:decomp:[U  2] fit : 0.00122
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[U  0] fit : -0.00387
+DEBUG:decomp:[U  1] fit : -0.00377
+DEBUG:decomp:[U  2] fit : -0.00200
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[  0 - U  0] fit: -0.01175
+DEBUG:decomp:[  0 - U  1] fit: -0.00459
+DEBUG:decomp:[  0 - U  2] fit: 0.00173
+DEBUG:decomp:[  1 - U  0] fit: -0.00399
+DEBUG:decomp:[  1 - U  1] fit: -0.00397
+DEBUG:decomp:[  1 - U  2] fit: 0.00129
+DEBUG:decomp:[  2 - U  0] fit: -0.00397
+DEBUG:decomp:[  2 - U  1] fit: -0.00397
+DEBUG:decomp:[  2 - U  2] fit: 0.00129
+DEBUG:decomp:[  3 - U  0] fit: -0.00397
+DEBUG:decomp:[  3 - U  1] fit: -0.00397
+DEBUG:decomp:[  3 - U  2] fit: 0.00129
+DEBUG:decomp:[  4 - U  0] fit: -0.00397
+DEBUG:decomp:[  4 - U  1] fit: -0.00397
+DEBUG:decomp:[  4 - U  2] fit: 0.00129
+DEBUG:decomp:[  5 - U  0] fit: -0.00397
+DEBUG:decomp:[  5 - U  1] fit: -0.00397
+DEBUG:decomp:[  5 - U  2] fit: 0.00129
+DEBUG:decomp:[  6 - U  0] fit: -0.00397
+DEBUG:decomp:[  6 - U  1] fit: -0.00397
+DEBUG:decomp:[  6 - U  2] fit: 0.00129
+DEBUG:decomp:[  7 - U  0] fit: -0.00397
+DEBUG:decomp:[  7 - U  1] fit: -0.00397
+DEBUG:decomp:[  7 - U  2] fit: 0.00129
+DEBUG:decomp:[  8 - U  0] fit: -0.00397
+DEBUG:decomp:[  8 - U  1] fit: -0.00397
+DEBUG:decomp:[  8 - U  2] fit: 0.00129
+DEBUG:decomp:[  9 - U  0] fit: -0.00397
+DEBUG:decomp:[  9 - U  1] fit: -0.00397
+DEBUG:decomp:[  9 - U  2] fit: 0.00129
+DEBUG:decomp:[ 10 - U  0] fit: -0.00397
+DEBUG:decomp:[ 10 - U  1] fit: -0.00397
+DEBUG:decomp:[ 10 - U  2] fit: 0.00129
+DEBUG:decomp:[ 11 - U  0] fit: -0.00397
+DEBUG:decomp:[ 11 - U  1] fit: -0.00397
+DEBUG:decomp:[ 11 - U  2] fit: 0.00129
+DEBUG:decomp:[ 12 - U  0] fit: -0.00397
+DEBUG:decomp:[ 12 - U  1] fit: -0.00397
+DEBUG:decomp:[ 12 - U  2] fit: 0.00129
+DEBUG:decomp:[ 13 - U  0] fit: -0.00397
+DEBUG:decomp:[ 13 - U  1] fit: -0.00397
+DEBUG:decomp:[ 13 - U  2] fit: 0.00129
+DEBUG:decomp:[ 14 - U  0] fit: -0.00397
+DEBUG:decomp:[ 14 - U  1] fit: -0.00397
+DEBUG:decomp:[ 14 - U  2] fit: 0.00129
+DEBUG:decomp:[ 15 - U  0] fit: -0.00397
+DEBUG:decomp:[ 15 - U  1] fit: -0.00397
+DEBUG:decomp:[ 15 - U  2] fit: 0.00129
+DEBUG:decomp:[ 16 - U  0] fit: -0.00397
+DEBUG:decomp:[ 16 - U  1] fit: -0.00397
+DEBUG:decomp:[ 16 - U  2] fit: 0.00129
+DEBUG:decomp:[ 17 - U  0] fit: -0.00397
+DEBUG:decomp:[ 17 - U  1] fit: -0.00397
+DEBUG:decomp:[ 17 - U  2] fit: 0.00129
+DEBUG:decomp:[ 18 - U  0] fit: -0.00397
+DEBUG:decomp:[ 18 - U  1] fit: -0.00397
+DEBUG:decomp:[ 18 - U  2] fit: 0.00129
+DEBUG:decomp:[ 19 - U  0] fit: -0.00397
+DEBUG:decomp:[ 19 - U  1] fit: -0.00397
+DEBUG:decomp:[ 19 - U  2] fit: 0.00129
+DEBUG:decomp:[ 20 - U  0] fit: -0.00397
+DEBUG:decomp:[ 20 - U  1] fit: -0.00397
+DEBUG:decomp:[ 20 - U  2] fit: 0.00129
+DEBUG:decomp:[ 21 - U  0] fit: -0.00397
+DEBUG:decomp:[ 21 - U  1] fit: -0.00397
+DEBUG:decomp:[ 21 - U  2] fit: 0.00129
+DEBUG:decomp:[ 22 - U  0] fit: -0.00397
+DEBUG:decomp:[ 22 - U  1] fit: -0.00397
+DEBUG:decomp:[ 22 - U  2] fit: 0.00129
+DEBUG:decomp:[ 23 - U  0] fit: -0.00397
+DEBUG:decomp:[ 23 - U  1] fit: -0.00397
+DEBUG:decomp:[ 23 - U  2] fit: 0.00129
+DEBUG:decomp:[ 24 - U  0] fit: -0.00397
+DEBUG:decomp:[ 24 - U  1] fit: -0.00397
+DEBUG:decomp:[ 24 - U  2] fit: 0.00129
+DEBUG:decomp:[ 25 - U  0] fit: -0.00397
+DEBUG:decomp:[ 25 - U  1] fit: -0.00397
+DEBUG:decomp:[ 25 - U  2] fit: 0.00129
+DEBUG:decomp:[ 26 - U  0] fit: -0.00397
+DEBUG:decomp:[ 26 - U  1] fit: -0.00397
+DEBUG:decomp:[ 26 - U  2] fit: 0.00129
+DEBUG:decomp:[ 27 - U  0] fit: -0.00397
+DEBUG:decomp:[ 27 - U  1] fit: -0.00397
+DEBUG:decomp:[ 27 - U  2] fit: 0.00129
+DEBUG:decomp:[ 28 - U  0] fit: -0.00397
+DEBUG:decomp:[ 28 - U  1] fit: -0.00397
+DEBUG:decomp:[ 28 - U  2] fit: 0.00129
+DEBUG:decomp:[ 29 - U  0] fit: -0.00397
+DEBUG:decomp:[ 29 - U  1] fit: -0.00397
+DEBUG:decomp:[ 29 - U  2] fit: 0.00129
+DEBUG:decomp:[ 30 - U  0] fit: -0.00397
+DEBUG:decomp:[ 30 - U  1] fit: -0.00397
+DEBUG:decomp:[ 30 - U  2] fit: 0.00129
+DEBUG:decomp:[ 31 - U  0] fit: -0.00397
+DEBUG:decomp:[ 31 - U  1] fit: -0.00397
+DEBUG:decomp:[ 31 - U  2] fit: 0.00129
+DEBUG:decomp:[ 32 - U  0] fit: -0.00397
+DEBUG:decomp:[ 32 - U  1] fit: -0.00397
+DEBUG:decomp:[ 32 - U  2] fit: 0.00129
+DEBUG:decomp:[ 33 - U  0] fit: -0.00397
+DEBUG:decomp:[ 33 - U  1] fit: -0.00397
+DEBUG:decomp:[ 33 - U  2] fit: 0.00129
+DEBUG:decomp:[ 34 - U  0] fit: -0.00397
+DEBUG:decomp:[ 34 - U  1] fit: -0.00397
+DEBUG:decomp:[ 34 - U  2] fit: 0.00129
+DEBUG:decomp:[ 35 - U  0] fit: -0.00397
+DEBUG:decomp:[ 35 - U  1] fit: -0.00397
+DEBUG:decomp:[ 35 - U  2] fit: 0.00129
+DEBUG:decomp:[ 36 - U  0] fit: -0.00397
+DEBUG:decomp:[ 36 - U  1] fit: -0.00397
+DEBUG:decomp:[ 36 - U  2] fit: 0.00129
+DEBUG:decomp:[ 37 - U  0] fit: -0.00397
+DEBUG:decomp:[ 37 - U  1] fit: -0.00397
+DEBUG:decomp:[ 37 - U  2] fit: 0.00129
+DEBUG:decomp:[ 38 - U  0] fit: -0.00397
+DEBUG:decomp:[ 38 - U  1] fit: -0.00397
+DEBUG:decomp:[ 38 - U  2] fit: 0.00129
+DEBUG:decomp:[ 39 - U  0] fit: -0.00397
+DEBUG:decomp:[ 39 - U  1] fit: -0.00397
+DEBUG:decomp:[ 39 - U  2] fit: 0.00129
+DEBUG:decomp:[ 40 - U  0] fit: -0.00397
+DEBUG:decomp:[ 40 - U  1] fit: -0.00397
+DEBUG:decomp:[ 40 - U  2] fit: 0.00129
+DEBUG:decomp:[ 41 - U  0] fit: -0.00397
+DEBUG:decomp:[ 41 - U  1] fit: -0.00397
+DEBUG:decomp:[ 41 - U  2] fit: 0.00129
+DEBUG:decomp:[ 42 - U  0] fit: -0.00397
+DEBUG:decomp:[ 42 - U  1] fit: -0.00397
+DEBUG:decomp:[ 42 - U  2] fit: 0.00129
+DEBUG:decomp:[ 43 - U  0] fit: -0.00397
+DEBUG:decomp:[ 43 - U  1] fit: -0.00397
+DEBUG:decomp:[ 43 - U  2] fit: 0.00129
+DEBUG:decomp:[ 44 - U  0] fit: -0.00397
+DEBUG:decomp:[ 44 - U  1] fit: -0.00397
+DEBUG:decomp:[ 44 - U  2] fit: 0.00129
+DEBUG:decomp:[ 45 - U  0] fit: -0.00397
+DEBUG:decomp:[ 45 - U  1] fit: -0.00397
+DEBUG:decomp:[ 45 - U  2] fit: 0.00129
+DEBUG:decomp:[ 46 - U  0] fit: -0.00397
+DEBUG:decomp:[ 46 - U  1] fit: -0.00397
+DEBUG:decomp:[ 46 - U  2] fit: 0.00129
+DEBUG:decomp:[ 47 - U  0] fit: -0.00397
+DEBUG:decomp:[ 47 - U  1] fit: -0.00397
+DEBUG:decomp:[ 47 - U  2] fit: 0.00129
+DEBUG:decomp:[ 48 - U  0] fit: -0.00397
+DEBUG:decomp:[ 48 - U  1] fit: -0.00397
+DEBUG:decomp:[ 48 - U  2] fit: 0.00129
+DEBUG:decomp:[ 49 - U  0] fit: -0.00397
+DEBUG:decomp:[ 49 - U  1] fit: -0.00397
+DEBUG:decomp:[ 49 - U  2] fit: 0.00129
+DEBUG:decomp:[ 50 - U  0] fit: -0.00397
+DEBUG:decomp:[ 50 - U  1] fit: -0.00397
+DEBUG:decomp:[ 50 - U  2] fit: 0.00129
+DEBUG:decomp:[ 51 - U  0] fit: -0.00397
+DEBUG:decomp:[ 51 - U  1] fit: -0.00397
+DEBUG:decomp:[ 51 - U  2] fit: 0.00129
+DEBUG:decomp:[ 52 - U  0] fit: -0.00397
+DEBUG:decomp:[ 52 - U  1] fit: -0.00397
+DEBUG:decomp:[ 52 - U  2] fit: 0.00129
+DEBUG:decomp:[ 53 - U  0] fit: -0.00397
+DEBUG:decomp:[ 53 - U  1] fit: -0.00397
+DEBUG:decomp:[ 53 - U  2] fit: 0.00129
+DEBUG:decomp:[ 54 - U  0] fit: -0.00397
+DEBUG:decomp:[ 54 - U  1] fit: -0.00397
+DEBUG:decomp:[ 54 - U  2] fit: 0.00129
+DEBUG:decomp:[ 55 - U  0] fit: -0.00397
+DEBUG:decomp:[ 55 - U  1] fit: -0.00397
+DEBUG:decomp:[ 55 - U  2] fit: 0.00129
+DEBUG:decomp:[ 56 - U  0] fit: -0.00397
+DEBUG:decomp:[ 56 - U  1] fit: -0.00397
+DEBUG:decomp:[ 56 - U  2] fit: 0.00129
+DEBUG:decomp:[ 57 - U  0] fit: -0.00397
+DEBUG:decomp:[ 57 - U  1] fit: -0.00397
+DEBUG:decomp:[ 57 - U  2] fit: 0.00129
+DEBUG:decomp:[ 58 - U  0] fit: -0.00397
+DEBUG:decomp:[ 58 - U  1] fit: -0.00397
+DEBUG:decomp:[ 58 - U  2] fit: 0.00129
+DEBUG:decomp:[ 59 - U  0] fit: -0.00397
+DEBUG:decomp:[ 59 - U  1] fit: -0.00397
+DEBUG:decomp:[ 59 - U  2] fit: 0.00129
+DEBUG:decomp:[ 60 - U  0] fit: -0.00397
+DEBUG:decomp:[ 60 - U  1] fit: -0.00397
+DEBUG:decomp:[ 60 - U  2] fit: 0.00129
+DEBUG:decomp:[ 61 - U  0] fit: -0.00397
+DEBUG:decomp:[ 61 - U  1] fit: -0.00397
+DEBUG:decomp:[ 61 - U  2] fit: 0.00129
+DEBUG:decomp:[ 62 - U  0] fit: -0.00397
+DEBUG:decomp:[ 62 - U  1] fit: -0.00397
+DEBUG:decomp:[ 62 - U  2] fit: 0.00129
+DEBUG:decomp:[ 63 - U  0] fit: -0.00397
+DEBUG:decomp:[ 63 - U  1] fit: -0.00397
+DEBUG:decomp:[ 63 - U  2] fit: 0.00129
+DEBUG:decomp:[ 64 - U  0] fit: -0.00397
+DEBUG:decomp:[ 64 - U  1] fit: -0.00397
+DEBUG:decomp:[ 64 - U  2] fit: 0.00129
+DEBUG:decomp:[ 65 - U  0] fit: -0.00397
+DEBUG:decomp:[ 65 - U  1] fit: -0.00397
+DEBUG:decomp:[ 65 - U  2] fit: 0.00129
+DEBUG:decomp:[ 66 - U  0] fit: -0.00397
+DEBUG:decomp:[ 66 - U  1] fit: -0.00397
+DEBUG:decomp:[ 66 - U  2] fit: 0.00129
+DEBUG:decomp:[ 67 - U  0] fit: -0.00397
+DEBUG:decomp:[ 67 - U  1] fit: -0.00397
+DEBUG:decomp:[ 67 - U  2] fit: 0.00129
+DEBUG:decomp:[ 68 - U  0] fit: -0.00397
+DEBUG:decomp:[ 68 - U  1] fit: -0.00397
+DEBUG:decomp:[ 68 - U  2] fit: 0.00129
+DEBUG:decomp:[ 69 - U  0] fit: -0.00397
+DEBUG:decomp:[ 69 - U  1] fit: -0.00397
+DEBUG:decomp:[ 69 - U  2] fit: 0.00129
+DEBUG:decomp:[ 70 - U  0] fit: -0.00397
+DEBUG:decomp:[ 70 - U  1] fit: -0.00397
+DEBUG:decomp:[ 70 - U  2] fit: 0.00129
+DEBUG:decomp:[ 71 - U  0] fit: -0.00397
+DEBUG:decomp:[ 71 - U  1] fit: -0.00397
+DEBUG:decomp:[ 71 - U  2] fit: 0.00129
+DEBUG:decomp:[ 72 - U  0] fit: -0.00397
+DEBUG:decomp:[ 72 - U  1] fit: -0.00397
+DEBUG:decomp:[ 72 - U  2] fit: 0.00129
+DEBUG:decomp:[ 73 - U  0] fit: -0.00397
+DEBUG:decomp:[ 73 - U  1] fit: -0.00397
+DEBUG:decomp:[ 73 - U  2] fit: 0.00129
+DEBUG:decomp:[ 74 - U  0] fit: -0.00397
+DEBUG:decomp:[ 74 - U  1] fit: -0.00397
+DEBUG:decomp:[ 74 - U  2] fit: 0.00129
+DEBUG:decomp:[ 75 - U  0] fit: -0.00397
+DEBUG:decomp:[ 75 - U  1] fit: -0.00397
+DEBUG:decomp:[ 75 - U  2] fit: 0.00129
+DEBUG:decomp:[ 76 - U  0] fit: -0.00397
+DEBUG:decomp:[ 76 - U  1] fit: -0.00397
+DEBUG:decomp:[ 76 - U  2] fit: 0.00129
+DEBUG:decomp:[ 77 - U  0] fit: -0.00397
+DEBUG:decomp:[ 77 - U  1] fit: -0.00397
+DEBUG:decomp:[ 77 - U  2] fit: 0.00129
+DEBUG:decomp:[ 78 - U  0] fit: -0.00397
+DEBUG:decomp:[ 78 - U  1] fit: -0.00397
+DEBUG:decomp:[ 78 - U  2] fit: 0.00129
+DEBUG:decomp:[ 79 - U  0] fit: -0.00397
+DEBUG:decomp:[ 79 - U  1] fit: -0.00397
+DEBUG:decomp:[ 79 - U  2] fit: 0.00129
+DEBUG:decomp:[ 80 - U  0] fit: -0.00397
+DEBUG:decomp:[ 80 - U  1] fit: -0.00397
+DEBUG:decomp:[ 80 - U  2] fit: 0.00129
+DEBUG:decomp:[ 81 - U  0] fit: -0.00397
+DEBUG:decomp:[ 81 - U  1] fit: -0.00397
+DEBUG:decomp:[ 81 - U  2] fit: 0.00129
+DEBUG:decomp:[ 82 - U  0] fit: -0.00397
+DEBUG:decomp:[ 82 - U  1] fit: -0.00397
+DEBUG:decomp:[ 82 - U  2] fit: 0.00129
+DEBUG:decomp:[ 83 - U  0] fit: -0.00397
+DEBUG:decomp:[ 83 - U  1] fit: -0.00397
+DEBUG:decomp:[ 83 - U  2] fit: 0.00129
+DEBUG:decomp:[ 84 - U  0] fit: -0.00397
+DEBUG:decomp:[ 84 - U  1] fit: -0.00397
+DEBUG:decomp:[ 84 - U  2] fit: 0.00129
+DEBUG:decomp:[ 85 - U  0] fit: -0.00397
+DEBUG:decomp:[ 85 - U  1] fit: -0.00397
+DEBUG:decomp:[ 85 - U  2] fit: 0.00129
+DEBUG:decomp:[ 86 - U  0] fit: -0.00397
+DEBUG:decomp:[ 86 - U  1] fit: -0.00397
+DEBUG:decomp:[ 86 - U  2] fit: 0.00129
+DEBUG:decomp:[ 87 - U  0] fit: -0.00397
+DEBUG:decomp:[ 87 - U  1] fit: -0.00397
+DEBUG:decomp:[ 87 - U  2] fit: 0.00129
+DEBUG:decomp:[ 88 - U  0] fit: -0.00397
+DEBUG:decomp:[ 88 - U  1] fit: -0.00397
+DEBUG:decomp:[ 88 - U  2] fit: 0.00129
+DEBUG:decomp:[ 89 - U  0] fit: -0.00397
+DEBUG:decomp:[ 89 - U  1] fit: -0.00397
+DEBUG:decomp:[ 89 - U  2] fit: 0.00129
+DEBUG:decomp:[ 90 - U  0] fit: -0.00397
+DEBUG:decomp:[ 90 - U  1] fit: -0.00397
+DEBUG:decomp:[ 90 - U  2] fit: 0.00129
+DEBUG:decomp:[ 91 - U  0] fit: -0.00397
+DEBUG:decomp:[ 91 - U  1] fit: -0.00397
+DEBUG:decomp:[ 91 - U  2] fit: 0.00129
+DEBUG:decomp:[ 92 - U  0] fit: -0.00397
+DEBUG:decomp:[ 92 - U  1] fit: -0.00397
+DEBUG:decomp:[ 92 - U  2] fit: 0.00129
+DEBUG:decomp:[ 93 - U  0] fit: -0.00397
+DEBUG:decomp:[ 93 - U  1] fit: -0.00397
+DEBUG:decomp:[ 93 - U  2] fit: 0.00129
+DEBUG:decomp:[ 94 - U  0] fit: -0.00397
+DEBUG:decomp:[ 94 - U  1] fit: -0.00397
+DEBUG:decomp:[ 94 - U  2] fit: 0.00129
+DEBUG:decomp:[ 95 - U  0] fit: -0.00397
+DEBUG:decomp:[ 95 - U  1] fit: -0.00397
+DEBUG:decomp:[ 95 - U  2] fit: 0.00129
+DEBUG:decomp:[ 96 - U  0] fit: -0.00397
+DEBUG:decomp:[ 96 - U  1] fit: -0.00397
+DEBUG:decomp:[ 96 - U  2] fit: 0.00129
+DEBUG:decomp:[ 97 - U  0] fit: -0.00397
+DEBUG:decomp:[ 97 - U  1] fit: -0.00397
+DEBUG:decomp:[ 97 - U  2] fit: 0.00129
+DEBUG:decomp:[ 98 - U  0] fit: -0.00397
+DEBUG:decomp:[ 98 - U  1] fit: -0.00397
+DEBUG:decomp:[ 98 - U  2] fit: 0.00129
+DEBUG:decomp:[ 99 - U  0] fit: -0.00397
+DEBUG:decomp:[ 99 - U  1] fit: -0.00397
+DEBUG:decomp:[ 99 - U  2] fit: 0.00129
+DEBUG:decomp:[100 - U  0] fit: -0.00397
+DEBUG:decomp:[100 - U  1] fit: -0.00397
+DEBUG:decomp:[100 - U  2] fit: 0.00129
+DEBUG:decomp:[101 - U  0] fit: -0.00397
+DEBUG:decomp:[101 - U  1] fit: -0.00397
+DEBUG:decomp:[101 - U  2] fit: 0.00129
+DEBUG:decomp:[102 - U  0] fit: -0.00397
+DEBUG:decomp:[102 - U  1] fit: -0.00397
+DEBUG:decomp:[102 - U  2] fit: 0.00129
+DEBUG:decomp:[103 - U  0] fit: -0.00397
+DEBUG:decomp:[103 - U  1] fit: -0.00397
+DEBUG:decomp:[103 - U  2] fit: 0.00129
+DEBUG:decomp:[104 - U  0] fit: -0.00397
+DEBUG:decomp:[104 - U  1] fit: -0.00397
+DEBUG:decomp:[104 - U  2] fit: 0.00129
+DEBUG:decomp:[105 - U  0] fit: -0.00397
+DEBUG:decomp:[105 - U  1] fit: -0.00397
+DEBUG:decomp:[105 - U  2] fit: 0.00129
+DEBUG:decomp:[106 - U  0] fit: -0.00397
+DEBUG:decomp:[106 - U  1] fit: -0.00397
+DEBUG:decomp:[106 - U  2] fit: 0.00129
+DEBUG:decomp:[107 - U  0] fit: -0.00397
+DEBUG:decomp:[107 - U  1] fit: -0.00397
+DEBUG:decomp:[107 - U  2] fit: 0.00129
+DEBUG:decomp:[108 - U  0] fit: -0.00397
+DEBUG:decomp:[108 - U  1] fit: -0.00397
+DEBUG:decomp:[108 - U  2] fit: 0.00129
+DEBUG:decomp:[109 - U  0] fit: -0.00397
+DEBUG:decomp:[109 - U  1] fit: -0.00397
+DEBUG:decomp:[109 - U  2] fit: 0.00129
+DEBUG:decomp:[110 - U  0] fit: -0.00397
+DEBUG:decomp:[110 - U  1] fit: -0.00397
+DEBUG:decomp:[110 - U  2] fit: 0.00129
+DEBUG:decomp:[111 - U  0] fit: -0.00397
+DEBUG:decomp:[111 - U  1] fit: -0.00397
+DEBUG:decomp:[111 - U  2] fit: 0.00129
+DEBUG:decomp:[112 - U  0] fit: -0.00397
+DEBUG:decomp:[112 - U  1] fit: -0.00397
+DEBUG:decomp:[112 - U  2] fit: 0.00129
+DEBUG:decomp:[113 - U  0] fit: -0.00397
+DEBUG:decomp:[113 - U  1] fit: -0.00397
+DEBUG:decomp:[113 - U  2] fit: 0.00129
+DEBUG:decomp:[114 - U  0] fit: -0.00397
+DEBUG:decomp:[114 - U  1] fit: -0.00397
+DEBUG:decomp:[114 - U  2] fit: 0.00129
+DEBUG:decomp:[115 - U  0] fit: -0.00397
+DEBUG:decomp:[115 - U  1] fit: -0.00397
+DEBUG:decomp:[115 - U  2] fit: 0.00129
+DEBUG:decomp:[116 - U  0] fit: -0.00397
+DEBUG:decomp:[116 - U  1] fit: -0.00397
+DEBUG:decomp:[116 - U  2] fit: 0.00129
+DEBUG:decomp:[117 - U  0] fit: -0.00397
+DEBUG:decomp:[117 - U  1] fit: -0.00397
+DEBUG:decomp:[117 - U  2] fit: 0.00129
+DEBUG:decomp:[118 - U  0] fit: -0.00397
+DEBUG:decomp:[118 - U  1] fit: -0.00397
+DEBUG:decomp:[118 - U  2] fit: 0.00129
+DEBUG:decomp:[119 - U  0] fit: -0.00397
+DEBUG:decomp:[119 - U  1] fit: -0.00397
+DEBUG:decomp:[119 - U  2] fit: 0.00129
+DEBUG:decomp:[120 - U  0] fit: -0.00397
+DEBUG:decomp:[120 - U  1] fit: -0.00397
+DEBUG:decomp:[120 - U  2] fit: 0.00129
+DEBUG:decomp:[121 - U  0] fit: -0.00397
+DEBUG:decomp:[121 - U  1] fit: -0.00397
+DEBUG:decomp:[121 - U  2] fit: 0.00129
+DEBUG:decomp:[122 - U  0] fit: -0.00397
+DEBUG:decomp:[122 - U  1] fit: -0.00397
+DEBUG:decomp:[122 - U  2] fit: 0.00129
+DEBUG:decomp:[123 - U  0] fit: -0.00397
+DEBUG:decomp:[123 - U  1] fit: -0.00397
+DEBUG:decomp:[123 - U  2] fit: 0.00129
+DEBUG:decomp:[124 - U  0] fit: -0.00397
+DEBUG:decomp:[124 - U  1] fit: -0.00397
+DEBUG:decomp:[124 - U  2] fit: 0.00129
+DEBUG:decomp:[U  0] fit : 0.00417
+DEBUG:decomp:[U  1] fit : -0.00021
+DEBUG:decomp:[U  2] fit : 0.00160
+DEBUG:decomp:[G] fit: 0.00000
+DEBUG:decomp:[  0 - U  0] fit: -0.03988
+DEBUG:decomp:[  0 - U  1] fit: -0.02522
+DEBUG:decomp:[  0 - U  2] fit: 0.02702
+DEBUG:decomp:[  1 - U  0] fit: -0.03419
+DEBUG:decomp:[  1 - U  1] fit: -0.03421
+DEBUG:decomp:[  1 - U  2] fit: 0.02848
+DEBUG:decomp:[  2 - U  0] fit: -0.03421
+DEBUG:decomp:[  2 - U  1] fit: -0.03421
+DEBUG:decomp:[  2 - U  2] fit: 0.02848
+DEBUG:decomp:[  3 - U  0] fit: -0.03421
+DEBUG:decomp:[  3 - U  1] fit: -0.03421
+DEBUG:decomp:[  3 - U  2] fit: 0.02848
+DEBUG:decomp:[  4 - U  0] fit: -0.03421
+DEBUG:decomp:[  4 - U  1] fit: -0.03421
+DEBUG:decomp:[  4 - U  2] fit: 0.02848
+DEBUG:decomp:[  5 - U  0] fit: -0.03421
+DEBUG:decomp:[  5 - U  1] fit: -0.03421
+DEBUG:decomp:[  5 - U  2] fit: 0.02848
+DEBUG:decomp:[  6 - U  0] fit: -0.03421
+DEBUG:decomp:[  6 - U  1] fit: -0.03421
+DEBUG:decomp:[  6 - U  2] fit: 0.02848
+DEBUG:decomp:[  7 - U  0] fit: -0.03421
+DEBUG:decomp:[  7 - U  1] fit: -0.03421
+DEBUG:decomp:[  7 - U  2] fit: 0.02848
+DEBUG:decomp:[  8 - U  0] fit: -0.03421
+DEBUG:decomp:[  8 - U  1] fit: -0.03421
+DEBUG:decomp:[  8 - U  2] fit: 0.02848
+DEBUG:decomp:[  9 - U  0] fit: -0.03421
+DEBUG:decomp:[  9 - U  1] fit: -0.03421
+DEBUG:decomp:[  9 - U  2] fit: 0.02848
+DEBUG:decomp:[ 10 - U  0] fit: -0.03421
+DEBUG:decomp:[ 10 - U  1] fit: -0.03421
+DEBUG:decomp:[ 10 - U  2] fit: 0.02848
+DEBUG:decomp:[ 11 - U  0] fit: -0.03421
+DEBUG:decomp:[ 11 - U  1] fit: -0.03421
+DEBUG:decomp:[ 11 - U  2] fit: 0.02848
+DEBUG:decomp:[ 12 - U  0] fit: -0.03421
+DEBUG:decomp:[ 12 - U  1] fit: -0.03421
+DEBUG:decomp:[ 12 - U  2] fit: 0.02848
+DEBUG:decomp:[ 13 - U  0] fit: -0.03421
+DEBUG:decomp:[ 13 - U  1] fit: -0.03421
+DEBUG:decomp:[ 13 - U  2] fit: 0.02848
+DEBUG:decomp:[ 14 - U  0] fit: -0.03421
+DEBUG:decomp:[ 14 - U  1] fit: -0.03421
+DEBUG:decomp:[ 14 - U  2] fit: 0.02848
+DEBUG:decomp:[ 15 - U  0] fit: -0.03421
+DEBUG:decomp:[ 15 - U  1] fit: -0.03421
+DEBUG:decomp:[ 15 - U  2] fit: 0.02848
+DEBUG:decomp:[ 16 - U  0] fit: -0.03421
+DEBUG:decomp:[ 16 - U  1] fit: -0.03421
+DEBUG:decomp:[ 16 - U  2] fit: 0.02848
+DEBUG:decomp:[ 17 - U  0] fit: -0.03421
+DEBUG:decomp:[ 17 - U  1] fit: -0.03421
+DEBUG:decomp:[ 17 - U  2] fit: 0.02848
+DEBUG:decomp:[ 18 - U  0] fit: -0.03421
+DEBUG:decomp:[ 18 - U  1] fit: -0.03421
+DEBUG:decomp:[ 18 - U  2] fit: 0.02848
+DEBUG:decomp:[ 19 - U  0] fit: -0.03421
+DEBUG:decomp:[ 19 - U  1] fit: -0.03421
+DEBUG:decomp:[ 19 - U  2] fit: 0.02848
+DEBUG:decomp:[ 20 - U  0] fit: -0.03421
+DEBUG:decomp:[ 20 - U  1] fit: -0.03421
+DEBUG:decomp:[ 20 - U  2] fit: 0.02848
+DEBUG:decomp:[ 21 - U  0] fit: -0.03421
+DEBUG:decomp:[ 21 - U  1] fit: -0.03421
+DEBUG:decomp:[ 21 - U  2] fit: 0.02848
+DEBUG:decomp:[ 22 - U  0] fit: -0.03421
+DEBUG:decomp:[ 22 - U  1] fit: -0.03421
+DEBUG:decomp:[ 22 - U  2] fit: 0.02848
+DEBUG:decomp:[ 23 - U  0] fit: -0.03421
+DEBUG:decomp:[ 23 - U  1] fit: -0.03421
+DEBUG:decomp:[ 23 - U  2] fit: 0.02848
+DEBUG:decomp:[ 24 - U  0] fit: -0.03421
+DEBUG:decomp:[ 24 - U  1] fit: -0.03421
+DEBUG:decomp:[ 24 - U  2] fit: 0.02848
+DEBUG:decomp:[ 25 - U  0] fit: -0.03421
+DEBUG:decomp:[ 25 - U  1] fit: -0.03421
+DEBUG:decomp:[ 25 - U  2] fit: 0.02848
+DEBUG:decomp:[ 26 - U  0] fit: -0.03421
+DEBUG:decomp:[ 26 - U  1] fit: -0.03421
+DEBUG:decomp:[ 26 - U  2] fit: 0.02848
+DEBUG:decomp:[ 27 - U  0] fit: -0.03421
+DEBUG:decomp:[ 27 - U  1] fit: -0.03421
+DEBUG:decomp:[ 27 - U  2] fit: 0.02848
+DEBUG:decomp:[ 28 - U  0] fit: -0.03421
+DEBUG:decomp:[ 28 - U  1] fit: -0.03421
+DEBUG:decomp:[ 28 - U  2] fit: 0.02848
+DEBUG:decomp:[ 29 - U  0] fit: -0.03421
+DEBUG:decomp:[ 29 - U  1] fit: -0.03421
+DEBUG:decomp:[ 29 - U  2] fit: 0.02848
+DEBUG:decomp:[ 30 - U  0] fit: -0.03421
+DEBUG:decomp:[ 30 - U  1] fit: -0.03421
+DEBUG:decomp:[ 30 - U  2] fit: 0.02848
+DEBUG:decomp:[ 31 - U  0] fit: -0.03421
+DEBUG:decomp:[ 31 - U  1] fit: -0.03421
+DEBUG:decomp:[ 31 - U  2] fit: 0.02848
+DEBUG:decomp:[ 32 - U  0] fit: -0.03421
+DEBUG:decomp:[ 32 - U  1] fit: -0.03421
+DEBUG:decomp:[ 32 - U  2] fit: 0.02848
+DEBUG:decomp:[ 33 - U  0] fit: -0.03421
+DEBUG:decomp:[ 33 - U  1] fit: -0.03421
+DEBUG:decomp:[ 33 - U  2] fit: 0.02848
+DEBUG:decomp:[ 34 - U  0] fit: -0.03421
+DEBUG:decomp:[ 34 - U  1] fit: -0.03421
+DEBUG:decomp:[ 34 - U  2] fit: 0.02848
+DEBUG:decomp:[ 35 - U  0] fit: -0.03421
+DEBUG:decomp:[ 35 - U  1] fit: -0.03421
+DEBUG:decomp:[ 35 - U  2] fit: 0.02848
+DEBUG:decomp:[ 36 - U  0] fit: -0.03421
+DEBUG:decomp:[ 36 - U  1] fit: -0.03421
+DEBUG:decomp:[ 36 - U  2] fit: 0.02848
+DEBUG:decomp:[ 37 - U  0] fit: -0.03421
+DEBUG:decomp:[ 37 - U  1] fit: -0.03421
+DEBUG:decomp:[ 37 - U  2] fit: 0.02848
+DEBUG:decomp:[ 38 - U  0] fit: -0.03421
+DEBUG:decomp:[ 38 - U  1] fit: -0.03421
+DEBUG:decomp:[ 38 - U  2] fit: 0.02848
+DEBUG:decomp:[ 39 - U  0] fit: -0.03421
+DEBUG:decomp:[ 39 - U  1] fit: -0.03421
+DEBUG:decomp:[ 39 - U  2] fit: 0.02848
+DEBUG:decomp:[ 40 - U  0] fit: -0.03421
+DEBUG:decomp:[ 40 - U  1] fit: -0.03421
+DEBUG:decomp:[ 40 - U  2] fit: 0.02848
+DEBUG:decomp:[ 41 - U  0] fit: -0.03421
+DEBUG:decomp:[ 41 - U  1] fit: -0.03421
+DEBUG:decomp:[ 41 - U  2] fit: 0.02848
+DEBUG:decomp:[ 42 - U  0] fit: -0.03421
+DEBUG:decomp:[ 42 - U  1] fit: -0.03421
+DEBUG:decomp:[ 42 - U  2] fit: 0.02848
+DEBUG:decomp:[ 43 - U  0] fit: -0.03421
+DEBUG:decomp:[ 43 - U  1] fit: -0.03421
+DEBUG:decomp:[ 43 - U  2] fit: 0.02848
+DEBUG:decomp:[ 44 - U  0] fit: -0.03421
+DEBUG:decomp:[ 44 - U  1] fit: -0.03421
+DEBUG:decomp:[ 44 - U  2] fit: 0.02848
+DEBUG:decomp:[ 45 - U  0] fit: -0.03421
+DEBUG:decomp:[ 45 - U  1] fit: -0.03421
+DEBUG:decomp:[ 45 - U  2] fit: 0.02848
+DEBUG:decomp:[ 46 - U  0] fit: -0.03421
+DEBUG:decomp:[ 46 - U  1] fit: -0.03421
+DEBUG:decomp:[ 46 - U  2] fit: 0.02848
+DEBUG:decomp:[ 47 - U  0] fit: -0.03421
+DEBUG:decomp:[ 47 - U  1] fit: -0.03421
+DEBUG:decomp:[ 47 - U  2] fit: 0.02848
+DEBUG:decomp:[ 48 - U  0] fit: -0.03421
+DEBUG:decomp:[ 48 - U  1] fit: -0.03421
+DEBUG:decomp:[ 48 - U  2] fit: 0.02848
+DEBUG:decomp:[ 49 - U  0] fit: -0.03421
+DEBUG:decomp:[ 49 - U  1] fit: -0.03421
+DEBUG:decomp:[ 49 - U  2] fit: 0.02848
+DEBUG:decomp:[ 50 - U  0] fit: -0.03421
+DEBUG:decomp:[ 50 - U  1] fit: -0.03421
+DEBUG:decomp:[ 50 - U  2] fit: 0.02848
+DEBUG:decomp:[ 51 - U  0] fit: -0.03421
+DEBUG:decomp:[ 51 - U  1] fit: -0.03421
+DEBUG:decomp:[ 51 - U  2] fit: 0.02848
+DEBUG:decomp:[ 52 - U  0] fit: -0.03421
+DEBUG:decomp:[ 52 - U  1] fit: -0.03421
+DEBUG:decomp:[ 52 - U  2] fit: 0.02848
+DEBUG:decomp:[ 53 - U  0] fit: -0.03421
+DEBUG:decomp:[ 53 - U  1] fit: -0.03421
+DEBUG:decomp:[ 53 - U  2] fit: 0.02848
+DEBUG:decomp:[ 54 - U  0] fit: -0.03421
+DEBUG:decomp:[ 54 - U  1] fit: -0.03421
+DEBUG:decomp:[ 54 - U  2] fit: 0.02848
+DEBUG:decomp:[ 55 - U  0] fit: -0.03421
+DEBUG:decomp:[ 55 - U  1] fit: -0.03421
+DEBUG:decomp:[ 55 - U  2] fit: 0.02848
+DEBUG:decomp:[ 56 - U  0] fit: -0.03421
+DEBUG:decomp:[ 56 - U  1] fit: -0.03421
+DEBUG:decomp:[ 56 - U  2] fit: 0.02848
+DEBUG:decomp:[ 57 - U  0] fit: -0.03421
+DEBUG:decomp:[ 57 - U  1] fit: -0.03421
+DEBUG:decomp:[ 57 - U  2] fit: 0.02848
+DEBUG:decomp:[ 58 - U  0] fit: -0.03421
+DEBUG:decomp:[ 58 - U  1] fit: -0.03421
+DEBUG:decomp:[ 58 - U  2] fit: 0.02848
+DEBUG:decomp:[ 59 - U  0] fit: -0.03421
+DEBUG:decomp:[ 59 - U  1] fit: -0.03421
+DEBUG:decomp:[ 59 - U  2] fit: 0.02848
+DEBUG:decomp:[ 60 - U  0] fit: -0.03421
+DEBUG:decomp:[ 60 - U  1] fit: -0.03421
+DEBUG:decomp:[ 60 - U  2] fit: 0.02848
+DEBUG:decomp:[ 61 - U  0] fit: -0.03421
+DEBUG:decomp:[ 61 - U  1] fit: -0.03421
+DEBUG:decomp:[ 61 - U  2] fit: 0.02848
+DEBUG:decomp:[ 62 - U  0] fit: -0.03421
+DEBUG:decomp:[ 62 - U  1] fit: -0.03421
+DEBUG:decomp:[ 62 - U  2] fit: 0.02848
+DEBUG:decomp:[ 63 - U  0] fit: -0.03421
+DEBUG:decomp:[ 63 - U  1] fit: -0.03421
+DEBUG:decomp:[ 63 - U  2] fit: 0.02848
+DEBUG:decomp:[ 64 - U  0] fit: -0.03421
+DEBUG:decomp:[ 64 - U  1] fit: -0.03421
+DEBUG:decomp:[ 64 - U  2] fit: 0.02848
+DEBUG:decomp:[ 65 - U  0] fit: -0.03421
+DEBUG:decomp:[ 65 - U  1] fit: -0.03421
+DEBUG:decomp:[ 65 - U  2] fit: 0.02848
+DEBUG:decomp:[ 66 - U  0] fit: -0.03421
+DEBUG:decomp:[ 66 - U  1] fit: -0.03421
+DEBUG:decomp:[ 66 - U  2] fit: 0.02848
+DEBUG:decomp:[ 67 - U  0] fit: -0.03421
+DEBUG:decomp:[ 67 - U  1] fit: -0.03421
+DEBUG:decomp:[ 67 - U  2] fit: 0.02848
+DEBUG:decomp:[ 68 - U  0] fit: -0.03421
+DEBUG:decomp:[ 68 - U  1] fit: -0.03421
+DEBUG:decomp:[ 68 - U  2] fit: 0.02848
+DEBUG:decomp:[ 69 - U  0] fit: -0.03421
+DEBUG:decomp:[ 69 - U  1] fit: -0.03421
+DEBUG:decomp:[ 69 - U  2] fit: 0.02848
+DEBUG:decomp:[ 70 - U  0] fit: -0.03421
+DEBUG:decomp:[ 70 - U  1] fit: -0.03421
+DEBUG:decomp:[ 70 - U  2] fit: 0.02848
+DEBUG:decomp:[ 71 - U  0] fit: -0.03421
+DEBUG:decomp:[ 71 - U  1] fit: -0.03421
+DEBUG:decomp:[ 71 - U  2] fit: 0.02848
+DEBUG:decomp:[ 72 - U  0] fit: -0.03421
+DEBUG:decomp:[ 72 - U  1] fit: -0.03421
+DEBUG:decomp:[ 72 - U  2] fit: 0.02848
+DEBUG:decomp:[ 73 - U  0] fit: -0.03421
+DEBUG:decomp:[ 73 - U  1] fit: -0.03421
+DEBUG:decomp:[ 73 - U  2] fit: 0.02848
+DEBUG:decomp:[ 74 - U  0] fit: -0.03421
+DEBUG:decomp:[ 74 - U  1] fit: -0.03421
+DEBUG:decomp:[ 74 - U  2] fit: 0.02848
+DEBUG:decomp:[ 75 - U  0] fit: -0.03421
+DEBUG:decomp:[ 75 - U  1] fit: -0.03421
+DEBUG:decomp:[ 75 - U  2] fit: 0.02848
+DEBUG:decomp:[ 76 - U  0] fit: -0.03421
+DEBUG:decomp:[ 76 - U  1] fit: -0.03421
+DEBUG:decomp:[ 76 - U  2] fit: 0.02848
+DEBUG:decomp:[ 77 - U  0] fit: -0.03421
+DEBUG:decomp:[ 77 - U  1] fit: -0.03421
+DEBUG:decomp:[ 77 - U  2] fit: 0.02848
+DEBUG:decomp:[ 78 - U  0] fit: -0.03421
+DEBUG:decomp:[ 78 - U  1] fit: -0.03421
+DEBUG:decomp:[ 78 - U  2] fit: 0.02848
+DEBUG:decomp:[ 79 - U  0] fit: -0.03421
+DEBUG:decomp:[ 79 - U  1] fit: -0.03421
+DEBUG:decomp:[ 79 - U  2] fit: 0.02848
+DEBUG:decomp:[ 80 - U  0] fit: -0.03421
+DEBUG:decomp:[ 80 - U  1] fit: -0.03421
+DEBUG:decomp:[ 80 - U  2] fit: 0.02848
+DEBUG:decomp:[ 81 - U  0] fit: -0.03421
+DEBUG:decomp:[ 81 - U  1] fit: -0.03421
+DEBUG:decomp:[ 81 - U  2] fit: 0.02848
+DEBUG:decomp:[ 82 - U  0] fit: -0.03421
+DEBUG:decomp:[ 82 - U  1] fit: -0.03421
+DEBUG:decomp:[ 82 - U  2] fit: 0.02848
+DEBUG:decomp:[ 83 - U  0] fit: -0.03421
+DEBUG:decomp:[ 83 - U  1] fit: -0.03421
+DEBUG:decomp:[ 83 - U  2] fit: 0.02848
+DEBUG:decomp:[ 84 - U  0] fit: -0.03421
+DEBUG:decomp:[ 84 - U  1] fit: -0.03421
+DEBUG:decomp:[ 84 - U  2] fit: 0.02848
+DEBUG:decomp:[ 85 - U  0] fit: -0.03421
+DEBUG:decomp:[ 85 - U  1] fit: -0.03421
+DEBUG:decomp:[ 85 - U  2] fit: 0.02848
+DEBUG:decomp:[ 86 - U  0] fit: -0.03421
+DEBUG:decomp:[ 86 - U  1] fit: -0.03421
+DEBUG:decomp:[ 86 - U  2] fit: 0.02848
+DEBUG:decomp:[ 87 - U  0] fit: -0.03421
+DEBUG:decomp:[ 87 - U  1] fit: -0.03421
+DEBUG:decomp:[ 87 - U  2] fit: 0.02848
+DEBUG:decomp:[ 88 - U  0] fit: -0.03421
+DEBUG:decomp:[ 88 - U  1] fit: -0.03421
+DEBUG:decomp:[ 88 - U  2] fit: 0.02848
+DEBUG:decomp:[ 89 - U  0] fit: -0.03421
+DEBUG:decomp:[ 89 - U  1] fit: -0.03421
+DEBUG:decomp:[ 89 - U  2] fit: 0.02848
+DEBUG:decomp:[ 90 - U  0] fit: -0.03421
+DEBUG:decomp:[ 90 - U  1] fit: -0.03421
+DEBUG:decomp:[ 90 - U  2] fit: 0.02848
+DEBUG:decomp:[ 91 - U  0] fit: -0.03421
+DEBUG:decomp:[ 91 - U  1] fit: -0.03421
+DEBUG:decomp:[ 91 - U  2] fit: 0.02848
+DEBUG:decomp:[ 92 - U  0] fit: -0.03421
+DEBUG:decomp:[ 92 - U  1] fit: -0.03421
+DEBUG:decomp:[ 92 - U  2] fit: 0.02848
+DEBUG:decomp:[ 93 - U  0] fit: -0.03421
+DEBUG:decomp:[ 93 - U  1] fit: -0.03421
+DEBUG:decomp:[ 93 - U  2] fit: 0.02848
+DEBUG:decomp:[ 94 - U  0] fit: -0.03421
+DEBUG:decomp:[ 94 - U  1] fit: -0.03421
+DEBUG:decomp:[ 94 - U  2] fit: 0.02848
+DEBUG:decomp:[ 95 - U  0] fit: -0.03421
+DEBUG:decomp:[ 95 - U  1] fit: -0.03421
+DEBUG:decomp:[ 95 - U  2] fit: 0.02848
+DEBUG:decomp:[ 96 - U  0] fit: -0.03421
+DEBUG:decomp:[ 96 - U  1] fit: -0.03421
+DEBUG:decomp:[ 96 - U  2] fit: 0.02848
+DEBUG:decomp:[ 97 - U  0] fit: -0.03421
+DEBUG:decomp:[ 97 - U  1] fit: -0.03421
+DEBUG:decomp:[ 97 - U  2] fit: 0.02848
+DEBUG:decomp:[ 98 - U  0] fit: -0.03421
+DEBUG:decomp:[ 98 - U  1] fit: -0.03421
+DEBUG:decomp:[ 98 - U  2] fit: 0.02848
+DEBUG:decomp:[ 99 - U  0] fit: -0.03421
+DEBUG:decomp:[ 99 - U  1] fit: -0.03421
+DEBUG:decomp:[ 99 - U  2] fit: 0.02848

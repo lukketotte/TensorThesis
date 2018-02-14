@@ -41,7 +41,7 @@ class TuckerDecomposition():
     """
 
 	def __init__(self, shape, ranks, stop_thresh = 1e-10, X_data = None,
-    	         dtype = tf.float64, init = 'unif', epochs = 1000,
+    	         dtype = tf.float64, init = 'unif', epochs = 100,
     	         limits = (0,1)):
         
         # need to read up on the difference of constant and variable
@@ -177,8 +177,10 @@ class TuckerDecomposition():
 		for n_ in idxs:
 			shape[n_] = self.ranks[n_]
 			name = None if (n_ < idxs[-1]) else 'Y%3d' % n_
+			# remove white space for valid scope name
+			name = name.replace(" ", "") if isinstance(name, str) else None
 
-			Un_mul_X = tf.matmul(tf.transpose(self.U[n_]), unfold_np(Y, n_))
+			Un_mul_X = tf.matmul(tf.transpose(self.U[n_]), unfold_tf(Y, n_))
 			with tf.name_scope(name):
 				Y = refold_tf(Un_mul_X, shape, n_)
         
@@ -199,15 +201,17 @@ class TuckerDecomposition():
 				# set up orth iteration ops
 				for n in range(self.order):
 					Y = self.get_ortho_iter(X_var, n)
-					_,u,_ = tf.svd(unfold_tf(Y, n), name = "svd%3d" % n)
+					name_string = "svd%3d" % n
+					name_string = name_string.replace(" ","")
+					_,u,_ = tf.svd(unfold_tf(Y, n), name = name_string)
 					svd_ops[n] = tf.assign(self.U[n], u[:, :self.ranks[n]])
                 
 				# shuffled or no?
 				for n in trange(self.order):
-					sess.run([svd_ops[n]], feed_dictv = {X_var : X_data})
+					sess.run([svd_ops[n]], feed_dict = {X_var : X_data})
 
 					X_pred = sess.run(self.X)
-					fit = get_fit(X_data, X_predict)
+					fit = get_fit(X_data, X_pred)
 					_log.debug('[%3d - U%3d] fit: %.5f' % (e,n,fit))
 
 		# Compute new core tensor value G
