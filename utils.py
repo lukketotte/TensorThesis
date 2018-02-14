@@ -31,6 +31,9 @@ def top_components(X, rank, n):
     U = np.array(U[: , ::-1])
     return U
 
+def shuffled(ls):
+    return sorted(list(ls), key=lambda _: np.random.rand())
+
 def unfold_np(arr, ax):
     """
     unfold np array along its ax-axis
