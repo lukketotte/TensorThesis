@@ -41,12 +41,13 @@ class TuckerDecomposition():
     """
 
 	def __init__(self, shape, ranks, stop_thresh = 1e-10, X_data = None,
-    	         dtype = tf.float64, init = 'random', epochs = 1000,
+    	         dtype = tf.float64, init = 'unif', epochs = 1000,
     	         limits = (0,1)):
         
         # need to read up on the difference of constant and variable
 		self.order = len(shape)
 		self.ranks = ranks if (type(ranks) is list) else [ranks]*self.order
+		self.shape = shape
 		self.stop_thresh = stop_thresh
 		self.init = init
 		self.epochs = epochs
@@ -66,6 +67,7 @@ class TuckerDecomposition():
 
 		with tf.name_scope('U'):
 			self.U = [None] * self.order
+			init_val = None
 
 			for n in range(self.order):
 				if init == 'hosvd':
