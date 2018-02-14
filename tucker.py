@@ -64,6 +64,7 @@ class TuckerDecomposition():
 		"""
 		self.G = tf.Variable(tf.random_uniform(self.ranks, self.a, self.b, self.dtype), 
         	                 name = "G")
+		self.X = tf.Variable(self.shape, dtype = self.dtype)
 
 		with tf.name_scope('U'):
 			self.U = [None] * self.order
@@ -97,7 +98,7 @@ class TuckerDecomposition():
 			Un_mul_G = tf.matmul(self.U[n], unfold_tf(G_to_X, n))
 			with tf.name_scope(name):
 				G_to_X = refold_tf(Un_mul_G, shape, n)
-
+		
 		self.X = G_to_X
 
 	def get_core_op(self, X_var):
@@ -208,19 +209,20 @@ class TuckerDecomposition():
                 
 				# shuffled or no?
 				for n in trange(self.order):
-					sess.run([svd_ops[n]], feed_dict = {X_var : X_data})
+					sess.run([svd_ops[n]], feed_dict = {X_var : self.X.eval()})
 
 					X_pred = sess.run(self.X)
 					fit = get_fit(X_data, X_pred)
 					_log.debug('[%3d - U%3d] fit: %.5f' % (e,n,fit))
 
-		# Compute new core tensor value G
-		core_op = self.get_core_op(X_var)
-		sess.run([core_op], feed_dict = {X_var : X_data})
+				# Compute new core tensor value G, 
+				# X_var hasnt changed though?
+				core_op = self.get_core_op(X_var)
+				sess.run([core_op], feed_dict = {X_var : X_data})
 
-		# Log final fit
-		X_predict  = sess.run(self.X)
-		fit = get_fit(X_data, X_predict)
-		_log.debug('[G] fit: %.5f' % fit)
+				# Log final fit
+				X_pred  = sess.run(self.X)
+				fit = get_fit(X_data, X_pred)
+				_log.debug('[G] fit: %.5f' % fit)
 
-		return X_predict
+			return X_pred
