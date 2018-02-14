@@ -81,7 +81,7 @@ class TuckerDecomposition():
 					shape = (self.shape[n], self.ranks[n])
 					init_val = np.random.normal(loc = self.a, scale = self.b, size = shape)
         		
-				self.U[n] = init_val
+				self.U[n] = tf.Variable(init_val, name = str(n), dtype = self.dtype)
     
 	def init_reconstruct(self):
 		"""
@@ -124,7 +124,7 @@ class TuckerDecomposition():
 		"""
 		HOSVD for a better first guess, before doing HOOI
 		"""
-		X_var = tf.variable(X_data, dtype = self.dtype)
+		X_var = tf.Variable(X_data, dtype = self.dtype)
 
 		init_op = tf.global_variables_initializer()
 		with tf.Session() as sess:
@@ -135,7 +135,11 @@ class TuckerDecomposition():
 				# do singular value decomposition on the X_n matrix
 				# kolda uses the eigenvalues here, note sure which
 				# should be used
-				_,u,_ = tf.svd(unfold_tf(X_var, n), name = 'svd%3d' %n)
+
+				# 'svd%3d' % n has a white space which is not comp of scope name
+				string_name = 'svd%3d' % n
+				string_name = string_name.replace(" ","")
+				_,u,_ = tf.svd(unfold_tf(X_var, n), name = string_name)
 
 				# set U[n] to the first ranks[n] left-singular values of X
 				new_U = tf.transpose(u[:self.ranks[n]])
@@ -147,7 +151,7 @@ class TuckerDecomposition():
 
 				# log fit after training
 				X_pred = sess.run(self.X)
-				fit = get_fit(X_data, X_predict)
+				fit = get_fit(X_data, X_pred)
 				_log.debug('[U%3d] fit : %.5f' % (n, fit))
 
 			# Compute new core tensor value G

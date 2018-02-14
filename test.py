@@ -21,7 +21,7 @@ U3 = np.array([[.2, .4, .9, .2],
 	           [.2, .6, .7, .1]])
  
 
-X = tf.constant(X, dtype = "float64")
+# X = tf.constant(X, dtype = "float64")
 U1 = tf.constant(U1)
 U2 = tf.constant(U2)
 U3 = tf.constant(U3)
@@ -29,13 +29,19 @@ U3 = tf.constant(U3)
 matList = [U1, U2, U3]
 print(len(matList))
 
-X1 = unfold_tf(X, 1)
+# X1 = unfold_tf(X, 1)
 
+
+
+test = td(X_data = X, shape = [2,3,4], ranks = [2,2,2])
+test.hosvd(X)
+"""
 sess = tf.Session()
-
 with sess.as_default():
   assert tf.get_default_session() is sess
   print(X1.eval())
   print(top_components(X.eval(), 3, 1))
   test = td(X_data = X.eval(), shape = [2,3,4], ranks = [2,2,2])
   
+  test.hosvd(X.eval())
+"""
