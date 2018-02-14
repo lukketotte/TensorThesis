@@ -54,9 +54,7 @@ class TuckerDecomposition():
 		# initialize the core tensor and component matricies
 		self.init_components(init, X_data)
 
-		
-
-		
+			
 	def init_components(self, init, X_data):
 		"""
 		init components using either HOSVD or uniform (a, b]
@@ -75,7 +73,11 @@ class TuckerDecomposition():
 					# calculate the singular values of Xn * Xn'
 					Xn = unfold_tf(self.X, n)
 					Y = tf.matmul(Xn, tf.transpose(Xn))
+					# want An as 0, ... , ranks[n] first singular values
+					# note that tf.svd returns the singular values in 
+					# descending order. 
 					init_val = tf.svd(Y, compute_uv = False)[:self.ranks[n]]
+					init_val = tf.diag(init_val)
 				elif init == 'unif':
 					shape = (self.shape[n], self.ranks[n])
 					init_val = np.random.uniform(low = self.a, 
@@ -83,7 +85,19 @@ class TuckerDecomposition():
 				name_str = "A%d" % n
 				name_str = name_str.replace(" ","")
 				
-
 				self.A[n] = tf.get_variable(name_str, dtype = self.dtype, 
 					                        initializer = init_val)
 				print(self.A[n])
+				# <tf.Variable 'A2:0' shape=(ranks[n],) dtype=float64_ref>
+
+	# TODO: method for updating core tensor, possible to use 
+	# the methods in utils I guess
+
+	def tucker_update(X_var, A):
+		"""
+		This method updates the core tensor defined in the 
+		init_components method as G.
+
+		Here the kruskal method from utils is used
+		"""
+		return tf.assign(self.G, kruskal(X_var, self.A))

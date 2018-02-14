@@ -146,6 +146,6 @@ def kruskal(G, U):
     N = len(U)
     for n in range(N):
   	    # n_mode_prod does the unfolding and refolding
-  	    X = n_mode_prod(G, U[n], n)
+  	    X = n_mode_prod(G, tf.transpose(U[n]), n)
     return(X)
 
