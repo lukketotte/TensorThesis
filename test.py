@@ -2,7 +2,7 @@ from utils import *
 import numpy as np
 import tensorflow as tf
 from scipy.linalg import eigh
-# from tucker import TuckerDecomposition as td
+from tucker import TuckerDecomposition as td
 
 X = np.array([[[1,4,7,10],
 	          [2,5,8,11],
@@ -37,5 +37,5 @@ with sess.as_default():
   assert tf.get_default_session() is sess
   print(X1.eval())
   print(top_components(X.eval(), 3, 1))
-  #test = td(X_data = X.eval(), shape = [2,3,4], ranks = [2,2,2])
+  test = td(X_data = X.eval(), shape = [2,3,4], ranks = [2,2,2])
   
