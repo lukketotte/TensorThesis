@@ -67,6 +67,7 @@ class TuckerDecomposition():
 		with tf.name_scope('A'):
 			self.A = [None] * self.order
 			init_val = None
+			self.zero_fill = [None] * self.order
 
 			for n in range(self.order):
 				if init == 'hosvd':
@@ -83,10 +84,13 @@ class TuckerDecomposition():
 					# component matrix is valid. Since Xn is pre-multiplied
 					# by An: cols(An) == rows(Xn)
 					if self.ranks[n] != self.shape[n]:
-						zero_fill = tf.get_variable("zero_fill", (self.ranks[n], self.shape[n] - sef.ranks[n]), 
-							dtype = tf.float64, initializer = tf.zeros_initializer)
+						# need to make the tensor names unique
+						name_zero_str = "0%d" % n
+						name_zero_str = name_zero_str.replace(" ","")
+						self.zero_fill[n] = tf.get_variable(name_zero_str, (self.ranks[n], self.shape[n] - self.ranks[n]), 
+								dtype = tf.float64, initializer = tf.zeros_initializer)
 						# concatonate to init_val by the column axis
-						init_val = tf.concat([init_val, zero_fill], 1)
+						init_val = tf.concat([init_val, self.zero_fill[n]], 1)
 
 				elif init == 'unif':
 					shape = (self.shape[n], self.ranks[n])
@@ -156,6 +160,9 @@ class TuckerDecomposition():
 					Gn = tf.matmul(Gn, tf.transpose(Gn))
 					# keep ranks[n] leading singular values
 					leading_singular_vals = tf.svd(Gn, compute_uv = False)[:self.ranks[n]]
+					# need to check that dimensions allow for matrix multiplication
+					# as in the hosvd method
+
 					tf.assign(A[n], leading_singular_vals)
 
 				# update X_estimate, check fit and log it

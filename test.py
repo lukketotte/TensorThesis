@@ -58,7 +58,7 @@ u = tf.svd(y, compute_uv = False)[:2]
 u = tf.diag(u)
 zero = tf.get_variable("zero", (2,1), dtype = tf.float64,
 	initializer = tf.zeros_initializer)
-# works fine
+
 u = tf.concat([u, zero], 1)
 
 init_op = tf.global_variables_initializer()
