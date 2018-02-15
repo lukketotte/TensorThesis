@@ -15,6 +15,8 @@ X = np.array([[[1.,4.,7.,10.],
 xt = tf.get_variable("xt", dtype = tf.float64, 
 	initializer = X)
 
+I = tf.diag([1]*4)
+
 
 
 
@@ -31,7 +33,11 @@ U2 = tf.constant(U2)
 U3 = tf.constant(U3)
 
 matList = [U1, U2, U3]
-print(len(matList))
+
+lst = [0,1,2,3,4,5]
+n = 2
+lst2 = lst[0:(n)] + lst[(n+1):]
+print(lst2)
 
 # X1 = unfold_tf(X, 1)
 
@@ -44,7 +50,7 @@ test = tdt(shape = [2,3,4], ranks = [2,2,2], X_data = X)
 # print(decompX)
 
 
-"""
+
 init_op = tf.global_variables_initializer()
 
 with tf.Session() as sess:
@@ -57,4 +63,6 @@ with tf.Session() as sess:
 	# u, idx = tf.nn.top_k(u, k = 3, sorted = False)
 
 	print(u.eval())
-"""
+
+	print(I.eval())
+

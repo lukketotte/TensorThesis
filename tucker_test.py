@@ -7,7 +7,6 @@ import logging
 logging.basicConfig(filename = 'loss.log', level = logging.DEBUG)
 _log = logging.getLogger('decomp')
 
-
 class TuckerDecomposition():
 	"""
 	Used for Tucker decomposition following Algorithm 1 in:
@@ -90,14 +89,55 @@ class TuckerDecomposition():
 				print(self.A[n])
 				# <tf.Variable 'A2:0' shape=(ranks[n],) dtype=float64_ref>
 
-	# TODO: method for updating core tensor, possible to use 
-	# the methods in utils I guess
-
 	def tucker_update(X_var, A):
 		"""
+		Helper method for HOOI:
 		This method updates the core tensor defined in the 
 		init_components method as G.
 
 		Here the kruskal method from utils is used
 		"""
 		return tf.assign(self.G, kruskal(X_var, self.A))
+
+	def hooi(self, X_data):
+		"""
+		HOOI
+		"""
+		# create a tf.variable to store the results in
+		X_estimate = tf.get_variable("X_estimate", self.shape, dtype = self.dtype,
+			initializer = tf.zeros_initializer)
+
+		i = 0
+		error = 1
+
+		# initialize all variables
+		init_op = tf.global_variables_initializer()
+		with tf.Session() as sess:
+			sess.run(init_op)
+
+			while i <= self.epochs or error >= self.stop_thresh:
+				for n in trange(self.order):
+					# the list of component matricies needs
+					# to be altered here, such that the nth
+					# component matrix is identity, keeping
+					# the n-fold intact
+					Xn = unfold_tf(self.X, n)
+					n_shape = Xn.get_shape()
+					# Create nth identity matrix, being square
+					# with the same number of rows anc cols as cols
+					# of Xn
+					In = tf.identity([1]*n_shape[1])
+					temp_comp_lst = [None] * self.order
+					# fill the temporary list
+					temp_comp_lst[0:n] = self.A[0:n]
+					temp_comp_lst[n] = In
+					temp_comp_lst[(n+1):] = self.A[(n+1):]
+
+					# update the core tensor, we're always
+					# passing in the original data with the
+					# component matricies being continually
+					# updated
+					tucker_update(self.X, temp_comp_lst)
+				
+
+
