@@ -112,25 +112,29 @@ def n_mode_prod(X, A, n, X_shape = None):
     """
     Calculates the n-mode product of a tensor and matrix A
     """
+    shape_A = list(A.get_shape())
+
     if X_shape is None:
     	shape = list(X.get_shape())
-    	shape_A = list(A.get_shape())
     else:
     	shape = X_shape
     # check that dimensions allows for matrix multiplication
-    if(shape[n] == shape_A[1]):
+    # list index out of range, lies in the shape_A thing
+
+    if shape[n] == shape_A[0]:
         Xn = unfold_tf(X, n)
-        Xn = tf.matmul(A, Xn)
+        Xn = tf.matmul(Xn, tf.transpose(A))
         # alternatively
         # Xn = np.matmul(Xn, A.T)
 
         # the folded tensor will have nth dimension A.shape[0]
         shape[n] = shape_A[0]
-    
+        print(Xn)
+
         return refold_tf(Xn, shape, n)
 
     else:
-  	    raise ValueError("Xn and A does not allow for matrix multiplication")
+  	    raise ValueError("X{} ({}) and A{} ({},{}) not defined".format(n, shape[n], n,shape_A[0], shape_A[1]))
 
 
 
@@ -150,9 +154,9 @@ def kruskal(G, U, X_shape = None):
     N = len(U)
     for n in range(N):
   	    # n_mode_prod does the unfolding and refolding
-  	    if X_shape is None:
-  	    	X = n_mode_prod(G, tf.transpose(U[n]), n)
-  	    else:
-  	    	X = n_mode_prod(G, tf.transpose(U[n]), n, X_shape)
+        if X_shape is None:
+  	        X = n_mode_prod(G, U[n], n)
+        else:
+  	        X = n_mode_prod(G, U[n], n, X_shape)
     return(X)
 

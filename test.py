@@ -4,6 +4,8 @@ import tensorflow as tf
 from scipy.linalg import eigh
 from tucker import TuckerDecomposition as td
 from tucker_test import TuckerDecomposition as tdt
+# from tensorly import decomposition as dp
+# import tensorly as tl
 
 X = np.array([[[1.,4.,7.,10.],
 	          [2.,5.,8.,11.],
@@ -12,10 +14,11 @@ X = np.array([[[1.,4.,7.,10.],
 	          [14.,17.,20.,23.],
 	          [15.,18.,21.,24.]]])
 
+print(isinstance(X, np.ndarray))
+print(X.shape)
+
 xt = tf.get_variable("xt", dtype = tf.float64, 
 	initializer = X)
-
-I = tf.diag([1]*4)
 
 
 
@@ -25,6 +28,9 @@ U2 = np.array([[.1,.3,.5], [.2,.4,.6]])
 U3 = np.array([[.2, .4, .9, .2],
 	           [.3, .2, .1, .8],
 	           [.2, .6, .7, .1]])
+
+tester = None
+print(not isinstance(tester, None))
  
 
 # X = tf.constant(X, dtype = "float64")
@@ -46,7 +52,7 @@ n = 2
 # X1 = unfold_tf(X, 1)
 
 test = tdt(shape = [2,3,4], ranks = [2,2,2], X_data = X)
-
+# X, G, A = test.hooi()
 # test = td(X_data = X, shape = [2,3,4], ranks = [2,2,2], epochs = 200)
 # hosvd = test.hosvd(X)
 # print(hosvd)
@@ -59,6 +65,13 @@ u = tf.diag(u)
 zero = tf.get_variable("zero", (2,1), dtype = tf.float64,
 	initializer = tf.zeros_initializer)
 
+I = tf.get_variable("i", initializer = tf.diag([1.,1.,1.]))
+I = tf.cast(I, tf.float64)
+I = tf.concat(I, zero, 1)
+
+lst = list(unfold_tf(xt, 2).get_shape())[1]
+print(lst)
+
 u = tf.concat([u, zero], 1)
 
 init_op = tf.global_variables_initializer()
@@ -67,7 +80,6 @@ with tf.Session() as sess:
 	sess.run(init_op)
 	print(xt.eval())
 	print(y.eval())
-
 
 	print(u.eval())
 

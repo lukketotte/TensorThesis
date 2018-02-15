@@ -51,8 +51,20 @@ class TuckerDecomposition():
 		self.a = limits[0]
 		self.b = limits[1]
 		self.stop_thresh = stop_thresh
+		self.init_folded_ranks()
 		# initialize the core tensor and component matricies
 		self.init_components(init, X_data)
+
+	def init_folded_ranks(self):
+		"""
+		Calculate the number of columns in the different n-mode unfoldings
+		of the data tensor. Used to make the matrix multiplication defined
+		in the hooi algorithm
+		"""
+		self.folded_numb_columns = [None] * self.order
+		for n in range(self.order):
+			self.folded_numb_columns[n] = list(unfold_tf(self.X, n).get_shape())[1]
+
 
 			
 	def init_components(self, init, X_data):
@@ -67,6 +79,7 @@ class TuckerDecomposition():
 		with tf.name_scope('A'):
 			self.A = [None] * self.order
 			init_val = None
+			# can use this list more efficiently later in the hooi program
 			self.zero_fill = [None] * self.order
 
 			for n in range(self.order):
@@ -83,14 +96,15 @@ class TuckerDecomposition():
 					# need to check that mult of unfolded tensor and
 					# component matrix is valid. Since Xn is pre-multiplied
 					# by An: cols(An) == rows(Xn)
-					if self.ranks[n] != self.shape[n]:
+					if self.folded_numb_columns[n] != self.ranks[n]:
 						# need to make the tensor names unique
 						name_zero_str = "0%d" % n
 						name_zero_str = name_zero_str.replace(" ","")
-						self.zero_fill[n] = tf.get_variable(name_zero_str, (self.ranks[n], self.shape[n] - self.ranks[n]), 
+						self.zero_fill[n] = tf.get_variable(name_zero_str, (self.ranks[n], self.folded_numb_columns[n] - self.ranks[n]), 
 								dtype = tf.float64, initializer = tf.zeros_initializer)
 						# concatonate to init_val by the column axis
 						init_val = tf.concat([init_val, self.zero_fill[n]], 1)
+
 
 				elif init == 'unif':
 					shape = (self.shape[n], self.ranks[n])
@@ -98,7 +112,8 @@ class TuckerDecomposition():
 						                         high = self.b, size = shape)
 				name_str = "A%d" % n
 				name_str = name_str.replace(" ","")
-				
+				# print(init_val.get_shape())
+				# shapes are correct
 				self.A[n] = tf.get_variable(name_str, dtype = self.dtype, 
 					                        initializer = init_val)
 				# print(self.A[n])
@@ -112,7 +127,7 @@ class TuckerDecomposition():
 
 		Here the kruskal method from utils is used
 		"""
-		return tf.assign(self.G, kruskal(X_var, self.A))
+		return tf.assign(self.G, kruskal(X_var, A, self.ranks))
 
 	def hooi(self):
 		"""
@@ -132,6 +147,7 @@ class TuckerDecomposition():
 
 			while i <= self.epochs or error >= self.stop_thresh:
 				for n in trange(self.order):
+					print("\n")
 					# the list of component matricies needs
 					# to be altered here, such that the nth
 					# component matrix is identity, keeping
@@ -141,7 +157,13 @@ class TuckerDecomposition():
 					# Create nth identity matrix, being square
 					# with the same number of rows anc cols as cols
 					# of Xn
-					In = tf.identity([1]*n_shape[1])
+					# error lies in the In here
+					In = tf.diag([1.0]*n_shape[0])
+					# need to concatonate the zeroes to make
+					# matrix multiplication defined
+					In = tf.cast(In, tf.float64)
+					In = tf.concat([In, self.zero_fill[n]], 1)
+
 					temp_comp_lst = [None] * self.order
 					# fill the temporary list
 					temp_comp_lst[0:n] = self.A[0:n]
@@ -152,6 +174,7 @@ class TuckerDecomposition():
 					# passing in the original data with the
 					# component matricies being continually
 					# updated
+
 					self.tucker_update(self.X, temp_comp_lst)
 
 					# update An to contain the leading singular
@@ -161,9 +184,12 @@ class TuckerDecomposition():
 					# keep ranks[n] leading singular values
 					leading_singular_vals = tf.svd(Gn, compute_uv = False)[:self.ranks[n]]
 					# need to check that dimensions allow for matrix multiplication
-					# as in the hosvd method
-
-					tf.assign(A[n], leading_singular_vals)
+					# as in the hosvd method, if self.zero_fill[n] is None, then no
+					# need to concatonate
+					if self.zero_fill[n] is None:
+						tf.assign(A[n], leading_singular_vals)
+					else:
+						tf.assign(A[n], tf.concat([leading_singular_vals, self.zero_fill[n]], 1))
 
 				# update X_estimate, check fit and log it
 				tf.assign(X_estimate, kruskal(self.G, self.A))

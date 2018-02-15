@@ -4,6 +4,7 @@ from tqdm import trange
 from utils import *
 import logging
 
+
 logging.basicConfig(filename = 'loss.log', level = logging.DEBUG)
 _log = logging.getLogger('decomp')
 
