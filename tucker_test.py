@@ -43,6 +43,7 @@ class TuckerDecomposition():
 		self.X = tf.get_variable("X", dtype = dtype, initializer = X_data)
 		# or rank, in tensorflow language
 		self.order = len(shape)
+		self.shape = shape
 		self.ranks = ranks if (type(ranks) is list) else [ranks]*self.order
 		self.dtype = dtype
 		self.init = init
@@ -77,6 +78,16 @@ class TuckerDecomposition():
 					# descending order. 
 					init_val = tf.svd(Y, compute_uv = False)[:self.ranks[n]]
 					init_val = tf.diag(init_val)
+
+					# need to check that mult of unfolded tensor and
+					# component matrix is valid. Since Xn is pre-multiplied
+					# by An: cols(An) == rows(Xn)
+					if self.ranks[n] != self.shape[n]:
+						zero_fill = tf.get_variable("zero_fill", (self.ranks[n], self.shape[n] - sef.ranks[n]), 
+							dtype = tf.float64, initializer = tf.zeros_initializer)
+						# concatonate to init_val by the column axis
+						init_val = tf.concat([init_val, zero_fill], 1)
+
 				elif init == 'unif':
 					shape = (self.shape[n], self.ranks[n])
 					init_val = np.random.uniform(low = self.a, 
@@ -86,10 +97,10 @@ class TuckerDecomposition():
 				
 				self.A[n] = tf.get_variable(name_str, dtype = self.dtype, 
 					                        initializer = init_val)
-				print(self.A[n])
+				# print(self.A[n])
 				# <tf.Variable 'A2:0' shape=(ranks[n],) dtype=float64_ref>
 
-	def tucker_update(X_var, A):
+	def tucker_update(self, X_var, A):
 		"""
 		Helper method for HOOI:
 		This method updates the core tensor defined in the 
@@ -99,7 +110,7 @@ class TuckerDecomposition():
 		"""
 		return tf.assign(self.G, kruskal(X_var, self.A))
 
-	def hooi(self, X_data):
+	def hooi(self):
 		"""
 		HOOI
 		"""
@@ -137,7 +148,27 @@ class TuckerDecomposition():
 					# passing in the original data with the
 					# component matricies being continually
 					# updated
-					tucker_update(self.X, temp_comp_lst)
+					self.tucker_update(self.X, temp_comp_lst)
+
+					# update An to contain the leading singular
+					# values of Gn * Gn'
+					Gn = unfold_tf(self.G, n)
+					Gn = tf.matmul(Gn, tf.transpose(Gn))
+					# keep ranks[n] leading singular values
+					leading_singular_vals = tf.svd(Gn, compute_uv = False)[:self.ranks[n]]
+					tf.assign(A[n], leading_singular_vals)
+
+				# update X_estimate, check fit and log it
+				tf.assign(X_estimate, kruskal(self.G, self.A))
+				error = get_fit(self.X, X_estimate)
+				_log.debug('fit iter %d: %.5f' % (i, error))
+				i += 1
+
+			return X_estimate, self.G, self.A
+
+
+
+
 				
 
 

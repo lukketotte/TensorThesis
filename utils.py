@@ -108,20 +108,24 @@ def khatri_rao(A,B):
     else: 
         raise ValueError("Matricies must have the same # of columns")
 
-def n_mode_prod(X, A, n):
+def n_mode_prod(X, A, n, X_shape = None):
     """
     Calculates the n-mode product of a tensor and matrix A
     """
-    shape = list(X.get_shape())
+    if X_shape is None:
+    	shape = list(X.get_shape())
+    	shape_A = list(A.get_shape())
+    else:
+    	shape = X_shape
     # check that dimensions allows for matrix multiplication
-    if(shape[n] == A.shape[1]):
+    if(shape[n] == shape_A[1]):
         Xn = unfold_tf(X, n)
         Xn = tf.matmul(A, Xn)
         # alternatively
         # Xn = np.matmul(Xn, A.T)
 
         # the folded tensor will have nth dimension A.shape[0]
-        shape[n] = A.shape[0]
+        shape[n] = shape_A[0]
     
         return refold_tf(Xn, shape, n)
 
@@ -130,7 +134,7 @@ def n_mode_prod(X, A, n):
 
 
 
-def kruskal(G, U):
+def kruskal(G, U, X_shape = None):
     """
     Kruskal operator, takes core matrix and list och 
     unfolded matricies.
@@ -146,6 +150,9 @@ def kruskal(G, U):
     N = len(U)
     for n in range(N):
   	    # n_mode_prod does the unfolding and refolding
-  	    X = n_mode_prod(G, tf.transpose(U[n]), n)
+  	    if X_shape is None:
+  	    	X = n_mode_prod(G, tf.transpose(U[n]), n)
+  	    else:
+  	    	X = n_mode_prod(G, tf.transpose(U[n]), n, X_shape)
     return(X)
 
