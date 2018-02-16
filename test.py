@@ -14,44 +14,15 @@ X = np.array([[[1.,4.,7.,10.],
 	          [14.,17.,20.,23.],
 	          [15.,18.,21.,24.]]])
 
-print(isinstance(X, np.ndarray))
-print(X.shape)
-
 xt = tf.get_variable("xt", dtype = tf.float64, 
 	initializer = X)
 
 
 
 
-U1 = np.array([[0.2, 0.4], [0.2,0.3], [0.5, 0.2]])
-U2 = np.array([[.1,.3,.5], [.2,.4,.6]])
-U3 = np.array([[.2, .4, .9, .2],
-	           [.3, .2, .1, .8],
-	           [.2, .6, .7, .1]])
-
-tester = None
-print(not isinstance(tester, None))
- 
-
-# X = tf.constant(X, dtype = "float64")
-U1 = tf.get_variable("U1", dtype = tf.float64,
-	initializer = U1)
-U2 = tf.get_variable("U2", dtype = tf.float64,
-	initializer = U2)
-U1 = tf.get_variable("U3", dtype = tf.float64,
-	initializer = U3)
-
-
-matList = [U1, U2, U3]
-
-lst = [0,1,2]
-n = 2
-
-
-
 # X1 = unfold_tf(X, 1)
 
-test = tdt(shape = [2,3,4], ranks = [2,2,2], X_data = X)
+# test = tdt(shape = [2,3,4], ranks = [2,2,2], X_data = X)
 # X, G, A = test.hooi()
 # test = td(X_data = X, shape = [2,3,4], ranks = [2,2,2], epochs = 200)
 # hosvd = test.hosvd(X)
@@ -60,28 +31,23 @@ test = tdt(shape = [2,3,4], ranks = [2,2,2], X_data = X)
 # print(decompX)
 # X_est, G, A = test.hooi()
 y = tf.matmul(unfold_tf(xt, 2), tf.transpose(unfold_tf(xt, 2)))
-u = tf.svd(y, compute_uv = False)[:2]
-u = tf.diag(u)
-zero = tf.get_variable("zero", (2,1), dtype = tf.float64,
-	initializer = tf.zeros_initializer)
-
-I = tf.get_variable("i", initializer = tf.diag([1.,1.,1.]))
-I = tf.cast(I, tf.float64)
-I = tf.concat(I, zero, 1)
-
-lst = list(unfold_tf(xt, 2).get_shape())[1]
-print(lst)
-
-u = tf.concat([u, zero], 1)
-
+v = tf.svd(y, compute_uv = True)[2]
+v = v[:, :2]
 init_op = tf.global_variables_initializer()
+kron = tf.contrib.kfac.utils.kronecker_product(y, v)
 
 with tf.Session() as sess:
 	sess.run(init_op)
-	print(xt.eval())
-	print(y.eval())
+	# print(xt.eval())
+	# print(y.eval())
 
-	print(u.eval())
+	# print(s.eval())
+	print("\n")
+	print(v.eval())
+	print("\n")
+	print(v.eval().shape)
+	print(y.eval().shape)
+	print(kron.eval().shape)
 
-	print(I.eval())
+	
 
