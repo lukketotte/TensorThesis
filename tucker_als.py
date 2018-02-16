@@ -18,7 +18,7 @@ class TuckerDecomposition():
 	rank: shape of core tensor
 	"""
 
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 10, 
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 100, 
 				 stop_thresh = 1e-10, dtype = tf.float64):
 
 		self.epochs = epochs
@@ -108,6 +108,12 @@ class TuckerDecomposition():
 		"""
 		return self.U
 
+	def G_to_X(self):
+		"""
+		Reconstructs an estimate of the data tensor using G, and the 
+		component matricies
+		"""
+
 	def tucker_ALS(self):
 		"""
 		Runs the iterative ALS scheme, continously updating the component matricies
@@ -135,36 +141,32 @@ class TuckerDecomposition():
 							G1_norm = tf.matmul(update_component_matricies(self.U, self._X_data, 0), self.U[0])
 							for n in range(self._order):
 								### set up TF graph ###
-								A = update_component_matricies(self.U, self._X_data, n)
+								temp = update_component_matricies(self.U, self._X_data, n)
 								# When n = 0 returns:
 								# (U[1] kronecker U[2])' * X0'
 								
 								# Take the rank[n] columns of right sing vecs
-								temp_v = tf.svd(A, compute_uv = True)[2]
+								temp_v = tf.svd(temp, compute_uv = True)[2]
 
-								# Should look into this more exactly.
-								# Currently, no update is being made
-								svd_op[n] = tf.assign(self.U[n], temp_v[:, :self._rank[n]])
-								sess.run(svd_op[n])
-						#for n in trange(self._order):
-								# performe the opration as specified above
-								# TODO: the component matricies are not being assigned
-								# 		as the code is looking now. Double check
+								# NO UPDATE MADE WITH FORMULATION AS BELOW
+								# svd_op[n] = tf.assign(self.U[n], temp_v[:, :self._rank[n]])
+								# sess.run(svd_op[n])
+								self.U[n] =  temp_v[:, :self._rank[n]]
 								
-							
 							# check change in norm
 							G1_temp = tf.matmul(update_component_matricies(self.U, self._X_data, 0), self.U[0])
 							delta_norm = ((G1_norm.eval() - G1_temp.eval())**2).sum()
 							# log the change in norm
 							_log.debug('Change in norm iter %d: %.5f' %(e, delta_norm))
 							# break if stop_tresh is met
-							# if delta_norm <= self.stop_thresh:
-							# 	print("\n Change in norm = %.5f, stop threshhold met" % delta_norm)
-							#	break
+							if delta_norm <= self.stop_thresh:
+								print("\n Change in norm = %.5f, stop threshhold met" % delta_norm)
+								break
 
 						# -----------------------------------------#
-						# return object
+						# return object, might be off in the scope but should be correct
 						G1 = tf.matmul(update_component_matricies(self.U, self._X_data, 0), self.U[0])
+						self.G = refold_tf(G1, self._rank, 0)
 						return(G1)
 				else:
 					raise TypeError("need to run init_components() beofre ALS")
