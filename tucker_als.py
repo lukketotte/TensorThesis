@@ -18,8 +18,8 @@ class TuckerDecomposition():
 	rank: shape of core tensor
 	"""
 
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 100, 
-				 stop_thresh = 1e-10, dtype = tf.float64):
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 50, 
+				 stop_thresh = 1e-22, dtype = tf.float64):
 
 		self.epochs = epochs
 		self.stop_thresh = stop_thresh
@@ -46,7 +46,7 @@ class TuckerDecomposition():
 		print("setting X")
 		if isinstance(X, np.ndarray):
 			# set the shape and order of tensor 
-			self._shape = X.shape
+			self._shape = list(X.shape)
 			self._order = len(self._shape)
 			self._X_data = tf.get_variable("X_data", dtype = self.dtype,
 				initializer = X)
@@ -112,7 +112,29 @@ class TuckerDecomposition():
 		"""
 		Reconstructs an estimate of the data tensor using G, and the 
 		component matricies
+
+		Gn * An -> refold as [I1,...,In-1, rn, ... , rN]
 		"""
+		if not isinstance(self.G, type(None)):
+			temp_G = self.G
+			for n in range(self._order):
+				# the refolded tensor shape after the nth step
+				# of the kruskal operator as defined by kolda
+				refold_shape = self._shape[:(n+1)] + self._rank[(n+1):]
+				# print(refold_shape)
+				temp_G = unfold_tf(temp_G, n)
+				print(temp_G.get_shape())
+				temp_G = tf.matmul(self.U[n], temp_G)
+				temp_G = refold_tf(temp_G, refold_shape, n)
+			
+			return(temp_G)
+
+
+
+
+		else:
+			raise TypeError("tucker_ALS() has to be run prior to estimation")
+
 
 	def tucker_ALS(self):
 		"""
@@ -157,11 +179,11 @@ class TuckerDecomposition():
 							G1_temp = tf.matmul(update_component_matricies(self.U, self._X_data, 0), self.U[0])
 							delta_norm = ((G1_norm.eval() - G1_temp.eval())**2).sum()
 							# log the change in norm
-							_log.debug('Change in norm iter %d: %.5f' %(e, delta_norm))
+							_log.debug('Change in norm iter %d: %.10f' %(e, delta_norm))
 							# break if stop_tresh is met
-							if delta_norm <= self.stop_thresh:
-								print("\n Change in norm = %.5f, stop threshhold met" % delta_norm)
-								break
+							#if delta_norm <= self.stop_thresh:
+							#	print("\n Change in norm = %.5f, stop threshhold met" % delta_norm)
+							#	break
 
 						# -----------------------------------------#
 						# return object, might be off in the scope but should be correct
