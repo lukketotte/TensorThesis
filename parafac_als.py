@@ -90,16 +90,36 @@ class parafac():
 					for n in range(self._order):
 						Xn = unfold_tf(self._X_data, n)
 						Xn = tf.matmul(Xn, tf.transpose(Xn))
-						# only keep the rank number of singular values
-						init_val = tf.svd(Xn, compute_uv = False)[:self._rank]
-						init_val = tf.diag(init_val)
+						# only keep the rank number of singular values,
+						# TODO: take into account if Rank > In
+						if self._rank > self._shape[n]:
+							print("WARNING: I%d is less than desired rank(%d)." % (self._shape[n], self._rank))
+							# If rank >= In we will get an error trying to take 
+							# the self._rank singular values (not that many)
+							init_val = tf.svd(Xn, compute_uv = False)[:self._shape[n]]
+							init_val = tf.diag(init_val)
+							# Append zeroes to ensure that number of cols = Rank for 
+							# the hadamard product in ALS
+							fill_name = "0C%d" % n
+							fill_name = fill_name.replace(" ","")
+							# nrows = rank, ncol = rank - shape[n]
+							self.zero_fill_col[n] = tf.get_variable(fill_name, 
+								(self._shape[n], self._rank - self._shape[n]), dtype = self.dtype,
+								initializer = tf.zeros_initializer)
+							# concatonate init_val and zero_fill_coll along the 
+							# column axis
+							init_val = tf.concat([init_val, self.zero_fill_col[n]], 1)
+
+						elif self._rank <= self._shape[n]:
+							init_val = tf.svd(Xn, compute_uv = False)[:self._rank]
+							init_val = tf.diag(init_val)
 						# the number of rows of init_val need to be the same
 						# as the nth value of self._shape
 						if not init_val.get_shape()[0] == self._shape[n]:
 							# have to append zeroes to make matrix multiplication
 							# in ALS defined. Does the fill matrix have to be 
 							# a tf.variable?
-							fill_name = "0%d" % n
+							fill_name = "0R%d" % n
 							# get a white space in str, not allowed in
 							# tf.variable name. 
 							fill_name = fill_name.replace(" ", "")
@@ -110,6 +130,7 @@ class parafac():
 							self.zero_fill_row[n] = tf.get_variable(fill_name, ((self._shape[n] - self._rank), self._rank),
 								dtype = self.dtype, initializer = tf.zeros_initializer)
 							init_val = tf.concat([init_val, self.zero_fill_row[n]], 0)
+
 
 						self.U[n] = tf.get_variable(name = str(n), dtype = self.dtype, initializer = init_val)
 

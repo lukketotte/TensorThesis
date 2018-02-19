@@ -13,10 +13,11 @@ X = np.array([[[2.,4.,7.,10.],
 
 pf_test = pf()
 pf_test.X_data = X
-pf_test.rank = 2
+pf_test.rank = 3
 pf_test.init_factors()
 
 U = pf_test.get_factor_matricies()
+# st.get_factor_matricies()
 
 init_op = tf.global_variables_initializer()
 with tf.Session() as sess:
@@ -25,4 +26,4 @@ with tf.Session() as sess:
 	print(U[1].get_shape())
 	print(U[2].get_shape())
 
-	print(U[2].eval())
+	print(U[0].eval())
