@@ -104,14 +104,14 @@ class parafac():
 					for n in range(self._order):
 						Xn = unfold_tf(self._X_data, n)
 						Xn = tf.matmul(Xn, tf.transpose(Xn))
-						# only keep the rank number of singular values,
+						# only keep the rank number of left singular vectors,
 						# TODO: take into account if Rank > In
 						if self._rank > self._shape[n]:
 							print("WARNING: I%d(%d) is less than desired rank(%d)." % (n, self._shape[n], self._rank))
 							# If rank >= In we will get an error trying to take 
 							# the self._rank singular values (not that many)
-							init_val = tf.svd(Xn, compute_uv = False)[:self._shape[n]]
-							init_val = tf.diag(init_val)
+							_, init_val,_ = tf.svd(Xn, compute_uv = True)
+							init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._rank])
 							# Append zeroes to ensure that number of cols = Rank for 
 							# the hadamard product in ALS
 							fill_name = "0C%d" % n
@@ -125,8 +125,8 @@ class parafac():
 							init_val = tf.concat([init_val, self.zero_fill_col[n]], 1)
 
 						elif self._rank <= self._shape[n]:
-							init_val = tf.svd(Xn, compute_uv = False)[:self._rank]
-							init_val = tf.diag(init_val)
+							_, init_val, _ = tf.svd(Xn, compute_uv = True)
+							init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._rank])
 						# the number of rows of init_val need to be the same
 						# as the nth value of self._shape
 						if not init_val.get_shape()[0] == self._shape[n]:
