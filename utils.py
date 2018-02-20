@@ -242,7 +242,7 @@ def kruskal_tf_parafac(A):
 	assuming A is RxR
 	"""
 	N = len(A)
-	r = A[0].get_shape()[0]
+	r = A[0].get_shape()[1]
 	temp = None
 
 	for n in range(N-1):

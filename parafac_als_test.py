@@ -26,6 +26,7 @@ U = pf_test.get_factor_matricies()
 
 krusk = kruskal_tf(U[0], U[1], 3)
 # should be 6 by 3
+krusk = kruskal_tf(krusk, U[2], 3)
 all_krusk = kruskal_tf_parafac(U)
 
 init_op = tf.global_variables_initializer()
@@ -40,12 +41,13 @@ with tf.Session() as sess:
 	print("\n")
 	print(krusk.eval())
 	print(krusk.get_shape())
-	y = np.kron(U[0].eval()[:, 0], U[1].eval()[: , 0])
+	#y = np.kron(U[2].eval()[:, 2], U[1].eval()[: , 2])
 	# final result for column 0 of khatri rao prod of all 
 	# 3 U matricies
-	print(np.kron(y, U[2].eval()[:,0]))
+	#print(np.kron(y, U[2].eval()[:,2]))
 
-	print(all_krusk.eval())
+	print(all_krusk.eval().shape)
+
 
 
 
