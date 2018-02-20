@@ -31,7 +31,7 @@ class parafac():
 	init: str, initiation for factor matricies, random or hosvd. Sticking with
 		  random for now, something is off with the pseudo code in Kolda
 	"""
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 8,
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 1,
 		         stop_tresh = 1e-10, dtype = tf.float64, init = 'random', limits = [0,1]):
 		self.epochs = epochs
 		self.stop_tresh = stop_tresh
@@ -172,7 +172,8 @@ class parafac():
 							xn = unfold_tf(self._X_data, n)
 							# Calculate the khatri rao prod of all 
 							# factor matricies but the nth entri
-							khatri_u = kruskal_tf_parafac(self.U[:n] + self.U[n+1 :])
+							comp_list = self.U[:n] + self.U[n+1 :]
+							khatri_u = kruskal_tf_parafac(comp_list[::-1])
 							# print(xn.get_shape())
 							# print(khatri_u.get_shape())
 							# print(mpinv(V).get_shape())
