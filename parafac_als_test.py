@@ -18,18 +18,29 @@ pf_test.rank = 3
 pf_test.init_factors()
 
 U = pf_test.get_factor_matricies()
-# st.get_factor_matricies()
 
-# tf.slice(input_, begin, size, name=None)
-#x = tf.slice(X, [2,0,0], [2,2,3])
-# tf.nn.l2_normalize(x, dim, epsilon=1e-12, name=None)
+# xn = unfold_tf(pf_test.X_data, 1) # 3 by 8
+# slice to get column 1
+# xns = tf.slice(xn, begin = [0, 0], size = [3,1])
+
+
+krusk = kruskal_tf(U[0], U[1], 3)
+# should be 6 by 3
+
 init_op = tf.global_variables_initializer()
 with tf.Session() as sess:
 	sess.run(init_op)
+	print(U[0].eval())
+	print(U[1].eval())
+
 	print(U[0].get_shape())
 	print(U[1].get_shape())
 	print(U[2].get_shape())
-	#print(x.eval())
+	print("\n")
+	print(krusk.eval())
+	print(krusk.get_shape())
+	print(np.kron(U[0].eval()[:, 0], U[1].eval()[: , 0]))
 
-	print(U[1].eval())
+
+
 	

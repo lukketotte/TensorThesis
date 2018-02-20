@@ -158,6 +158,8 @@ class parafac():
 															shape = [self._shape[n], self._rank], dtype = self.dtype))
 						# normalize the columns 
 						self.U[n] = tf.nn.l2_normalize(self.U[n], 0)
+						# B[n] = U[n]'U[n]
+						self.B[n] = tf.matmul(tf.transpose(self.U[n]),self.U[n])
 
 
 				else:

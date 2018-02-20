@@ -197,6 +197,53 @@ def update_component_matricies(U, X, n):
 	else:
 		raise ValueError("Currently only allowing for 3d tensors")
 
+def mpinv(A, reltol = 1e-10):
+	"""
+	Computes the moore-penrose inverse, clearing any 
+	values less than reltol
+	"""
+	s, u, v = tf.svd(A)
+
+	# invert s, clear entries lower than reltol*s[0]
+	atol = tf.reduce_max(s) * reltol
+	s = tf.boolean_mask(s, s > atol)
+	s_inv = tf.diag(tf.concat([1. / s], 0))
+
+	# compute v * s_inv * u_t:
+	return tf.matmul(v, tf.matmul(s_inv, tf.transpose(u)))
+
+def kruskal_tf(A, B, r):
+	"""
+	helper method for kruskal_tf_parafac()
+	kronecker prod of two vectors = vectorized outer product
+	"""
+	Ia = A.get_shape()[0]
+	Ib = B.get_shape()[0]
+	col_list = [None] * r
+	for n in range(r):
+		a = tf.slice(A, begin = [0, n], size = [Ia, 1])
+		b = tf.slice(B, begin = [0, n], size = [Ib, 1])
+		col = tf.matmul(a, tf.transpose(b))
+		col_list[n] = tf.reshape(col, [-1])
+
+	# return col_list[0]
+	return tf.transpose(tf.concat([col_list], 1))
+	# return tf.reshape(ret,  shape = [r*2, r])
+
+def kruskal_tf_parafac(A):
+	"""
+	Kruskal product of list of tf.tensors. The i'th column
+	will be the kronecker products of the i'th column vectors of 
+	all tensors in A. 
+
+	This method is specifically coded for the parafac solution
+	assuming A is RxR
+	"""
+	N = len(A)
+	r = A.get_shape()[0]
+
+	
+
 
 
 
