@@ -137,29 +137,6 @@ def n_mode_prod(X, A, n, X_shape = None):
 		raise ValueError("X{} ({}) and A{} ({},{}) not defined".format(n, shape[n], n,shape_A[0], shape_A[1]))
 
 
-
-def kruskal(G, U, X_shape = None):
-	"""
-	Kruskal operator, takes core matrix and list och 
-	unfolded matricies.
-
-	G: tensor 
-	U: list of factor matricies
-
-	X = G times1 U1 times2 U2 ... timesN UN
-	"""
-	# need to keep in mind that the shape returns
-	# the dimension in a completely different order in 
-	# comparison with the litterature. 
-	N = len(U)
-	for n in range(N):
-		# n_mode_prod does the unfolding and refolding
-		if X_shape is None:
-			X = n_mode_prod(G, U[n], n)
-		else:
-			X = n_mode_prod(G, U[n], n, X_shape)
-	return(X)
-
 def update_component_matricies(U, X, n):
 	"""
 	N.D Sidiopulous et. al, 2016, Tensor Decompositions for
@@ -212,6 +189,28 @@ def mpinv(A, reltol = 1e-10):
 	# compute v * s_inv * u_t:
 	return tf.matmul(v, tf.matmul(s_inv, tf.transpose(u)))
 
+def kruskal_np(G, U, X_shape = None):
+	"""
+	Kruskal operator, takes core matrix and list och 
+	unfolded matricies.
+
+	G: tensor 
+	U: list of factor matricies
+
+	X = G times1 U1 times2 U2 ... timesN UN
+	"""
+	# need to keep in mind that the shape returns
+	# the dimension in a completely different order in 
+	# comparison with the litterature. 
+	N = len(U)
+	for n in range(N):
+		# n_mode_prod does the unfolding and refolding
+		if X_shape is None:
+			X = n_mode_prod(G, U[n], n)
+		else:
+			X = n_mode_prod(G, U[n], n, X_shape)
+	return(X)
+
 def kruskal_tf(A, B, r):
 	"""
 	helper method for kruskal_tf_parafac()
@@ -228,9 +227,8 @@ def kruskal_tf(A, B, r):
 		col = tf.matmul(a, tf.transpose(b))
 		col_list[n] = tf.reshape(col, [-1])
 
-	# return col_list[0]
 	return tf.transpose(tf.concat([col_list], 1))
-	# return tf.reshape(ret,  shape = [r*2, r])
+	
 
 def kruskal_tf_parafac(A):
 	"""

@@ -17,36 +17,35 @@ pf_test.X_data = X
 pf_test.rank = 3
 pf_test.init_factors()
 
-U = pf_test.get_factor_matricies()
 
 # xn = unfold_tf(pf_test.X_data, 1) # 3 by 8
 # slice to get column 1
 # xns = tf.slice(xn, begin = [0, 0], size = [3,1])
 
 
-krusk = kruskal_tf(U[0], U[1], 3)
-# should be 6 by 3
-krusk = kruskal_tf(krusk, U[2], 3)
-all_krusk = kruskal_tf_parafac(U)
+
+pf_test.parafac_ALS()
+
+U = pf_test.get_factor_matricies()
+
+
+krusk1 = kruskal_tf(U[0], U[1], 3)
+krusk2 = kruskal_tf(U[1], U[0], 3)
+
+x_est = pf_test.reconstruct_X_data()
 
 init_op = tf.global_variables_initializer()
 with tf.Session() as sess:
 	sess.run(init_op)
+
 	print(U[0].eval())
 	print(U[1].eval())
+	print(U[2].eval())
+	print(x_est.eval())
 
-	print(U[0].get_shape())
-	print(U[1].get_shape())
-	print(U[2].get_shape())
-	print("\n")
-	print(krusk.eval())
-	print(krusk.get_shape())
-	#y = np.kron(U[2].eval()[:, 2], U[1].eval()[: , 2])
-	# final result for column 0 of khatri rao prod of all 
-	# 3 U matricies
-	#print(np.kron(y, U[2].eval()[:,2]))
 
-	print(all_krusk.eval().shape)
+
+	
 
 
 

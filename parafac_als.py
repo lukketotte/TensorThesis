@@ -4,7 +4,7 @@ from tqdm import trange
 from utils import *
 import logging
 
-logging.basicConfig(filename = 'loss.log', level = logging.DEBUG)
+logging.basicConfig(filename = 'loss_parafac.log', level = logging.DEBUG)
 _log = logging.getLogger('decomp')
 
 class parafac():
@@ -31,7 +31,7 @@ class parafac():
 	init: str, initiation for factor matricies, random or hosvd. Sticking with
 		  random for now, something is off with the pseudo code in Kolda
 	"""
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 50,
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 5,
 		         stop_tresh = 1e-10, dtype = tf.float64, init = 'random', limits = [0,1]):
 		self.epochs = epochs
 		self.stop_tresh = stop_tresh
@@ -158,9 +158,9 @@ class parafac():
 															shape = [self._shape[n], self._rank], dtype = self.dtype))
 						# normalize the columns 
 						self.U[n] = tf.nn.l2_normalize(self.U[n], 0)
-						# B[n] = U[n]'U[n]
+						# B[n] = U[n]'U[n] which is R by R
 						self.B[n] = tf.matmul(tf.transpose(self.U[n]),self.U[n])
-
+						# print(self.B[n].get_shape())
 
 				else:
 					raise ValueError("%s not valid for init paramater (hosvd or random)" % self.init)
@@ -173,3 +173,57 @@ class parafac():
 
 	def get_factor_matricies(self):
 		return self.U
+
+	def get_B(self):
+		return self.B
+
+	def reconstruct_X_data(self):
+		# using the mode-0 unfolding:
+		# Xn = An(khatri rao of all the other factor matricies)
+		A_khatri = kruskal_tf_parafac(self.U[:0] + self.U[1 :])
+		X0 = tf.matmul(self.U[0], tf.transpose(A_khatri))
+		return refold_tf(X0, self._shape, 0)
+
+	def parafac_ALS(self):
+		if not isinstance(self.U, type(None)):
+			if not isinstance(self._X_data, type(None)):
+				init_op = tf.global_variables_initializer()
+				with tf.Session() as sess:
+					sess.run(init_op)
+
+					# ------- ALS algorithm ------- #
+					# TODO: include stopping criterion based on error
+					for e in trange(self.epochs):
+						for n in range(self._order):
+							# Calculate V = hadamard product of all B but Bn
+							# will look a little different depending on whether
+							# n is 0 or not
+							if n == 0:
+								V = self.B[1]
+								# skip first two elements in B
+								for B in self.B[2: ]:
+									V = tf.multiply(V, B)
+							elif not n == 0:
+								V = self.B[0]
+								for B in self.B[1 :] :
+									if not B == n:
+										V = tf.multiply(V, B)
+
+							xn = unfold_tf(self._X_data, n)
+							# Calculate the khatri rao prod of all 
+							# factor matricies but the nth entri
+							khatri_u = kruskal_tf_parafac(self.U[:n] + self.U[n+1 :])
+
+							# update nth factor matrix
+							self.U[n] = tf.matmul(xn, tf.matmul(khatri_u, mpinv(V)))
+
+							# if n neq (self._order - 1) normalize columns of factor matrix
+							if not n == (self._order - 1):
+								self.U[n] = tf.nn.l2_normalize(self.U[n], 0)
+
+							self.B[n] = tf.matmul(tf.transpose(self.U[n]), self.U[n])
+
+			else:
+				raise TypeError("Need to set X_data prior to ALS")
+		else:
+			raise TypeError("Need to run init_factors() prior to ALS")
