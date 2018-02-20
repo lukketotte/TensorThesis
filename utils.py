@@ -182,8 +182,8 @@ def mpinv(A, reltol = 1e-10):
 	s, u, v = tf.svd(A)
 
 	# invert s, clear entries lower than reltol*s[0]
-	atol = tf.reduce_max(s) * reltol
-	s = tf.boolean_mask(s, s > atol)
+	# atol = tf.reduce_max(s) * reltol
+	# s = tf.boolean_mask(s, s > atol)
 	s_inv = tf.diag(tf.concat([1. / s], 0))
 
 	# compute v * s_inv * u_t:

@@ -31,7 +31,7 @@ class parafac():
 	init: str, initiation for factor matricies, random or hosvd. Sticking with
 		  random for now, something is off with the pseudo code in Kolda
 	"""
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 5,
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 8,
 		         stop_tresh = 1e-10, dtype = tf.float64, init = 'random', limits = [0,1]):
 		self.epochs = epochs
 		self.stop_tresh = stop_tresh
@@ -97,58 +97,18 @@ class parafac():
 				self.U = [None] * self._order
 				self.B = [None] * self._order
 				init_val = None
-				self.zero_fill_row = [None] * self._order
-				self.zero_fill_col = [None] * self._order
 
 				if(self.init == "hosvd"):
 					for n in range(self._order):
 						Xn = unfold_tf(self._X_data, n)
-						Xn = tf.matmul(Xn, tf.transpose(Xn))
-						# only keep the rank number of left singular vectors,
-						# TODO: take into account if Rank > In
-						if self._rank > self._shape[n]:
-							print("WARNING: I%d(%d) is less than desired rank(%d)." % (n, self._shape[n], self._rank))
-							# If rank >= In we will get an error trying to take 
-							# the self._rank singular values (not that many)
-							_, init_val,_ = tf.svd(Xn, compute_uv = True)
-							init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._rank])
-							# Append zeroes to ensure that number of cols = Rank for 
-							# the hadamard product in ALS
-							fill_name = "0C%d" % n
-							fill_name = fill_name.replace(" ","")
-							# nrows = rank, ncol = rank - shape[n]
-							self.zero_fill_col[n] = tf.get_variable(fill_name, 
-								(self._shape[n], self._rank - self._shape[n]), dtype = self.dtype,
-								initializer = tf.zeros_initializer)
-							# concatonate init_val and zero_fill_coll along the 
-							# column axis
-							init_val = tf.concat([init_val, self.zero_fill_col[n]], 1)
-
-						elif self._rank <= self._shape[n]:
-							_, init_val, _ = tf.svd(Xn, compute_uv = True)
-							init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._rank])
-						# the number of rows of init_val need to be the same
-						# as the nth value of self._shape
-						if not init_val.get_shape()[0] == self._shape[n]:
-							# have to append zeroes to make matrix multiplication
-							# in ALS defined. Does the fill matrix have to be 
-							# a tf.variable?
-							fill_name = "0R%d" % n
-							# get a white space in str, not allowed in
-							# tf.variable name. 
-							fill_name = fill_name.replace(" ", "")
-							# no need to do this all over again in the ALS algorithm, so 
-							# store it in list. In ALS simply check if position is None or not
-							# TODO: check if this really shouldnt be constant, can you use 
-							#		a variable as initializer for another variable
-							self.zero_fill_row[n] = tf.get_variable(fill_name, ((self._shape[n] - self._rank), self._rank),
-								dtype = self.dtype, initializer = tf.zeros_initializer)
-							init_val = tf.concat([init_val, self.zero_fill_row[n]], 0)
-
+						_, init_val,_ = tf.svd(Xn, compute_uv = True)
+						init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._rank])
+						print(init_val.get_shape())
+						print(type(init_val))
 						# normalize over the columns of init_val
 						# init_val = tf.nn.l2_normalize(init_val, 1)
-						self.U[n] = tf.get_variable(name = str(n), dtype = self.dtype, initializer = init_val)
-						# normalize the columns of U[n], meaning that U[n][:,i]'*U[n][:,i] = 1 ?
+						# self.U[n] = tf.get_variable(name = str(n), dtype = self.dtype, initializer = init_val)
+						self.U[n] = init_val
 
 
 				elif(self.init == "random"):
@@ -213,6 +173,10 @@ class parafac():
 							# Calculate the khatri rao prod of all 
 							# factor matricies but the nth entri
 							khatri_u = kruskal_tf_parafac(self.U[:n] + self.U[n+1 :])
+							# print(xn.get_shape())
+							# print(khatri_u.get_shape())
+							# print(mpinv(V).get_shape())
+
 
 							# update nth factor matrix
 							self.U[n] = tf.matmul(xn, tf.matmul(khatri_u, mpinv(V)))
