@@ -216,6 +216,8 @@ def kruskal_tf(A, B, r):
 	"""
 	helper method for kruskal_tf_parafac()
 	kronecker prod of two vectors = vectorized outer product
+	# TODO: return has an ineffecient transpose, revisit and 
+			check if fixable
 	"""
 	Ia = A.get_shape()[0]
 	Ib = B.get_shape()[0]
@@ -240,7 +242,17 @@ def kruskal_tf_parafac(A):
 	assuming A is RxR
 	"""
 	N = len(A)
-	r = A.get_shape()[0]
+	r = A[0].get_shape()[0]
+	temp = None
+
+	for n in range(N-1):
+		# first step
+		if isinstance(temp, type(None)):
+			temp = kruskal_tf(A[n], A[n+1], r)
+		else:
+			temp = kruskal_tf(temp, A[n+1], r)
+
+	return temp
 
 	
 
