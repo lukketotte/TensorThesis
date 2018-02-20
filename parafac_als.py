@@ -28,20 +28,22 @@ class parafac():
 	
 	stop_thresh: double, min change before stopping
 	
-	init: str, initiation for factor matricies, random or hosvd
+	init: str, initiation for factor matricies, random or hosvd. Sticking with
+		  random for now, something is off with the pseudo code in Kolda
 	"""
 	def __init__(self, X_data = None, shape = None, rank = None, epochs = 50,
-		         stop_tresh = 1e-10, dtype = tf.float64, init = 'hosvd'):
+		         stop_tresh = 1e-10, dtype = tf.float64, init = 'random', limits = [0,1]):
 		self.epochs = epochs
 		self.stop_tresh = stop_tresh
 		self.dtype = dtype
 		self.init = init
-
+		
 		self._X_data = X_data
 		self._shape = shape
 		self._order = len(shape) if (type(shape) is list) else None
 		self._rank = rank
 		self.U = None
+		self._limits = limits
 
 
 	@property
@@ -73,6 +75,18 @@ class parafac():
 		else:
 			raise TypeError("Rank has to be int")
 
+	@property
+	def limits(self):
+		return self._limits
+	@limits.setter
+	def limits(self, lst):
+		if isinstance(lst, list):
+			if isinstance(lst[0], int):
+				self._limits = lst
+			raise TypeError("Expecting [int]")
+		else:
+			raise TypeError("Expecting list")
+
 	def init_factors(self):
 		"""
 		
@@ -93,7 +107,7 @@ class parafac():
 						# only keep the rank number of singular values,
 						# TODO: take into account if Rank > In
 						if self._rank > self._shape[n]:
-							print("WARNING: I%d is less than desired rank(%d)." % (self._shape[n], self._rank))
+							print("WARNING: I%d(%d) is less than desired rank(%d)." % (n, self._shape[n], self._rank))
 							# If rank >= In we will get an error trying to take 
 							# the self._rank singular values (not that many)
 							init_val = tf.svd(Xn, compute_uv = False)[:self._shape[n]]
@@ -131,17 +145,20 @@ class parafac():
 								dtype = self.dtype, initializer = tf.zeros_initializer)
 							init_val = tf.concat([init_val, self.zero_fill_row[n]], 0)
 
-
+						# normalize over the columns of init_val
+						# init_val = tf.nn.l2_normalize(init_val, 1)
 						self.U[n] = tf.get_variable(name = str(n), dtype = self.dtype, initializer = init_val)
+						# normalize the columns of U[n], meaning that U[n][:,i]'*U[n][:,i] = 1 ?
 
 
 				elif(self.init == "random"):
 					for n in range(self._order):
-						self.U[n] = tf.get_variable(tf.random_uniform(self.ranks, 0, 1, self.dtype), 
-							name = str(n))
+						self.U[n] = tf.get_variable(name = str(n), dtype = self.dtype, 
+							initializer = tf.random_uniform(minval = self._limits[0], maxval = self._limits[1],
+															shape = [self._shape[n], self._rank], dtype = self.dtype))
+						# normalize the columns 
+						self.U[n] = tf.nn.l2_normalize(self.U[n], 0)
 
-				# No matter initialization type, normalise columns of U[n] and
-				# assign U[n]' * U[n] to B[n]
 
 				else:
 					raise ValueError("%s not valid for init paramater (hosvd or random)" % self.init)

@@ -201,3 +201,7 @@ def update_component_matricies(U, X, n):
 
 
 
+
+
+
+
