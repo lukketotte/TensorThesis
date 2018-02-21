@@ -41,6 +41,17 @@ def unfold_np(arr, ax):
 	"""
 	return np.rollaxis(arr, ax, 0).reshape(arr.shape[ax], -1)
 
+def refold_np(unfolded_tensor, mode, shape):
+	"""
+	refold ndarray that was unfolded along the mode into
+	ndarray of shape
+	"""
+	full_shape = list(shape)
+	mode_dim = full_shape.pop(mode)
+	full_shape.insert(0, mode_dim)
+	return np.moveaxis(np.reshape(unfolded_tensor, full_shape), 0, mode)
+
+
 def unfold_tf(X, n):
 	"""
 	unfold TF variable X along the n-axis
@@ -242,7 +253,7 @@ def kruskal_tf_parafac(A):
 	all tensors in A. 
 
 	This method is specifically coded for the parafac solution
-	assuming A is RxR
+	assuming A is InxR
 	"""
 	N = len(A)
 	r = A[0].get_shape()[1]

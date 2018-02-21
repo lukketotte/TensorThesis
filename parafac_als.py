@@ -34,8 +34,8 @@ class parafac():
 	row_info: str, added into the debug file, specifying whether parafac has
 			  been run on original data or a core tensor
 	"""
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 10,
-		         stop_thresh = 1e-5, dtype = tf.float64, init = 'random', limits = [0,1],
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 100,
+		         stop_thresh = 1e-2, dtype = tf.float64, init = 'random', limits = [0,1],
 		         row_info = None):
 		self.epochs = epochs
 		self.stop_thresh = stop_thresh
@@ -180,7 +180,9 @@ class parafac():
 					sess.run(init_op)
 
 					# ------- ALS algorithm ------- #
-					for e in trange(self.epochs):						
+					for e in trange(self.epochs):
+					# start with getting current fit
+						temp_fit = get_fit(unfold_tf(self._X_data,0).eval(), unfold_tf(self.reconstruct_X_data(),0).eval())				
 						for n in range(self._order):
 							# create the n unfolding of X
 							xn = unfold_tf(self._X_data, n)
@@ -193,10 +195,9 @@ class parafac():
 						# check fit, log it. Do it at start of iteration rather than the end
 						fit = get_fit(unfold_tf(self._X_data,0).eval(), unfold_tf(self.reconstruct_X_data(),0).eval())
 						_log.debug('PARAFAC, %d, %d, %.10f, %s' %(self._rank,e, fit, self._row_info))
-						if not e == 0:
-							if abs(fit) <= self.stop_thresh:
-								print("\nfit: %.5f. Breaking." %fit)
-								break
+						if abs(temp_fit - fit) <= self.stop_thresh:
+							print("\nchange in fit: %.5f. Breaking." % (temp_fit - fit) )
+							break
 
 			else:
 				raise TypeError("Need to set X_data prior to ALS")
