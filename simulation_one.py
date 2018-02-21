@@ -12,7 +12,7 @@ from tucker_als import TuckerDecomposition as td
 # generate X from N(0,1) of size 5, 30, 30 (in python terms)
 X = random.normal(loc = 0, scale = 5, size = (20, 20 ,20))
 
-max_R = 10
+max_R = 5
 for i in range(max_R - 1):
 	pf_test = pf(init = "random", row_info = "original")
 	pf_test.X_data = X
