@@ -10,7 +10,7 @@ from parafac_als import parafac as pf
 from tucker_als import TuckerDecomposition as td
 
 # generate X from N(0,1) of size 20, 20, 20 (in python terms)
-X = random.normal(loc = 0, scale = 1, size = (20, 20 ,20))
+X = random.normal(loc = 0, scale = 5, size = (20, 20 ,20))
 
 tucker = td()
 tucker.rank = [10,10,10]
