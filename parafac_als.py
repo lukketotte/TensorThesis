@@ -34,7 +34,7 @@ class parafac():
 	row_info: str, added into the debug file, specifying whether parafac has
 			  been run on original data or a core tensor
 	"""
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 1,
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 50,
 		         stop_thresh = 1e-5, dtype = tf.float64, init = 'random', limits = [0,1],
 		         row_info = None):
 		self.epochs = epochs
@@ -180,44 +180,23 @@ class parafac():
 					sess.run(init_op)
 
 					# ------- ALS algorithm ------- #
-					for e in trange(self.epochs):
+					for e in trange(self.epochs):						
+						for n in range(self._order):
+							# create the n unfolding of X
+							xn = unfold_tf(self._X_data, n)
+							# create list that exludes U[n]
+							temp_lst = self.U[:n] + self.U[(n+1):]
+							# reversed order
+							temp_kahtri = kruskal_tf_parafac(temp_lst[::-1])
+							self.U[n] = tf.matmul(xn, tf.transpose(mpinv(temp_kahtri)))
+
 						# check fit, log it. Do it at start of iteration rather than the end
-						fit = get_fit(self._X_data.eval(), self.reconstruct_X_data().eval())
+						fit = get_fit(unfold_tf(self._X_data,0).eval(), unfold_tf(self.reconstruct_X_data(),0).eval())
 						_log.debug('PARAFAC, %d, %d, %.10f, %s' %(self._rank,e, fit, self._row_info))
 						if not e == 0:
 							if abs(fit) <= self.stop_thresh:
 								print("\nfit: %.5f. Breaking." %fit)
 								break
-						
-						for n in range(self._order):
-							# Calculate V = hadamard product of all B but Bn
-							# will look a little different depending on whether
-							# n is 0 or not
-							if n == 0:
-								V = self.B[1]
-								# skip first two elements in B
-								for B in self.B[2: ]:
-									V = tf.multiply(V, B)
-							elif not n == 0:
-								V = self.B[0]
-								for B in self.B[1 :] :
-									if not B == n:
-										V = tf.multiply(V, B)
-
-							xn = unfold_tf(self._X_data, n)
-							# Calculate the khatri rao prod of all 
-							# factor matricies but the nth entri
-							comp_list = self.U[:n] + self.U[n+1 :]
-							khatri_u = kruskal_tf_parafac(comp_list[::-1])
-
-							# update nth factor matrix
-							self.U[n] = tf.matmul(xn, tf.matmul(khatri_u, mpinv(V)))
-
-							# if n neq (self._order - 1) normalize columns of factor matrix
-							if not n == (self._order - 1):
-								self.U[n] = tf.nn.l2_normalize(self.U[n], 0)
-
-							self.B[n] = tf.matmul(tf.transpose(self.U[n]), self.U[n])
 
 			else:
 				raise TypeError("Need to set X_data prior to ALS")

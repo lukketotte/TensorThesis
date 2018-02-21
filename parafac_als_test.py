@@ -13,37 +13,41 @@ X = np.array([[[1.,4.,7.,10.],
 	          [15.,18.,21.,24.]]])
 
 
-pf_test = pf(init = "random", row_info = "original")
+pf_test = pf(init = "hosvd", row_info = "original")
 pf_test.X_data = X
-pf_test.rank = 6
+pf_test.rank = 2
 pf_test.init_factors()
 # pf_test.row_info("original")
 pf_test.parafac_ALS()
 
-
 x_est = pf_test.reconstruct_X_data()
 
-tucker = td()
-tucker.rank = [2,2,2]
-tucker.X_data = X
-G = tucker.tucker_ALS()
-# get core tensor
-G = refold_tf(G, [2,2,2], 0)
+config = tf.ConfigProto()
+config.gpu_options.per_process_gpu_memory_fraction = 0.4
+sess = tf.Session(config=config)
 
 init_op = tf.global_variables_initializer()
-with tf.Session() as sess:
+with sess:
 	sess.run(init_op)
 	# print(x_est.eval())
-	G_np = G.eval()
+	x_est_np = x_est.eval()
 
-tf.reset_default_graph()
-pf_core = pf(init = "random", row_info = "core")
-pf_core.X_data = G_np
-pf_core.rank = 6
-pf_core.init_factors()
-# pf_test.row_info("core")
-pf_core.parafac_ALS()
-	
+print(x_est_np)
+print("\n")
+norm_est = (x_est_np ** 2).sum()
+print(norm_est)
+norm_x = (X ** 2).sum()
+print(norm_x)
+norm_inner = np.multiply(x_est_np, X).sum()
+print(norm_inner)
+
+xn = unfold_np(X, 0)
+xn_est = unfold_np(x_est_np, 0)
+diff = xn - xn_est
+
+
+f = np.trace(np.dot(diff, np.transpose(diff)))
+print(f**.5)
 
 
 
