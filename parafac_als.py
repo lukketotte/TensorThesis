@@ -30,11 +30,15 @@ class parafac():
 	
 	init: str, initiation for factor matricies, random or hosvd. Sticking with
 		  random for now, something is off with the pseudo code in Kolda
+	
+	row_info: str, added into the debug file, specifying whether parafac has
+			  been run on original data or a core tensor
 	"""
 	def __init__(self, X_data = None, shape = None, rank = None, epochs = 1,
-		         stop_tresh = 1e-10, dtype = tf.float64, init = 'random', limits = [0,1]):
+		         stop_thresh = 1e-5, dtype = tf.float64, init = 'random', limits = [0,1],
+		         row_info = None):
 		self.epochs = epochs
-		self.stop_tresh = stop_tresh
+		self.stop_thresh = stop_thresh
 		self.dtype = dtype
 		self.init = init
 		
@@ -44,6 +48,7 @@ class parafac():
 		self._rank = rank
 		self.U = None
 		self._limits = limits
+		self._row_info = row_info
 
 
 	@property
@@ -87,6 +92,19 @@ class parafac():
 		else:
 			raise TypeError("Expecting list")
 
+	@property
+	def row_info(self):
+		return self._row_info
+	@row_info.setter
+	def row_info(self, string):
+		if isinstance(string, str):
+			if string is "original" or string is "core":
+				self._row_info = string
+			else:
+				raise ValueError("Only 'original' and 'core' are valid entries for row_info")
+		else:
+			raise TypeError("Must be string")
+
 	def init_factors(self):
 		"""
 		
@@ -102,13 +120,23 @@ class parafac():
 					for n in range(self._order):
 						Xn = unfold_tf(self._X_data, n)
 						_, init_val,_ = tf.svd(Xn, compute_uv = True)
-						init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._rank])
-						print(init_val.get_shape())
-						print(type(init_val))
-						# normalize over the columns of init_val
-						# init_val = tf.nn.l2_normalize(init_val, 1)
-						# self.U[n] = tf.get_variable(name = str(n), dtype = self.dtype, initializer = init_val)
+						# not that the left singular matrix is In by In
+						if self._rank <= self._shape[n]:
+							init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._rank])
+						# in the case where rank > shape[n]:
+						elif self._rank > self._shape[n]:
+							init_val = tf.slice(init_val, begin = [0,0], size = [self._shape[n], self._shape[n]])
+							# append random uniform to init_val with In rows and rank - In columns
+							uni_string = "u%d" % n
+							uni_string = uni_string.replace(" ","")
+							uni_fill = tf.get_variable(name = uni_string, dtype = self.dtype,
+								initializer = tf.random_uniform(minval = self._limits[0], maxval = self._limits[1],
+																shape = [self._shape[n], self._rank - self._shape[n]],
+																dtype = self.dtype))
+							init_val = tf.concat([init_val, uni_fill], 1)
+
 						self.U[n] = init_val
+						self.B[n] = tf.matmul(tf.transpose(self.U[n]),self.U[n])
 
 
 				elif(self.init == "random"):
@@ -152,8 +180,15 @@ class parafac():
 					sess.run(init_op)
 
 					# ------- ALS algorithm ------- #
-					# TODO: include stopping criterion based on error
 					for e in trange(self.epochs):
+						# check fit, log it. Do it at start of iteration rather than the end
+						fit = get_fit(self._X_data.eval(), self.reconstruct_X_data().eval())
+						_log.debug('PARAFAC, %d, %d, %.10f, %s' %(self._rank,e, fit, self._row_info))
+						if not e == 0:
+							if abs(fit) <= self.stop_thresh:
+								print("\nfit: %.5f. Breaking." %fit)
+								break
+						
 						for n in range(self._order):
 							# Calculate V = hadamard product of all B but Bn
 							# will look a little different depending on whether
@@ -174,10 +209,6 @@ class parafac():
 							# factor matricies but the nth entri
 							comp_list = self.U[:n] + self.U[n+1 :]
 							khatri_u = kruskal_tf_parafac(comp_list[::-1])
-							# print(xn.get_shape())
-							# print(khatri_u.get_shape())
-							# print(mpinv(V).get_shape())
-
 
 							# update nth factor matrix
 							self.U[n] = tf.matmul(xn, tf.matmul(khatri_u, mpinv(V)))

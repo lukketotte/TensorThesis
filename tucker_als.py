@@ -18,8 +18,8 @@ class TuckerDecomposition():
 	rank: shape of core tensor
 	"""
 
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 50, 
-				 stop_thresh = 1e-22, dtype = tf.float64):
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 20, 
+				 stop_thresh = 1e-12, dtype = tf.float64):
 
 		self.epochs = epochs
 		self.stop_thresh = stop_thresh
@@ -48,7 +48,7 @@ class TuckerDecomposition():
 			# set the shape and order of tensor 
 			self._shape = list(X.shape)
 			self._order = len(self._shape)
-			self._X_data = tf.get_variable("X_data", dtype = self.dtype,
+			self._X_data = tf.get_variable("X_dat", dtype = self.dtype,
 				initializer = X)
 			# when X_data is set, the component matricies U, V, W (in 3d case)
 			# will be initialized
@@ -95,7 +95,9 @@ class TuckerDecomposition():
 					init_val = tf.svd(tf.matmul(Xn, tf.transpose(Xn)), compute_uv = True)[2]
 					# take rank[n] columns singular vectors 
 					init_val = init_val[: , :self._rank[n]]
-					self.U[n] = tf.get_variable(name = str(n), dtype = self.dtype, initializer = init_val)
+					str_u = "c%d" % n
+					str_u = str_u.replace(" ","")
+					self.U[n] = tf.get_variable(name = str_u, dtype = self.dtype, initializer = init_val)
 
 			else:
 				raise TypeError("Expecting rank to be [int] but gets None, set rank")
@@ -179,11 +181,11 @@ class TuckerDecomposition():
 							G1_temp = tf.matmul(update_component_matricies(self.U, self._X_data, 0), self.U[0])
 							delta_norm = ((G1_norm.eval() - G1_temp.eval())**2).sum()
 							# log the change in norm
-							_log.debug('Change in norm iter %d: %.10f' %(e, delta_norm))
+							# _log.debug('Change in norm iter %d: %.10f' %(e, delta_norm))
 							# break if stop_tresh is met
-							#if delta_norm <= self.stop_thresh:
-							#	print("\n Change in norm = %.5f, stop threshhold met" % delta_norm)
-							#	break
+							if delta_norm <= self.stop_thresh:
+								print("\n Change in norm = %.5f, stop threshhold met" % delta_norm)
+								break
 
 						# -----------------------------------------#
 						# return object, might be off in the scope but should be correct
