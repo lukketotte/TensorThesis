@@ -41,14 +41,7 @@ print(norm_x)
 norm_inner = np.multiply(x_est_np, X).sum()
 print(norm_inner)
 
-xn = unfold_np(X, 0)
-xn_est = unfold_np(x_est_np, 0)
-diff = xn - xn_est
-
-
-f = np.trace(np.dot(diff, np.transpose(diff)))
-print(f**.5)
-
+print(norm_x + norm_est - 2*norm_inner)
 
 
 

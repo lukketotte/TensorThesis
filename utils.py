@@ -80,18 +80,17 @@ def get_fit(X, Y):
 	run within a tf.Session() so we have numpy arrays
 	"""
 	########################
-	# normX = (X ** 2).sum()
-	# normY = (Y ** 2).sum()
-	# norm_inner = np.multiply(X,Y).sum()
+	normX = (X ** 2).sum()
+	normY = (Y ** 2).sum()
+	norm_inner = np.multiply(X,Y).sum()
 
-	# norm_residual = normX + normY - norm_inner
-	# = 1 is perfect fit
+	norm_residual = normX + normY - 2*norm_inner
 	# return 1 - (norm_residual / normX)
-	# return norm_residual
+	return norm_residual
 	########################
-	diff = X - Y
-	diff = np.trace(np.dot(diff, np.transpose(diff)))
-	return diff ** .5
+	# diff = X - Y
+	# diff = np.trace(np.dot(diff, np.transpose(diff)))
+	# return diff ** .5
 
 def khatri_rao(A,B):
 	"""

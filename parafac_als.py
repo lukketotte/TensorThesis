@@ -34,7 +34,7 @@ class parafac():
 	row_info: str, added into the debug file, specifying whether parafac has
 			  been run on original data or a core tensor
 	"""
-	def __init__(self, X_data = None, shape = None, rank = None, epochs = 10,
+	def __init__(self, X_data = None, shape = None, rank = None, epochs = 50,
 		         stop_thresh = 1e-5, dtype = tf.float64, init = 'random', limits = [0,1],
 		         row_info = None):
 		self.epochs = epochs
