@@ -26,11 +26,11 @@ for i in range(max_R - 1):
 	# print(X[0, :, :])
 
 	tucker = td()
-	tucker.rank = [10,10,10]
+	tucker.rank = [15,15,15]
 	tucker.X_data = X
 	G = tucker.tucker_ALS()
 	# get core tensor, all dimensions reduced to 50% rounded up
-	G = refold_tf(G, [10,10,10], 0)
+	G = refold_tf(G, [15,15,15], 0)
 
 	init_op = tf.global_variables_initializer()
 	with tf.Session() as sess:
