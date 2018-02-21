@@ -10,7 +10,7 @@ from parafac_als import parafac as pf
 from tucker_als import TuckerDecomposition as td
 
 # generate X from N(0,1) of size 5, 30, 30 (in python terms)
-X = random.normal(loc = 0, scale = 1, size = (5, 30 ,30))
+X = random.normal(loc = 0, scale = 5, size = (20, 20 ,20))
 
 max_R = 10
 for i in range(max_R - 1):
@@ -26,11 +26,11 @@ for i in range(max_R - 1):
 	# print(X[0, :, :])
 
 	tucker = td()
-	tucker.rank = [3,15,15]
+	tucker.rank = [10,10,10]
 	tucker.X_data = X
 	G = tucker.tucker_ALS()
 	# get core tensor, all dimensions reduced to 50% rounded up
-	G = refold_tf(G, [3,15,15], 0)
+	G = refold_tf(G, [10,10,10], 0)
 
 	init_op = tf.global_variables_initializer()
 	with tf.Session() as sess:

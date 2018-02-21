@@ -84,8 +84,9 @@ def get_fit(X, Y):
 	norm_inner = (X * Y).sum()
 
 	norm_residual = normX + normY - norm_inner
-	# fit as percentage, lower values for closer fit
-	return 1 - (norm_residual / normX)
+	# = 1 is perfect fit
+	# return 1 - (norm_residual / normX)
+	return norm_residual
 
 def khatri_rao(A,B):
 	"""
