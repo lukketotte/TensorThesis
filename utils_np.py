@@ -147,7 +147,6 @@ def mode_prod(X, A, n):
 		raise ValueError("X{} ({}) and A{} ({},{}) not defined".format(n, shape[n], n,shape_A[0], shape_A[1]))
 
 
-
 def kruskal_to_tensor(factors, weights=None):
 
     shape = [np.shape(factor)[0] for factor in factors]

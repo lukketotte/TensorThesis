@@ -160,11 +160,11 @@ class parafac():
 		else:
 			raise TypeError("Run init_factors() prior")
 	
-	def parafac_als(self):
+	def parafac_als(self, return_error = True):
 		if not isinstance(self.A, type(None)):
 			if not isinstance(self.X_data, type(None)):
 
-				rec_errors = []
+				self.rec_errors = []
 				norm_X = norm(self._X_data, 2)
 
 				for e in range(self.epochs):
@@ -180,12 +180,15 @@ class parafac():
 						self.A[mode] = A
 
 					rec_error = norm(self._X_data - self.reconstruct_X(), 2) / norm_X
-					rec_errors.append(rec_error)
+					self.rec_errors.append(rec_error)
 
 					if e > 1:
-						if abs(rec_errors[-2] - rec_errors[-1]) < self.stop_thresh:
-							print("\nConverged in {} iterations. Error = {}".format(e, rec_error))
+						if abs(self.rec_errors[-2] - self.rec_errors[-1]) < self.stop_thresh:
+							print("Converged in {} iterations. Error = {}".format(e, rec_error))
 							break
+
+				if return_error:
+					return self.rec_errors
 			else:
 				raise TypeError("X_data has not been set")
 		else:

@@ -4,6 +4,7 @@ from scipy.linalg import eigh
 from scipy.linalg import kron
 from numpy.linalg import svd
 from parafac_np import parafac
+import matplotlib.pyplot as plt
 
 X = np.array([[[1.,4.,7.,10.],
 	          [1.,5.,8.,11.],
@@ -12,7 +13,7 @@ X = np.array([[[1.,4.,7.,10.],
 	          [14.,17.,20.,23.],
 	          [15.,18.,21.,24.]]])
 
-X = np.random.normal(2, 1, 3*4*2).reshape(2,3,4)
+X = np.random.normal(2, 8, 10*10*10).reshape(10,10,10)
 
 
 Y = np.array([[[1., 2., 3.],
@@ -26,11 +27,16 @@ pc = parafac(init = "hosvd")
 
 
 pc.X_data = X
-pc.rank = 1
+pc.rank = 50
 
 pc.init_factors()
-pc.parafac_als()
+error = pc.parafac_als()
 X_hat = pc.reconstruct_X()
-print(X_hat)
-print(get_fit(X, X_hat))
 
+# print(error)
+plt.plot(error)
+plt.ylabel('Training error')
+plt.xlabel('Epochs')
+plt.title("N(2, 8), 10 x 10 x 10")
+plt.grid(True)
+plt.show()
