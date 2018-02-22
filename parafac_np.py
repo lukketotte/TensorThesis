@@ -133,7 +133,7 @@ class parafac():
 													 size = diff * self._shape[mode]).reshape(self._shape[mode], diff)
 							init_val = np.concatenate((init_val, fill), 1)
 
-						self.A[mode] = normalize(init_val, axis = 1, norm = 'max')
+						self.A[mode] = init_val
 
 			else:
 				raise TypeError("X_data need to be set")
@@ -172,14 +172,12 @@ class parafac():
 						pseudo_inverse = np.ones([self._rank, self._rank])
 
 						for i, A in enumerate(self.A):
-							print(i)
 							if i != mode:
 								pseudo_inverse[:] = pseudo_inverse * np.dot(np.transpose(A), A)
-							A = np.dot(unfold_np(self._X_data, mode), khatri_rao_list(self.A[:mode] + self.A[(mode + 1):]))
-							
-							A = np.dot(A, pinv(pseudo_inverse))
-							A = normalize(A)
-							self.A[mode] = A
+						A = np.dot(unfold_np(self._X_data, mode), khatri_rao_list(self.A[:mode] + self.A[(mode+1):]))
+						# TODO: catch error of non-singular matrix
+						A = np.transpose(np.linalg.solve(np.transpose(pseudo_inverse), np.transpose(A)))
+						self.A[mode] = A
 
 					rec_error = norm(self._X_data - self.reconstruct_X(), 2) / norm_X
 					rec_errors.append(rec_error)

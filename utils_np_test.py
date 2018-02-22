@@ -21,23 +21,15 @@ Y = np.array([[[1., 2., 3.],
 
 pc = parafac(init = "hosvd")
 
-a = np.array([[1,2,3],
-			 [4,5,6]])
-b = np.array([[1,2,3],
-			 [4,5,6]])
-c = np.array([[1,2,3],
-			 [4,5,6]])
-
-
-
 
 pc.X_data = X
-pc.rank = 2
+pc.rank = 6
 
 pc.init_factors()
 pc.parafac_als()
 X_hat = pc.reconstruct_X()
 print(X_hat)
+print(get_fit(X, X_hat))
 
 """
 

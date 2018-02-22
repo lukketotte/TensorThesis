@@ -54,20 +54,7 @@ def refold_np(unfolded_tensor, mode, shape):
 	return np.moveaxis(np.reshape(unfolded_tensor, full_shape), 0, mode)
 
 def norm(tensor, order = 2, axis = None):
-	"""
-	Computes l-'order' norm of tensor
-
-	Params
-	------
-	tensor: ndarray
-	order: int
-	axis: int or tuple
-
-	Returns
-	------
-	float or tensor
-		if 'axis' is provided returns a tensor
-	"""
+	
 	if axis == ():
 		axis = None
 	if order == 'inf':
@@ -115,7 +102,7 @@ def khatri_rao(A,B):
 	else: 
 		raise ValueError("Matricies must have the same # of columns")
 
-def khatri_rao_list(A, skip_mat = None, rev = True):
+def khatri_rao_list(A, skip_mat = None, rev = False):
 	"""
 	Takes a list of factor matricies and constructs the khatri rao
 	of all matricies in list.
@@ -158,3 +145,54 @@ def mode_prod(X, A, n):
 		return refold_np(xn, n, shape_x)
 	else:
 		raise ValueError("X{} ({}) and A{} ({},{}) not defined".format(n, shape[n], n,shape_A[0], shape_A[1]))
+
+
+
+def kruskal_to_tensor(factors, weights=None):
+
+    shape = [np.shape(factor)[0] for factor in factors]
+    if weights is not None:
+        full_tensor = np.dot(factors[0]*weights, np.transpose(khatri_rao(factors[1:])))
+    else:
+        full_tensor = np.dot(factors[0], np.transpose(khatri_rao_list(factors[1:])))
+    return refold_np(full_tensor, 0, shape)
+
+def kr(matrices):
+	n_columns = matrices[0].shape[1]
+	n_factors = len(matrices)
+
+	start = ord('a')
+	common_dim = 'z'
+	target = ''.join(chr(start + i) for i in range(n_factors))
+	source = ','.join(i+common_dim for i in target)
+	operation = source+'->'+target+common_dim
+	return np.einsum(operation, *matrices).reshape((-1, n_columns))
+
+def khatri_rao_tl(matrices, skip_matrix=None, reverse=False):
+	if skip_matrix is not None:
+		matrices = [matrices[i] for i in range(len(matrices)) if i != skip_matrix]
+
+	# Khatri-rao of only one matrix: just return that matrix
+	if len(matrices) == 1:
+		return matrices[0]
+
+	n_columns = matrices[0].shape[1]
+
+	# Optional part, testing whether the matrices have the proper size
+	for i, matrix in enumerate(matrices):
+		if np.ndim(matrix) != 2:
+			raise ValueError('All the matrices must have exactly 2 dimensions!'
+                             'Matrix {} has dimension {} != 2.'.format(
+                                 i, T.ndim(matrix)))
+		if matrix.shape[1] != n_columns:
+			raise ValueError('All matrices must have same number of columns!'
+                             'Matrix {} has {} columns != {}.'.format(
+                                 i, matrix.shape[1], n_columns))
+
+	n_factors = len(matrices)
+
+	if reverse:
+		matrices = matrices[::-1]
+        # Note: we do NOT use .reverse() which would reverse matrices even outside this function
+
+	return kr(matrices)
