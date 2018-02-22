@@ -17,7 +17,7 @@ print(X)
 
 X = tl.tensor(X)
 
-factors = decomposition.parafac(X, rank = 2)
+factors = decomposition.parafac(X, rank = 3)
 
 print(factors[0], factors[1])
 
