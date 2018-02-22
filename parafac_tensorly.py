@@ -29,6 +29,7 @@ c = np.array([[1.2,2.21,5.3],
 # print(khatri_rao_list([a,b]))
 
 
+
 X0 = unfold_np(X,0)
 X = refold_np(X0, 0, (2,3,4))
 
@@ -54,3 +55,12 @@ print(get_fit(X, X_new))
 
 
 
+norm = np.random.normal(2, 1, size = 20).reshape(2,5,2)
+fac_norm = parafac(norm, rank = 2, init = "random")
+print(norm)
+
+khatri = khatri_rao_list(fac_norm [1:])
+x0 = np.dot(fac_norm[0], np.transpose(khatri))
+X_new = refold_np(x0, 0, [2,5,2])
+
+print(X_new)
