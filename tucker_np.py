@@ -105,7 +105,7 @@ class tucker():
 				norm_x = norm(self._X_data, 2)
 
 				for e in range(self.epochs):
-					for index, mode in enumerate(self.A):
+					for index in range(self._order):
 						core_approximation = multi_mode_dot(self._X_data, self.A, 
 															skip=index, transpose=True)
 
