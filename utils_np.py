@@ -2,6 +2,8 @@ import numpy as np
 from scipy.linalg import eigh
 from scipy.linalg import kron
 from numpy.linalg import svd
+import scipy.linalg
+import scipy.sparse.linalg
 
 def top_components(X, rank, n):
 
@@ -137,24 +139,64 @@ def mode_prod(X, A, n):
 	shape_a = list(A.shape)
 	shape_x = list(X.shape)
 
-	if shape[n] == shape_a[1]:
+	if shape_x[n] == shape_a[1]:
 		xn = unfold_np(X, n)
-		xn = np.dot(np.transpose(xn), A)
+		xn = np.dot(np.transpose(xn), np.transpose(A))
 		# folded tensor will have nth dim shape_a[0]
 		shape_x[n] = shape_a[0]
 		return refold_np(xn, n, shape_x)
 	else:
 		raise ValueError("X{} ({}) and A{} ({},{}) not defined".format(n, shape[n], n,shape_A[0], shape_A[1]))
 
+def multi_mode_dot(tensor, matrix_or_vec_list, modes=None, skip=None, transpose=False):
+	"""n-mode product of a tensor and several matrices or vectors
+	Parameters
+	----------
+	tensor : ndarray
+	matrix_or_vec_list : list of matrices or vectors of lengh ``tensor.ndim``
+	skip : None or int, optional, default is None
+		if not None, index of a matrix to skip
+		Note that in any case, `modes`, if provided, should have a lengh of ``tensor.ndim``
+	modes : None or int list, optional, default is None
+	transpose : bool, optional, default is False
+				if True, the matrices or vectors in in the list are transposed
+	Returns
+	-------
+	ndarray, tensor times each matrix or vector in the list at mode `mode`
+	Notes
+	-----
+	If no modes are specified, just assumes there is one matrix or vector per mode and returns:
+	:math:`\\text{tensor  }\\times_0 \\text{ matrix or vec list[0] }\\times_1 \\cdots \\times_n \\text{ matrix or vec list[n] }`
+	"""
+	if modes is None:
+		modes = range(len(matrix_or_vec_list))
+
+	decrement = 0  # If we multiply by a vector, we diminish the dimension of the tensor
+
+	res = tensor
+
+	for i, (matrix_or_vec, mode) in enumerate(zip(matrix_or_vec_list, modes)):
+		if (skip is not None) and (i == skip):
+			continue
+
+		if transpose:
+			res = mode_prod(res, np.transpose(matrix_or_vec), mode - decrement)
+		else:
+			res = mode_prod(res, matrix_or_vec, mode - decrement)
+
+		if np.ndim(matrix_or_vec) == 1:
+			decrement = 1
+
+	return res
 
 def kruskal_to_tensor(factors, weights=None):
 
-    shape = [np.shape(factor)[0] for factor in factors]
-    if weights is not None:
-        full_tensor = np.dot(factors[0]*weights, np.transpose(khatri_rao(factors[1:])))
-    else:
-        full_tensor = np.dot(factors[0], np.transpose(khatri_rao_list(factors[1:])))
-    return refold_np(full_tensor, 0, shape)
+	shape = [np.shape(factor)[0] for factor in factors]
+	if weights is not None:
+		full_tensor = np.dot(factors[0]*weights, np.transpose(khatri_rao(factors[1:])))
+	else:
+		full_tensor = np.dot(factors[0], np.transpose(khatri_rao_list(factors[1:])))
+	return refold_np(full_tensor, 0, shape)
 
 def kr(matrices):
 	n_columns = matrices[0].shape[1]
@@ -195,3 +237,59 @@ def khatri_rao_tl(matrices, skip_matrix=None, reverse=False):
         # Note: we do NOT use .reverse() which would reverse matrices even outside this function
 
 	return kr(matrices)
+
+def partial_svd(matrix, n_eigenvecs=None):
+	"""Computes a fast partial SVD on `matrix`
+	if `n_eigenvecs` is specified, sparse eigendecomposition
+	is used on either matrix.dot(matrix.T) or matrix.T.dot(matrix)
+	
+	Parameters
+	----------
+	matrix : 2D-array
+	n_eigenvecs : int, optional, default is None
+		if specified, number of eigen[vectors-values] to return
+	Returns
+	-------
+	U : 2D-array
+		of shape (matrix.shape[0], n_eigenvecs)
+		contains the right singular vectors
+	S : 1D-array
+		of shape (n_eigenvecs, )
+		contains the singular values of `matrix`
+	V : 2D-array
+		of shape (n_eigenvecs, matrix.shape[1])
+		contains the left singular vectors
+	"""
+	# Check that matrix is... a matrix!
+	if matrix.ndim != 2:
+		raise ValueError('matrix be a matrix. matrix.ndim is {} != 2'.format(
+			matrix.ndim))
+
+	# Choose what to do depending on the params
+	dim_1, dim_2 = matrix.shape
+	if dim_1 <= dim_2:
+		min_dim = dim_1
+	else:
+		min_dim = dim_2
+
+	if n_eigenvecs is None or n_eigenvecs >= min_dim:
+		# Default on standard SVD
+		U, S, V = scipy.linalg.svd(matrix)
+		U, S, V = U[:, :n_eigenvecs], S[:n_eigenvecs], V[:n_eigenvecs, :]
+		return U, S, V
+
+	else:
+		# We can perform a partial SVD
+		# First choose whether to use X * X.T or X.T *X
+		if dim_1 < dim_2:
+			S, U = scipy.sparse.linalg.eigsh(np.dot(matrix, matrix.T), k=n_eigenvecs, which='LM')
+			S = np.sqrt(S)
+			V = np.dot(matrix.T, U * 1/S[None, :])
+		else:
+			S, V = scipy.sparse.linalg.eigsh(np.dot(matrix.T, matrix), k=n_eigenvecs, which='LM')
+			S = np.sqrt(S)
+			U = np.dot(matrix, V) * 1/S[None, :]
+
+		# WARNING: here, V is still the transpose of what it should be
+		U, S, V = U[:, ::-1], S[::-1], V[:, ::-1]
+		return U, S, V.T
