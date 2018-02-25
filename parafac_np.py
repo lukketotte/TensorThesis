@@ -37,7 +37,7 @@ class parafac():
 			  been run on original data or a core tensor
 	"""
 	def __init__(self, X_data = None, shape = None, rank = None, epochs = 1000,
-				stop_thresh = 1e-10, dtype = np.float64, init = 'random', limits = [0,1],
+				stop_thresh = 1e-5, dtype = np.float64, init = 'random', limits = [0,1],
 		    	row_info = None):
 
 		self.epochs = epochs
@@ -160,7 +160,7 @@ class parafac():
 		else:
 			raise TypeError("Run init_factors() prior")
 	
-	def parafac_als(self, return_error = True):
+	def parafac_als(self, return_error = True, verbose = False):
 		if not isinstance(self.A, type(None)):
 			if not isinstance(self.X_data, type(None)):
 
@@ -168,6 +168,8 @@ class parafac():
 				norm_X = norm(self._X_data, 2)
 
 				for e in range(self.epochs):
+					if verbose is True:
+						print("Iters: %d / %d" % (e, self.epochs))
 					for mode in range(self._order):
 						pseudo_inverse = np.ones([self._rank, self._rank])
 
