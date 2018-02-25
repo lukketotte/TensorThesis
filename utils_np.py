@@ -149,24 +149,8 @@ def mode_prod(X, A, n):
 		raise ValueError("X{} ({}) and A{} ({},{}) not defined".format(n, shape[n], n,shape_A[0], shape_A[1]))
 
 def multi_mode_dot(tensor, matrix_or_vec_list, modes=None, skip=None, transpose=False):
-	"""n-mode product of a tensor and several matrices or vectors
-	Parameters
-	----------
-	tensor : ndarray
-	matrix_or_vec_list : list of matrices or vectors of lengh ``tensor.ndim``
-	skip : None or int, optional, default is None
-		if not None, index of a matrix to skip
-		Note that in any case, `modes`, if provided, should have a lengh of ``tensor.ndim``
-	modes : None or int list, optional, default is None
-	transpose : bool, optional, default is False
-				if True, the matrices or vectors in in the list are transposed
-	Returns
-	-------
-	ndarray, tensor times each matrix or vector in the list at mode `mode`
-	Notes
-	-----
-	If no modes are specified, just assumes there is one matrix or vector per mode and returns:
-	:math:`\\text{tensor  }\\times_0 \\text{ matrix or vec list[0] }\\times_1 \\cdots \\times_n \\text{ matrix or vec list[n] }`
+	"""
+	n-mode product of a tensor and several matrices or vectors
 	"""
 	if modes is None:
 		modes = range(len(matrix_or_vec_list))
@@ -190,7 +174,10 @@ def multi_mode_dot(tensor, matrix_or_vec_list, modes=None, skip=None, transpose=
 	return res
 
 def kruskal_to_tensor(factors, weights=None):
-
+	"""
+	Reconstruct tensor from PARAFAC factor matricies as
+	Kruskal(A(1), ..., A(N))
+	"""
 	shape = [np.shape(factor)[0] for factor in factors]
 	if weights is not None:
 		full_tensor = np.dot(factors[0]*weights, np.transpose(khatri_rao(factors[1:])))
@@ -242,13 +229,7 @@ def partial_svd(matrix, n_eigenvecs=None):
 	"""Computes a fast partial SVD on `matrix`
 	if `n_eigenvecs` is specified, sparse eigendecomposition
 	is used on either matrix.dot(matrix.T) or matrix.T.dot(matrix)
-	
-	Parameters
-	----------
-	matrix : 2D-array
-	n_eigenvecs : int, optional, default is None
-		if specified, number of eigen[vectors-values] to return
-	Returns
+
 	-------
 	U : 2D-array
 		of shape (matrix.shape[0], n_eigenvecs)
@@ -260,7 +241,7 @@ def partial_svd(matrix, n_eigenvecs=None):
 		of shape (n_eigenvecs, matrix.shape[1])
 		contains the left singular vectors
 	"""
-	# Check that matrix is... a matrix!
+	# check that it is a matrix
 	if matrix.ndim != 2:
 		raise ValueError('matrix be a matrix. matrix.ndim is {} != 2'.format(
 			matrix.ndim))
