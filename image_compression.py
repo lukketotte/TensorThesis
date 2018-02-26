@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import tensorly as tl
 import numpy as np
-from scipy.misc import face, imresize
+# from scipy.misc import face, imresize
 from tensorly.decomposition import tucker
 import matplotlib.image as mpimg
 from math import ceil
@@ -38,7 +38,7 @@ def to_image(tensor):
     return im.astype(np.uint8)
 
 # colour img is a pixel x pixel x colour tensor
-tucker_rank = [100, 200, 3]
+tucker_rank = [30, 80, 3]
 
 img = tl.tensor(img)
 
@@ -47,7 +47,13 @@ core, tucker_factors = tucker(img, ranks=tucker_rank,
 	verbose = True)
 
 tucker_reconstruction = tl.tucker_to_tensor(core, tucker_factors)
+print("reconstructed")
 
+plt.figure()
+plt.imshow(to_image(tucker_reconstruction))
+plt.show()
+
+"""
 fig = plt.figure()
 ax = fig.add_subplot(1, 2, 1)
 ax.set_axis_off()
@@ -61,3 +67,4 @@ ax.set_title('Tucker')
 
 plt.tight_layout()
 plt.show()
+"""
