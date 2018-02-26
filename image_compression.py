@@ -9,12 +9,15 @@ from math import ceil
 from utils_np import *
 from parafac_np import parafac
 
+### DONT RUN THIS ON THE LAPTOP, ITS RIP
+
 # img=mpimg.imread('stinkbug.png')
-img = mpimg.imread('image\\space_odyssey.jpg')
-print(type(img))
+img = mpimg.imread('image\\lost_in_trans.jpg')
 print(img.shape)
 plt.imshow(img)
-# plt.show()
+plt.show()
+img = np.array(img, dtype = np.float64)
+
 
 """
 # hsov throws memory error, should catch it 
@@ -35,12 +38,13 @@ def to_image(tensor):
     return im.astype(np.uint8)
 
 # colour img is a pixel x pixel x colour tensor
-tucker_rank = [432, 960, 3]
+tucker_rank = [100, 200, 3]
 
 img = tl.tensor(img)
 
 core, tucker_factors = tucker(img, ranks=tucker_rank, 
-	init='random', tol=10e-5, random_state=1234, n_iter_max = 10)
+	init='random', tol=10e-5, random_state=1234, n_iter_max = 100,
+	verbose = True)
 
 tucker_reconstruction = tl.tucker_to_tensor(core, tucker_factors)
 
