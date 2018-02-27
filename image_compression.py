@@ -5,6 +5,7 @@ import numpy as np
 from tensorly.decomposition import tucker
 import matplotlib.image as mpimg
 from math import ceil
+import time
 
 from utils_np import *
 from parafac_np import parafac
@@ -15,23 +16,43 @@ from core_parafac_analysis import *
 
 # img=mpimg.imread('stinkbug.png')
 img = mpimg.imread('image\\lost_in_trans.jpg')
-print(img.shape)
-plt.imshow(img)
+
+# plt.imshow(img)
 # plt.show()
 img = np.array(img, dtype = np.float64)
 
-pc = parafac(init = "random")
-pc.X_data = img
-r = 5
-pc.rank = r
-pc.init_factors()
-pc.parafac_als()
-X_hat = pc.reconstruct_X()
-X_hat = to_image(X_hat)
+# Get tucker core
+img_tl = tl.tensor(img)
+tucker_rank = [30, 80, 3]
+core, tucker_factors = tucker(img_tl, ranks=tucker_rank, 
+	init='random', tol=10e-5, random_state=1234, n_iter_max = 100,
+	verbose = True)
 
-original_data_error = error_parafac(tensor = img, max_rank = 5, 
+core_np = tl.to_numpy(core)
+
+# train on original data and core 
+max_r = 40
+t0 = time.time()
+original_data_error = error_parafac(tensor = img, max_rank = max_r, 
 	init = "random", verbose = True)
-print(original_data_error)
+t1 = time.time()
+print(t1 - t0)
+t0 = time.time()
+core_data_error = error_parafac(tensor = core_np, max_rank = max_r,
+	init = "random", verbose = False)
+t1 = time.time()
+print(t1 - t0)
+xint = range(0, max_r + 1, 5)
+
+plt.plot(original_data_error)
+plt.plot(core_data_error)
+plt.ylabel("Training Error")
+plt.xlabel("$Rank_{CP}$")
+plt.title("Image, core 50% compression")
+plt.legend(["Original data", "Core tensor"], loc = "upper right")
+plt.grid(True)
+plt.xticks(xint)
+plt.show()
 
 
 

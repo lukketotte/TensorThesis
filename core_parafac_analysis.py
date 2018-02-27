@@ -48,12 +48,12 @@ def to_image(tensor):
 
 	Params
 	------
-	tensor: np.ndarray or tl.NDarray
+	tensor: np.ndarray or tl.tensor
 	"""
 	# if np.ndarray no transform
 	if isinstance(tensor, np.ndarray):
 		im = tensor
-	# if tl.NDarray transform to np.ndarray
+	# if tl.tensor transform to np.ndarray
 	else:
 		im = tl.to_numpy(tensor)
 	im -= im.min()
