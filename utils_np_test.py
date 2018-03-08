@@ -1,4 +1,5 @@
 from utils_np import *
+from core_parafac_analysis import *
 import numpy as utils_np
 from scipy.linalg import eigh
 from scipy.linalg import kron
@@ -19,39 +20,18 @@ X = np.array([[[1.,4.,7.,10.],
 	          [14.,17.,20.,23.],
 	          [15.,18.,21.,24.]]])
 
-X = np.random.normal(2, 8, 10*10*10).reshape(10,10,10)
+X = np.random.normal(2, 8, 40*40*40).reshape(40,40,40)
 
 Xt = tl.tensor(X)
 
-core, factors = tucker(Xt , ranks = [5,5,5])
+core, factors = tucker(Xt , ranks = [20,20,20])
 tucker_reconstruction = tl.tucker_to_tensor(core, factors)
 core = tl.to_numpy(core)
 
-
-#tk = tucker()
-#tk.X_data = X
-#tk.ranks = [2,2,2]
-#tk.init_components()
-#G = tk.partial_tucker()
-#A = tk.get_component_mats()
+error_x = error_parafac(X, 30)
+error_g = error_parafac(core, 30)
 
 
-
-pc = parafac(init = "hosvd")
-
-
-pc.X_data = X
-pc.rank = 2
-
-pc.init_factors()
-error_x = pc.parafac_als()
-X_hat = pc.reconstruct_X()
-
-pc_g = parafac(init = "hosvd")
-pc_g.X_data = core
-pc_g.rank = 2
-pc_g.init_factors()
-error_g = pc_g.parafac_als()
 
 # print(error)
 
