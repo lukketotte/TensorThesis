@@ -4,16 +4,29 @@ import tensorly as tl
 from tensorly.decomposition import tucker
 import matplotlib.pyplot as plt
 import math
+from utils_np import *
 
 # X is 10x10x10 generated from N(2,8)
 X = np.random.normal(2, 8, 10*10*10).reshape(10,10,10)
 # X = np.random.exponential(5, 20*20*20).reshape(20,20,20)
 # run tucker decomposition
 Xt = tl.tensor(X)
-core, factors = tucker(Xt , ranks = [5, 5,5])
+core, factors = tucker(Xt , ranks = [8, 8, 8])
 tucker_reconstruction = tl.tucker_to_tensor(core, factors)
 core = tl.to_numpy(core)
 
+# calculate product of 2norm of factor matricies
+np_factors = []
+
+for i in range(len(factors)):
+	np_factors.append(tl.to_numpy(factors[i]))
+
+print(two_norm(np_factors))
+print(two_norm(np_factors[0]))
+print(np.dot(np.transpose(np_factors[0]), np_factors[0]))
+# product of spectral norm of independent tucker 
+# factor matricies is 1 as the factor matricies
+# are orthogonal
 n_iter = 30
 x_error_over_ranks = [None] * n_iter
 g_error_over_ranks = [None] * n_iter

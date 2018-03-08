@@ -274,3 +274,25 @@ def partial_svd(matrix, n_eigenvecs=None):
 		# WARNING: here, V is still the transpose of what it should be
 		U, S, V = U[:, ::-1], S[::-1], V[:, ::-1]
 		return U, S, V.T
+
+def two_norm(A):
+	"""
+	Parameters
+	----------
+	A: np.ndarray or [np.ndarray]
+	
+	Returns
+	-------
+	if A is np.ndarray: maximum sing value
+	if A is [np.ndarray]: product of maximum singular values
+	"""
+	if isinstance(A, np.ndarray):
+		_,s,_ = svd(A)
+		# svd returns singular values in descending order
+		return(s[0])
+	elif isinstance(A, list):
+		ret_prod = 1
+		for n in range(len(A)):
+			_,s,_ = svd(A[n])
+			ret_prod *= s[0]
+		return ret_prod

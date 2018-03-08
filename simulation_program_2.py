@@ -31,11 +31,11 @@ Xt = tl.tensor(X)
 # the same way tucker rank is at least the same 
 # as the rank in the data generating process
 
-core, factors = tucker(Xt , ranks = [15,15,15])
+core, factors = tucker(Xt , ranks = [10,10,10])
 tucker_reconstruction = tl.tucker_to_tensor(core, factors)
 core = tl.to_numpy(core)
 
-niter = 30
+niter = 20
 error_iter = [None] * niter
 error_iter_g = [None] * niter
 
@@ -67,7 +67,7 @@ plt.plot(error_iter_g)
 plt.ylabel('Training error')
 plt.xlabel('$Rank_{CP}$')
 plt.title("$CP_{True} = 20, \,\mathcal{X} \in \Re^{30x30x30}$")
-plt.legend(['Original data', 'Core tensor(.5)'], loc='upper right')
+plt.legend(['Original data', 'Core tensor(.33)'], loc='upper right')
 plt.grid(True)
 plt.xticks(xint)
 plt.show()
