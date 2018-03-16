@@ -1,10 +1,10 @@
-from parafac_np import parafac
+from decompositions.parafac_np import parafac
 import numpy as np
 import tensorly as tl
 from tensorly.decomposition import tucker
 import matplotlib.pyplot as plt
 import math
-from utils_np import *
+from utils.utils_np import *
 
 # X is 10x10x10 generated from N(2,8)
 X = np.random.normal(2, 8, 10*10*10).reshape(10,10,10)

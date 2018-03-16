@@ -1,10 +1,10 @@
-from parafac_np import parafac
+from decompositions.parafac_np import parafac
 import numpy as np
 import tensorly as tl
 from tensorly.decomposition import tucker
 import matplotlib.pyplot as plt
 import math
-from utils_np import *
+from utils.utils_np import *
 
 """
 Should try to simulate data nowing the ground truth

@@ -1,6 +1,6 @@
 import numpy as np
 from tqdm import trange
-from utils_np import *
+from utils.utils_np import *
 import logging
 from numpy.linalg import pinv
 from numpy.linalg import svd
