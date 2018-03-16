@@ -1,11 +1,13 @@
 import tensorflow as tf
 import numpy as np
 from tqdm import trange
-from utils import *
-import logging
 
-logging.basicConfig(filename = 'loss.log', level = logging.DEBUG)
-_log = logging.getLogger('decomp')
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+from utils.utils_np import *
+
 
 class TuckerDecomposition():
 	"""
