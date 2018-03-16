@@ -10,7 +10,7 @@ import time
 from utils_np import *
 from parafac_np import parafac
 
-from core_parafac_analysis import *
+from utils.core_parafac_analysis import *
 
 ### DONT RUN THIS ON THE LAPTOP, ITS RIP
 

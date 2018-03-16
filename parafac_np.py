@@ -1,14 +1,13 @@
 import numpy as np
 from tqdm import trange
+from utils.utils_np import *
+import logging
 from numpy.linalg import pinv
 from numpy.linalg import svd
 from sklearn.preprocessing import normalize
 
-import os,sys,inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
-from utils.utils_np import *
+logging.basicConfig(filename = 'loss_parafac.log', level = logging.DEBUG)
+_log = logging.getLogger('decomp')
 
 class parafac():
 	"""
@@ -39,7 +38,7 @@ class parafac():
 	"""
 	def __init__(self, X_data = None, shape = None, rank = None, epochs = 1000,
 				stop_thresh = 1e-5, dtype = np.float64, init = 'random', limits = [0,1],
-		    	row_info = None, seed = 1234):
+		    	row_info = None):
 
 		self.epochs = epochs
 		self.stop_thresh = stop_thresh
@@ -53,7 +52,6 @@ class parafac():
 		self.A = None
 		self._limits = limits
 		self._row_info = row_info
-		self._seed = seed
 
 	@property
 	def X_data(self):
@@ -118,7 +116,6 @@ class parafac():
 				self.A = [None] * self._order
 
 				if self.init is "random":
-					np.random.seed(self._seed)
 					for mode in range(self._order):
 						init_val = np.random.uniform(low = self.limits[0], high = self.limits[1],
 										             size = self._shape[mode] * self._rank)

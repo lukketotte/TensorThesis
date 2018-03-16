@@ -23,7 +23,7 @@ B = np.random.normal(1, 1, 30*20).reshape(30, 20)
 C = np.random.normal(2, 1, 30*20).reshape(30, 20)
 
 X = kruskal_to_tensor([A,B,C])
-print(X[:,:,1])
+print(X.shape)
 
 Xt = tl.tensor(X)
 
