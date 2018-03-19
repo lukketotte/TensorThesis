@@ -7,38 +7,37 @@ import tensorly as tl
 from tensorly.decomposition import tucker
 import matplotlib.pyplot as plt
 import math
+import time
 
-# going to simulate a tensor where the factor matricies
-# are generated from trivariate ND. 
 
-covA = covariance_matrix(dim = 5, diagonal = True)
-covB = covariance_matrix(dim = 5, diagonal = False, seed = 12342)
-print(np.linalg.det(covB))
-
-# how should i generate the covariance matrix?
-
-"""
-tucker_rank = 8
+tucker_rank = 15
 dim_pc = 20
-pc_rank = 10
+pc_rank = 20
 compression = float(tucker_rank)/float(dim_pc)
-max_rank = 12
+max_rank = 25
 
-x = np.random.uniform(0, 1, size = pc_rank).reshape(pc_rank, 1)
-y = np.random.uniform(1, 2, size = pc_rank).reshape(pc_rank, 1)
-cov = np.dot(x, y.T)
-print(cov)
+### Generate factor matricies
+# parameters
 mean = [0]*pc_rank
+# multicollinearity in covA, on avarage 50% of the entries
+covA  = covariance_matrix(dim = pc_rank, diagonal = False, seed = 91)
+covB = covariance_matrix(dim = pc_rank, diagonal = False, seed = 9110)
+covC = covariance_matrix(dim = pc_rank, diagonal = False,  seed = 911021)
 
-np.random.seed(1234)
-A = np.random.multivariate_normal(mean, np.diag(np.random.rand(pc_rank)), size = pc_rank)
-B = np.random.multivariate_normal(mean, np.diag(np.random.rand(pc_rank)), size = pc_rank)
-C = np.random.multivariate_normal(mean, np.diag(np.random.rand(pc_rank)), size = pc_rank)
+# generate factor matricies
+A = np.random.multivariate_normal(mean, covA, size = pc_rank)
+B = np.random.multivariate_normal(mean, covB, size = pc_rank)
+C = np.random.multivariate_normal(mean, covC, size = pc_rank)
+
+# Testing the other simulations scheme
+# covariance_matrix_parafac(10, 5, [1,1,1])
+factor_matricies =  covariance_matrix_parafac(dim_pc, pc_rank, [1,1,1])
 
 # A = np.random.multivariate_normal(mean, cov, dim_pc*pc_rank).reshape(3,dim_pc,pc_rank)
 # 10x10x10 tensor
 
-X = kruskal_to_tensor([A,B,C])
+# X = kruskal_to_tensor([A,B,C])
+X = kruskal_to_tensor(factor_matricies)
 X_tl = tl.tensor(X)
 
 
@@ -51,10 +50,16 @@ core, tucker_factors = tucker(X_tl, ranks = tucker_rank,
 
 core_np = tl.to_numpy(core)
 
-X_error = error_parafac(tensor = X, max_rank = max_rank,
-	init = "random", verbose = True)
-core_error = error_parafac(tensor = core_np, max_rank = max_rank,
-	init = "random", verbose = True)
+# estimate errors, take the time aswell
+start_time = time.time()
+X_error = error_parafac(tensor = X, max_rank = max_rank, init = "random", verbose = False)
+x_time = time.time() - start_time
+
+start_time = time.time()
+core_error = error_parafac(tensor = core_np, max_rank = max_rank, init = "random", verbose = False)
+core_time = time.time() - start_time
+
+print(x_time, core_time)
 
 xint = range(0, max_rank + 1, 2)
 plt.plot(X_error)
@@ -67,4 +72,3 @@ plt.legend(["Original data", "Core tensor"], loc = "upper right")
 plt.grid(True)
 plt.xticks(xint)
 plt.show()
-"""

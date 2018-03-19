@@ -66,11 +66,11 @@ def to_image(tensor):
 	im *= 255
 	return im.astype(np.uint8)
 
-def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1],
-	degree_of_collinearity = 0.5):
+def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1]):
 	"""
 	Function to generate covariance matrix for the 
-	multivariate normal distribution
+	multivariate normal distribution. Here we consider
+	multicollinearity within the factor matricies
 
 	Params
 	------
@@ -78,8 +78,6 @@ def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1],
 	seed = random seed
 	diagonal = if false, creates multicollinearity
 	uniform_params = [lower value, higher value] for uniform
-	degree_of_collinearity = avarage number of non-zero off diagonals 
-							 if diagonal is set to false
 	"""
 	if diagonal:
 		cov = np.diag(np.random.uniform(low = uniform_params[0], 
@@ -91,10 +89,59 @@ def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1],
 		# it will be generated as cov*cov'
 		cov = np.random.uniform(low = uniform_params[0], 
 								high = uniform_params[1],
-								size = (dim**2)).reshape(5,5)
+								size = (dim**2)).reshape(dim,dim)
 		
 		return np.matmul(cov, np.transpose(cov))
 		
 		 
-		
+def covariance_matrix_parafac(dim, pc_rank, dependency_structure, 
+	seed = 1234, uniform_params = [0,1]):
+	"""
+	This function returns all the factor matricies, which will be generated
+	assuming dependencies between their columns. That is in terms of the outer
+	product
 
+	Params
+	------
+	dim = [int], elements in the modes of tensor
+	pc_rank = int, pc rank of tensor
+	dependency_structure = [int]*3, 1's or 0's depending on whether a element in the 
+						   covariance matrix of MVND should be zero or not.
+						   [12, 13, 23]
+	seed = int, random seed
+	uniform_params = [int], [lower value, higher value] for uniform
+	"""
+	# only third order tensors in simulation. If an int is passed make it into a list
+	if isinstance(dim, int):
+		dim = [dim]*3
+
+	N = len(dim)
+	factor_matricies = [None]*N
+
+	for n in range(N):
+		factor_matricies[n] = np.zeros((dim[n], pc_rank))
+
+	cov = covariance_matrix(dim = 3, diagonal = False)
+	# position [0,1], [1,0]
+	cov[0,1] *= dependency_structure[0]
+	cov[1,0] = cov[0,1]
+	# position[0,2], [2,0]
+	cov[0,2] *= dependency_structure[1]
+	cov[2,0] = cov[0,2]
+	# position [1,2], [2,1]
+	cov[1,2] *= dependency_structure[2]
+	cov[2,1] = cov[1,2]
+
+	for i in range(pc_rank):
+		dim_max = max(dim)
+		columns_of_matricies = np.random.multivariate_normal([0]*3, cov, size = dim_max)
+		# assign to the factor matricies
+		for n in range(N):
+			factor_matricies[n][:,i] = columns_of_matricies[0:dim[n], n]
+
+	
+	return factor_matricies
+
+
+
+	
