@@ -11,10 +11,13 @@ import math
 # going to simulate a tensor where the factor matricies
 # are generated from trivariate ND. 
 
+covA = covariance_matrix(dim = 5, diagonal = True)
+covB = covariance_matrix(dim = 5, diagonal = False, seed = 12342)
+print(np.linalg.det(covB))
 
 # how should i generate the covariance matrix?
 
-
+"""
 tucker_rank = 8
 dim_pc = 20
 pc_rank = 10
@@ -64,3 +67,4 @@ plt.legend(["Original data", "Core tensor"], loc = "upper right")
 plt.grid(True)
 plt.xticks(xint)
 plt.show()
+"""

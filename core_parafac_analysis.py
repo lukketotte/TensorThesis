@@ -2,13 +2,8 @@ import numpy as np
 import tensorly as tl
 from tensorly.decomposition import tucker
 from utils_np import *
+from parafac_np import parafac
 from math import ceil
-
-import os,sys,inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir)
-from decompositions.parafac_np import parafac
 
 """
 Methods for data analysis for this master thesis
@@ -65,36 +60,3 @@ def to_image(tensor):
 	im /= im.max()
 	im *= 255
 	return im.astype(np.uint8)
-
-def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1],
-	degree_of_collinearity = 0.5):
-	"""
-	Function to generate covariance matrix for the 
-	multivariate normal distribution
-
-	Params
-	------
-	dim = nrow & ncol
-	seed = random seed
-	diagonal = if false, creates multicollinearity
-	uniform_params = [lower value, higher value] for uniform
-	degree_of_collinearity = avarage number of non-zero off diagonals 
-							 if diagonal is set to false
-	"""
-	if diagonal:
-		cov = np.diag(np.random.uniform(low = uniform_params[0], 
-									high = uniform_params[1],
-									size = dim))
-		return cov
-	else:
-		# to get a symmetric positive definite matrix,
-		# it will be generated as cov*cov'
-		cov = np.random.uniform(low = uniform_params[0], 
-								high = uniform_params[1],
-								size = (dim**2)).reshape(5,5)
-		
-		return np.matmul(cov, np.transpose(cov))
-		
-		 
-		
-
