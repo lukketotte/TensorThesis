@@ -14,21 +14,21 @@ logging.basicConfig(filename = 'time_consumption.log', level = logging.DEBUG)
 _log = logging.getLogger('time')
 
 # for storing results
-dataset = "1a"
+dataset = "21c"
 
-tucker_rank = 10
+tucker_rank = 18
 dim_pc = 20
-pc_rank = 15
+pc_rank = 25
 compression = float(tucker_rank)/float(dim_pc)
-max_rank = 20
+max_rank = pc_rank + 5
 
 ### Generate factor matricies
 # parameters
 mean = [0]*pc_rank
 # multicollinearity in covA, on avarage 50% of the entries
-covA  = covariance_matrix(dim = pc_rank, diagonal = True, seed = 1234)
-covB = covariance_matrix(dim = pc_rank, diagonal = True, seed = 1234)
-covC = covariance_matrix(dim = pc_rank, diagonal = True,  seed = 1234)
+covA  = covariance_matrix(dim = pc_rank, diagonal = False, seed = 1234)
+covB = covariance_matrix(dim = pc_rank, diagonal = False, seed = 1234)
+covC = covariance_matrix(dim = pc_rank, diagonal = False,  seed = 1234)
 
 # generate factor matricies
 A = np.random.multivariate_normal(mean, covA, size = pc_rank)
@@ -42,8 +42,8 @@ factor_matricies =  covariance_matrix_parafac(dim_pc, pc_rank, [1,1,1])
 # A = np.random.multivariate_normal(mean, cov, dim_pc*pc_rank).reshape(3,dim_pc,pc_rank)
 # 10x10x10 tensor
 
-X = kruskal_to_tensor([A,B,C])
-# X = kruskal_to_tensor(factor_matricies)
+# X = kruskal_to_tensor([A,B,C])
+X = kruskal_to_tensor(factor_matricies)
 X_tl = tl.tensor(X)
 
 
@@ -67,18 +67,23 @@ core_time = time.time() - start_time
 
 
 
-_log.debug('%.2f, %.3f, %.3f, %s' %((1-compression), x_time, core_time, dataset))
+_log.debug('%d, %.2f, %.3f, %.3f, %s' %(pc_rank, (1-compression), x_time, core_time, dataset))
 
-xint = range(0, max_rank + 1, 2)
-plt.plot(X_error)
-plt.plot(core_error)
-plt.axvline(x = pc_rank, color = "gray", linestyle = "dashed")
-plt.ylabel("Training Error")
-plt.xlabel("Tensor Rank")
+xint = range(0, max_rank + 1, 5)
+
+plt.plot(X_error, color = "black" ,linestyle = '--')
+plt.plot(core_error, color = "black", linestyle = "-")
+plt.axvline(x = pc_rank, color = "black", linestyle = ":")
+plt.ylabel("Training Error", fontsize = 16)
+plt.xlabel("Tensor Rank", fontsize = 16)
 # plt.title("%.2f compression" % (1-compression))
 plt.title("$\mathcal{G} \in \Re^{%dx%dx%d}$" % (tucker_rank[0],tucker_rank[1],tucker_rank[2]), 
+	fontsize = 24)
+plt.legend(["Original data", "Core tensor", "rank($\mathcal{X}$)"], loc = "upper right",
 	fontsize = 18)
-plt.legend(["Original data", "Core tensor"], loc = "upper right")
 plt.grid(True)
-plt.xticks(xint)
+plt.xticks(xint, fontsize = 14)
+plt.yticks(fontsize = 12)
+# plt.yticks(np.arange(min(X_error), max(X_error) + 0.05, 0.1), fontsize = 14)
+# plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
 plt.show()
