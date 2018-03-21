@@ -79,6 +79,7 @@ def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1])
 	diagonal = if false, creates multicollinearity
 	uniform_params = [lower value, higher value] for uniform
 	"""
+	np.random.seed(seed)
 	if diagonal:
 		cov = np.diag(np.random.uniform(low = uniform_params[0], 
 									high = uniform_params[1],
@@ -111,6 +112,7 @@ def covariance_matrix_parafac(dim, pc_rank, dependency_structure,
 	seed = int, random seed
 	uniform_params = [int], [lower value, higher value] for uniform
 	"""
+	np.random.seed(seed)
 	# only third order tensors in simulation. If an int is passed make it into a list
 	if isinstance(dim, int):
 		dim = [dim]*3
