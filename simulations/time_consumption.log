@@ -1,3 +1,7 @@
-DEBUG:time:12, 4.144, 2.293, 108.742, 1_uniformDEBUG:time:14, 4.224, 2.881, 110.243, 1_uniform
+DEBUG:time:12, 4.144, 2.293, 108.742, 1_uniform
+DEBUG:time:14, 4.224, 2.881, 110.243, 1_uniform
 DEBUG:time:16, 4.330, 3.376, 108.384, 1_uniform
 DEBUG:time:18, 3.936, 3.540, 108.133, 1_uniform
+DEBUG:time:12, 3.992, 2.313, 108.742, 1_uniform
+DEBUG:time:12, 2.377, 1.361, 162.643, 2_uniform
+DEBUG:time:14, 2.485, 1.666, 165.068, 2_uniform

@@ -20,11 +20,11 @@ logging.basicConfig(filename = 'time_consumption.log', level = logging.DEBUG)
 _log = logging.getLogger('time')
 
 # for storing results
-dataset = "1_uniform"
+dataset = "2_uniform"
 
-a = 0.5
-b = 1.5
-tucker_rank = [12]*3
+a = 1
+b = 2
+tucker_rank = [14]*3
 dim_pc = 20
 pc_rank = 25
 compression = float(tucker_rank[0])/float(dim_pc)
