@@ -5,3 +5,14 @@ DEBUG:time:18, 3.936, 3.540, 108.133, 1_uniform
 DEBUG:time:12, 3.992, 2.313, 108.742, 1_uniform
 DEBUG:time:12, 2.377, 1.361, 162.643, 2_uniform
 DEBUG:time:14, 2.485, 1.666, 165.068, 2_uniform
+DEBUG:time:16, 1.213, 0.906, 162.272, 2_uniform
+DEBUG:time:16, 1.228, 0.925, 162.272, 2_uniform
+DEBUG:time:18, 1.204, 1.073, 161.774, 2_uniform
+DEBUG:time:12, 1.556, 3.223, 1_mvnd
+DEBUG:time:12, 1.569, 3.111, 1_mvnd
+DEBUG:time:12, 1.373, 2.493, 1_mvnd
+DEBUG:time:14, 1.462, 1.522, 1_mvnd
+DEBUG:time:16, 1.398, 1.103, 1_mvnd
+DEBUG:time:18, 1.358, 0.934, 1_mvnd
+DEBUG:time:12, 7.189, 3.700, 2_mvnd
+DEBUG:time:14, 7.153, 5.444, 2_mvnd

@@ -66,7 +66,7 @@ def to_image(tensor):
 	im *= 255
 	return im.astype(np.uint8)
 
-def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1]):
+def covariance_matrix(dim, seed = None, diagonal = True, uniform_params = [0,1]):
 	"""
 	Function to generate covariance matrix for the 
 	multivariate normal distribution. Here we consider
@@ -79,8 +79,9 @@ def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1])
 	diagonal = if false, creates multicollinearity
 	uniform_params = [lower value, higher value] for uniform
 	"""
-	np.random.seed(seed)
 	if diagonal:
+		if not isinstance(seed, type(None)):
+			np.random.seed(seed)
 		cov = np.diag(np.random.uniform(low = uniform_params[0], 
 									high = uniform_params[1],
 									size = dim))
@@ -88,6 +89,8 @@ def covariance_matrix(dim, seed = 1234, diagonal = True, uniform_params = [0,1])
 	else:
 		# to get a symmetric positive definite matrix,
 		# it will be generated as cov*cov'
+		if not isinstance(seed, type(None)):
+			np.random.seed(seed)
 		cov = np.random.uniform(low = uniform_params[0], 
 								high = uniform_params[1],
 								size = (dim**2)).reshape(dim,dim)

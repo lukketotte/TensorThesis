@@ -20,13 +20,14 @@ logging.basicConfig(filename = 'time_consumption.log', level = logging.DEBUG)
 _log = logging.getLogger('time')
 
 # for storing results
-dataset = "2_uniform"
-
-a = 1
-b = 2
-tucker_rank = [18]*3
+dataset = "2_mvnd"
+diag = False
+a = 0
+b = 1
+tucker_rank = [14]*3
 dim_pc = 20
 pc_rank = 25
+mean = [0]*pc_rank
 compression = float(tucker_rank[0])/float(dim_pc)
 max_rank = pc_rank + 5
 number_of_runs = 100
@@ -41,22 +42,19 @@ for i in range(number_of_runs):
 	# plot the first result that is seeded
 	if i == 0:
 		# condition number goes up with higher valued interval
-		np.random.seed(1234)
-		A = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
-		B = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
-		C = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
+		covA  = covariance_matrix(dim = pc_rank, diagonal = diag, seed = 1234)
+		covB = covariance_matrix(dim = pc_rank, diagonal = diag, seed = 1234)
+		covC = covariance_matrix(dim = pc_rank, diagonal = diag,  seed = 1234)
+		A = np.random.multivariate_normal(mean, covA, size = pc_rank)
+		B = np.random.multivariate_normal(mean, covB, size = pc_rank)
+		C = np.random.multivariate_normal(mean, covC, size = pc_rank)
 	else:
-		A = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
-		B = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
-		C = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
-
-	# condition numbers of A, B, C
-	_, sA, _ = np.linalg.svd(A)
-	_, sB, _ = np.linalg.svd(B)
-	_, sC, _ = np.linalg.svd(C)
-	condition_number.append(np.amax(sA)/np.amin(sA))
-	condition_number.append(np.amax(sB)/np.amin(sB))
-	condition_number.append(np.amax(sC)/np.amin(sC))
+		covA  = covariance_matrix(dim = pc_rank, diagonal = diag)
+		covB = covariance_matrix(dim = pc_rank, diagonal = diag)
+		covC = covariance_matrix(dim = pc_rank, diagonal = diag)
+		A = np.random.multivariate_normal(mean, covA, size = pc_rank)
+		B = np.random.multivariate_normal(mean, covB, size = pc_rank)
+		C = np.random.multivariate_normal(mean, covC, size = pc_rank)
 
 	X = kruskal_to_tensor([A,B,C])
 	X_tl = tl.tensor(X)
@@ -77,10 +75,9 @@ for i in range(number_of_runs):
 	print("Completed run %d \n" % (i+1))
 
 # log the relevant results
-_log.debug('%d, %.3f, %.3f, %.3f, %s' %(tucker_rank[0], 
+_log.debug('%d, %.3f, %.3f, %s' %(tucker_rank[0], 
 								  stats.describe(time_runs_x)[2], 
 								  stats.describe(time_runs_core)[2],
-								  stats.describe(condition_number)[2],
 								  dataset))
 
 xint = range(0, max_rank + 1, 5)
@@ -91,8 +88,8 @@ for i in range(number_of_runs):
 	if i == 0:
 		continue
 	else:
-		plt.plot(result_runs_core[i], alpha = 0.01, color = "black")
-		plt.plot(result_runs_x[i], alpha = 0.01, color = "black")
+		plt.plot(result_runs_core[i], alpha = 0.025, color = "black")
+		plt.plot(result_runs_x[i], alpha = 0.025, color = "black")
 # seeded results
 x = plt.plot(result_runs_x[0], color = "blue" ,linestyle = '--', label = "Original tensor")
 g = plt.plot(result_runs_core[0], color = "red", linestyle = "-", label = "Core tensor")
@@ -109,22 +106,5 @@ plt.xticks(xint, fontsize = 14)
 plt.yticks(fontsize = 12)
 # plt.yticks(np.arange(min(X_error), max(X_error) + 0.05, 0.1), fontsize = 14)
 # plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
-plt.savefig(fname = "C:\\Users\\rotmos\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
+plt.savefig(fname = "C:\\Users\\rotmos\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\Mvnd\\%s_%d" % (dataset, tucker_rank[0]))
 # plt.show()
-
-
-"""
-X = np.random.uniform(low = 1, high = 2, size = 20).reshape(5,4)
-
-u,s,v = np.linalg.svd(X, full_matrices = False)
-
-w,v = np.linalg.eig(np.dot(X.T, X))
-
-print((w[0]/w[3])**0.5)
-
-s[0] += 2
-X = np.dot(u, np.dot(np.diag(s), v))
-#print(X)
-w,v = np.linalg.eig(np.dot(X.T, X))
-print((w[0]/w[3])**0.5)
-"""
