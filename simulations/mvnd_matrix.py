@@ -24,7 +24,7 @@ dataset = "2_mvnd"
 diag = False
 a = 0
 b = 1
-tucker_rank = [14]*3
+tucker_rank = [18]*3
 dim_pc = 20
 pc_rank = 25
 mean = [0]*pc_rank
@@ -42,22 +42,27 @@ for i in range(number_of_runs):
 	# plot the first result that is seeded
 	if i == 0:
 		# condition number goes up with higher valued interval
-		covA  = covariance_matrix(dim = pc_rank, diagonal = diag, seed = 1234)
-		covB = covariance_matrix(dim = pc_rank, diagonal = diag, seed = 1234)
-		covC = covariance_matrix(dim = pc_rank, diagonal = diag,  seed = 1234)
+		covA  = covariance_matrix(dim = pc_rank, diagonal = diag, seed = 1234,
+			uniform_params = [a,b])
+		covB = covariance_matrix(dim = pc_rank, diagonal = diag, seed = 1234,
+			uniform_params = [a,b])
+		covC = covariance_matrix(dim = pc_rank, diagonal = diag,  seed = 1234,
+			uniform_params = [a,b])
 		A = np.random.multivariate_normal(mean, covA, size = pc_rank)
 		B = np.random.multivariate_normal(mean, covB, size = pc_rank)
 		C = np.random.multivariate_normal(mean, covC, size = pc_rank)
 	else:
-		covA  = covariance_matrix(dim = pc_rank, diagonal = diag)
-		covB = covariance_matrix(dim = pc_rank, diagonal = diag)
-		covC = covariance_matrix(dim = pc_rank, diagonal = diag)
+		covA  = covariance_matrix(dim = pc_rank, diagonal = diag, uniform_params = [a,b])
+		covB = covariance_matrix(dim = pc_rank, diagonal = diag, uniform_params = [a,b])
+		covC = covariance_matrix(dim = pc_rank, diagonal = diag, uniform_params = [a,b])
 		A = np.random.multivariate_normal(mean, covA, size = pc_rank)
 		B = np.random.multivariate_normal(mean, covB, size = pc_rank)
 		C = np.random.multivariate_normal(mean, covC, size = pc_rank)
 
 	X = kruskal_to_tensor([A,B,C])
 	X_tl = tl.tensor(X)
+
+	# print(X[0,0,0])
 	
 	core, tucker_factors = tucker(X_tl, ranks = tucker_rank,
 		init = "random", tol = 10e-5, random_state = 1234, 
@@ -105,6 +110,6 @@ plt.grid(True)
 plt.xticks(xint, fontsize = 14)
 plt.yticks(fontsize = 12)
 # plt.yticks(np.arange(min(X_error), max(X_error) + 0.05, 0.1), fontsize = 14)
-# plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
-plt.savefig(fname = "C:\\Users\\rotmos\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\Mvnd\\%s_%d" % (dataset, tucker_rank[0]))
+plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\Mvnd\\%s_%d" % (dataset, tucker_rank[0]))
+# plt.savefig(fname = "C:\\Users\\rotmos\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\Mvnd\\%s_%d" % (dataset, tucker_rank[0]))
 # plt.show()

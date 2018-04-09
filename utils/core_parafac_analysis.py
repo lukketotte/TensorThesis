@@ -3,6 +3,7 @@ import tensorly as tl
 from tensorly.decomposition import tucker
 from utils_np import *
 from math import ceil
+from scipy.stats.stats import pearsonr
 
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -147,6 +148,92 @@ def covariance_matrix_parafac(dim, pc_rank, dependency_structure,
 	
 	return factor_matricies
 
+def split_half_analysis(X, split_mode, rank, split_value = None, 
+	init_pc = "random", split_type = "half"):
+	"""
+	Takes a tensor (3d) and returns the congruence (closeness)
+	value for all factor matricies. Congruence will be the avarage
+	of the columnwise correlation of corresponding halves. For now
+	assuming that the split mode has even dimension number (?)
+
+	params
+	------
+	X: np.ndarray. Tensor to perform split half analysis on
+
+	split_mode: int. Mode to split the tensor on
+
+	split_value: int. the value of the split_mode to perform the split on
+	             if None split into two equal halves
+
+	init_pc: int. Rank for parafac
+
+	split_type: Str. Type of split. Either halves or odd_even
+
+	returns
+	-------
+	[int]. Contains the congruence estimates for all three 
+	factor matricies as the avarage correlation between the 
+	column vectors
+
+	TODO
+	------
+	possibly return error if split mode is not an even number
+	"""
+	modes = X.shape
+
+	if split_type == "half":
+		# create the split half tensors
+		split_value = int(modes[split_mode]/2)
+		X_1 = X[:, :, 0:split_value]
+		X_2 = X[:, :, split_value:]
+	elif split_type == "odd_even":
+		even = []
+		odd = []
+		for i in range(modes[split_mode]):
+			if i % 2 == 0:
+				even.append(i)
+			else:
+				odd.append(i)
+		X_1 = X[:, :, np.array(odd)]
+		X_2 = X[:, :, np.array(even)]
+
+	# train parafac on halves
+	# initiate class for both halves
+	pc_1 = parafac(init = init_pc)
+	pc_2 = parafac(init = init_pc)
+
+	# set data argument
+	pc_1.X_data = X_1
+	pc_2.X_data = X_2
+
+	# set rank and factor matricies
+	pc_1.rank = rank
+	pc_1.init_factors()
+
+	pc_2.rank = rank
+	pc_2.init_factors()
+
+	# train model
+	model_1 = pc_1.parafac_als()
+	model_2 = pc_2.parafac_als()
+
+	# get the factor matricies
+	factor_matricies_X1 = pc_1.get_factors()
+	factor_matricies_X2 = pc_2.get_factors()
+
+	return_list = [None] * 3
+	shape_halves = X_1.shape
+
+	for i in range(len(return_list)):
+		temp_congruence = 0
+		# factor matricies have #columns = rank
+		for j in range(rank):
+			temp_congruence += pearsonr(factor_matricies_X1[i][:,j],
+										factor_matricies_X2[i][:,j])[0]
+		# avarage congruence for factor matricies i
+		return_list[i] = temp_congruence/rank
+
+	return return_list
 
 
-	
+
