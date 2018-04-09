@@ -149,7 +149,7 @@ def covariance_matrix_parafac(dim, pc_rank, dependency_structure,
 	return factor_matricies
 
 def split_half_analysis(X, split_mode, rank, split_value = None, 
-	init_pc = "random", split_type = "half"):
+	init_pc = "random", split_type = "half", split_indicies = None):
 	"""
 	Takes a tensor (3d) and returns the congruence (closeness)
 	value for all factor matricies. Congruence will be the avarage
@@ -167,7 +167,8 @@ def split_half_analysis(X, split_mode, rank, split_value = None,
 
 	init_pc: int. Rank for parafac
 
-	split_type: Str. Type of split. Either halves or odd_even
+	split_type: Str. Type of split. Either halves,odd_even. Can be manually
+	set by supplying it with a list
 
 	returns
 	-------
@@ -181,21 +182,26 @@ def split_half_analysis(X, split_mode, rank, split_value = None,
 	"""
 	modes = X.shape
 
-	if split_type == "half":
-		# create the split half tensors
-		split_value = int(modes[split_mode]/2)
-		X_1 = X[:, :, 0:split_value]
-		X_2 = X[:, :, split_value:]
-	elif split_type == "odd_even":
-		even = []
-		odd = []
-		for i in range(modes[split_mode]):
-			if i % 2 == 0:
-				even.append(i)
-			else:
-				odd.append(i)
-		X_1 = X[:, :, np.array(odd)]
-		X_2 = X[:, :, np.array(even)]
+	if isinstance(split_type, np.ndarray):
+		split_value_list = int(len(split_type)/2)
+		X_1 = X[:, :, split_type[:split_value_list]]
+		X_2 = X[:, :, split_type[split_value_list:]]
+	elif isinstance(split_type, str):
+		if split_type == "half":
+			# create the split half tensors
+			split_value = int(modes[split_mode]/2)
+			X_1 = X[:, :, 0:split_value]
+			X_2 = X[:, :, split_value:]
+		elif split_type == "odd_even":
+			even = []
+			odd = []
+			for i in range(modes[split_mode]):
+				if i % 2 == 0:
+					even.append(i)
+				else:
+					odd.append(i)
+			X_1 = X[:, :, np.array(odd)]
+			X_2 = X[:, :, np.array(even)]
 
 	# train parafac on halves
 	# initiate class for both halves

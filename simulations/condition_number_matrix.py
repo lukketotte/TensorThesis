@@ -30,7 +30,7 @@ pc_rank = 25
 compression = float(tucker_rank[0])/float(dim_pc)
 max_rank = pc_rank + 5
 number_of_runs = 100
-congruence_rank = 2
+
 # store results
 result_runs_core = [None] * number_of_runs
 time_runs_core = [None] * number_of_runs
@@ -38,13 +38,6 @@ result_runs_x = [None] * number_of_runs
 time_runs_x = [None] * number_of_runs
 condition_number = []
 
-# for congruence estimates
-congruence_A = []
-congruence_B = []
-congruence_C = []
-congruence_A_tucker = []
-congruence_B_tucker = []
-congruence_C_tucker = []
 
 for i in range(number_of_runs):
 	# plot the first result that is seeded
@@ -59,7 +52,6 @@ for i in range(number_of_runs):
 		A = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
 		B = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
 		C = np.random.uniform(low = a, high = b, size = dim_pc*pc_rank).reshape(dim_pc,pc_rank)
-		print(A[0,0])
 	# condition numbers of A, B, C
 	_, sA, _ = np.linalg.svd(A)
 	_, sB, _ = np.linalg.svd(B)
@@ -70,14 +62,6 @@ for i in range(number_of_runs):
 
 
 	X = kruskal_to_tensor([A,B,C])
-	# split half
-	congrunce =  split_half_analysis(X, 2, congruence_rank, 
-		split_type = "odd_even")
-	# print("Congrunce for run %d" % (i+1))
-	# print(congrunce)
-	congruence_A.append(congrunce[0])
-	congruence_B.append(congrunce[1])
-	congruence_C.append(congrunce[2])
 
 	X_tl = tl.tensor(X)
 	
@@ -87,24 +71,6 @@ for i in range(number_of_runs):
 
 	core_np = tl.to_numpy(core)
 
-	congrunce_tucker = split_half_analysis(core_np, 2, congruence_rank, 
-		split_type = "odd_even")
-	congruence_A_tucker.append(congrunce_tucker[0])
-	congruence_B_tucker.append(congrunce_tucker[1])
-	congruence_C_tucker.append(congrunce_tucker[2])
-
-print()
-print(stats.describe(congruence_A)[2:4])
-print(stats.describe(congruence_A_tucker)[2:4])
-print()
-print(stats.describe(congruence_B)[2:4])
-print(stats.describe(congruence_B_tucker)[2:4])
-print()
-print(stats.describe(congruence_C)[2:4])
-print(stats.describe(congruence_C_tucker)[2:4])
-
-
-"""
 	# estimate errors, take the time aswell
 	start_time = time.time()
 	result_runs_x[i] = error_parafac(tensor = X, max_rank = max_rank, init = "hosvd", verbose = False)
@@ -150,7 +116,7 @@ plt.yticks(fontsize = 12)
 # plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
 plt.savefig(fname = "C:\\Users\\rotmos\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
 # plt.show()
-"""
+
 
 """
 X = np.random.uniform(low = 1, high = 2, size = 20).reshape(5,4)

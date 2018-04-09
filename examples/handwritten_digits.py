@@ -7,6 +7,7 @@ sys.path.insert(0, parentdir)
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import datasets
+from scipy import stats
 
 from decompositions.parafac_np import parafac
 from utils.utils_np import *
@@ -58,10 +59,7 @@ for idx, digit in enumerate(all_digits):
 	digit_tensor.append(temp_tensor.T)
 
 digit_tensor = np.asarray(digit_tensor)
-
-
-
-
+print(digit_tensor.shape)
 
 """
 for i in range(4):
@@ -84,9 +82,9 @@ compression_string = str(compression)
 compression_string = compression_string.replace("0.", "_")
 
 
-tucker_rank = [round(compression* digit_tensor.shape[0]), 
+tucker_rank = [round(compression * digit_tensor.shape[0]), 
 	           round(compression * digit_tensor.shape[1]),
-	           round(compression * digit_tensor.shape[2])]
+	           round(digit_tensor.shape[2])]
 
 core, tucker_factors = tucker(digit_tl, ranks = tucker_rank,
 	init = "random", tol = 10e-5, random_state = 1234, 
@@ -94,8 +92,10 @@ core, tucker_factors = tucker(digit_tl, ranks = tucker_rank,
 
 core_digit = tl.to_numpy(core)
 
-max_rank = 45
 
+
+max_rank = 10
+"""
 # estimate errors, take the time aswell
 start_time = time.time()
 X_error = error_parafac(tensor = digit_tensor, max_rank = max_rank, init = "hosvd", verbose = False)
@@ -105,8 +105,44 @@ start_time = time.time()
 core_error = error_parafac(tensor = core_digit, max_rank = max_rank, init = "hosvd", verbose = False)
 core_time = time.time() - start_time
 print(x_time, core_time)
+"""
 
+### congruence analysis ###
+# for congruence estimates
+congruence_A = []
+congruence_B = []
+congruence_C = []
+congruence_A_tucker = []
+congruence_B_tucker = []
+congruence_C_tucker = []
 
+for i in range(5):
+	idxs = np.random.choice(150, 150, replace = False)
+	# original data using permutation
+	congrunce =  split_half_analysis(digit_tensor, 2, 6, 
+	split_type = idxs)
+	congruence_A.append(congrunce[0])
+	congruence_B.append(congrunce[1])
+	congruence_C.append(congrunce[2])
+
+	# core 
+	congrunce_tucker = split_half_analysis(core_digit, 2, 6, 
+	split_type = idxs)
+	congruence_A_tucker.append(congrunce_tucker[0])
+	congruence_B_tucker.append(congrunce_tucker[1])
+	congruence_C_tucker.append(congrunce_tucker[2])
+
+print()
+print(stats.describe(congruence_A)[2:4])
+print(stats.describe(congruence_A_tucker)[2:4])
+print()
+print(stats.describe(congruence_B)[2:4])
+print(stats.describe(congruence_B_tucker)[2:4])
+print()
+print(stats.describe(congruence_C)[2:4])
+print(stats.describe(congruence_C_tucker)[2:4])
+
+"""
 xint = range(0, max_rank + 1, 5)
 
 plt.plot(X_error, color = "black" ,linestyle = '--')
@@ -125,3 +161,4 @@ plt.yticks(fontsize = 12)
 # plt.yticks(np.arange(min(X_error), max(X_error) + 0.05, 0.1), fontsize = 14)
 # plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Real\\digit_%s" % compression_string)
 plt.show()
+"""
