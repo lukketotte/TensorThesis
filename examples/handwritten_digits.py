@@ -48,6 +48,7 @@ def digit_tensor_maker(img_labels, digit):
 digit_tensor = digit_tensor_maker(images_and_labels, 0)
 print(digit_tensor.shape)
 
+
 # combine all into a 150 x 64 x 10 tensor
 digit_tensor = []
 all_digits = list(range(0,10))
@@ -107,6 +108,7 @@ core_error = error_parafac(tensor = core_digit, max_rank = max_rank, init = "ran
 core_time = time.time() - start_time
 print(x_time, core_time)
 
+
 compression = 0.8
 
 tucker_rank = [round(compression * digit_tensor.shape[0]), 
@@ -121,7 +123,10 @@ core_digit = tl.to_numpy(core)
 
 core_error_2 = error_parafac(tensor = core_digit, max_rank = max_rank, init = "random", verbose = False)
 
-
+diff_1 = np.array(X_error) - np.array(core_error)
+diff_2 = np.array(X_error) - np.array(core_error_2)
+diff_1 = diff_1 - np.mean(diff_1)
+diff_2 = diff_2 - np.mean(diff_2)
 """
 ### congruence analysis ###
 # for congruence estimates
@@ -160,10 +165,13 @@ print(stats.describe(congruence_C_tucker)[2:4])
 
 """
 xint = range(0, max_rank + 1, 5)
-
-plt.plot(X_error, color = "blue" ,linestyle = '--')
+# plt.figure(figsize=(9,5))
+plt.figure(figsize=(7.5,5))
+plt.plot(X_error, color = "§blue" ,linestyle = '--')
 plt.plot(core_error, color = "red", linestyle = "-")
 plt.plot(core_error_2, color = "green", linestyle = "-.")
+#plt.plot(diff_1, color = "blue" ,linestyle = '-')
+#plt.plot(diff_2, color = "red", linestyle = '--')
 
 plt.ylabel("Training Error", fontsize = 16)
 plt.xlabel("Tensor Rank", fontsize = 16)
@@ -172,8 +180,8 @@ plt.xlabel("Tensor Rank", fontsize = 16)
 # 	fontsize = 24)
 plt.title("", 
  	fontsize = 24)
-plt.legend(["Original data", "10% compression", "20% compression"], loc = "upper right",
-	fontsize = 18)
+plt.legend(["original data","10% compression", "20% compression"], loc = "upper right",
+	fontsize = 16)
 plt.grid(True)
 plt.xticks(xint, fontsize = 14)
 plt.yticks(fontsize = 12)

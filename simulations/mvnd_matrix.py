@@ -20,10 +20,10 @@ logging.basicConfig(filename = 'time_consumption.log', level = logging.DEBUG)
 _log = logging.getLogger('time')
 
 # for storing results
-dataset = "2_mvnd"
+dataset = "22_mvnd"
 diag = False
-a = 0
-b = 1
+a = 1
+b = 2
 tucker_rank = [18]*3
 dim_pc = 20
 pc_rank = 25
@@ -88,7 +88,8 @@ _log.debug('%d, %.3f, %.3f, %s' %(tucker_rank[0],
 xint = range(0, max_rank + 1, 5)
 # plot from the other runs aswell with transparancy to get a
 # idea of the stability between runs from non seeded results
-plt.figure(figsize=(7.5,5))
+#plt.figure(figsize=(7.5,5))
+plt.figure(figsize=(8,5))
 for i in range(number_of_runs):
 	if i == 0:
 		continue

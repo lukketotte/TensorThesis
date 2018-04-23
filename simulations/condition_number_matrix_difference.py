@@ -18,11 +18,11 @@ from scipy import stats
 # for storing results
 dataset = "2_uniform_diff"
 
-a = 2
-b = 3
+a = 1
+b = 2
 tucker_rank = [18]*3
 dim_pc = 20
-pc_rank = 15
+pc_rank = 25
 compression = float(tucker_rank[0])/float(dim_pc)
 max_rank = pc_rank + 5
 number_of_runs = 100
@@ -83,7 +83,7 @@ plt.figure(figsize=(9,5))
 for i in range(number_of_runs):
 	plt.plot(diff_result[i], alpha = 0.04, color = "black")
 # mean diff
-x = plt.plot(diff_mean, color = "blue" ,linestyle = '-')
+x = plt.plot(diff_mean, color = "red" ,linestyle = '-')
 rank = plt.axvline(x = pc_rank, color = "black", linestyle = ":")
 # labels for axes
 plt.ylabel("Difference in Training Error", fontsize = 16)
@@ -95,6 +95,6 @@ plt.grid(True)
 plt.xticks(xint, fontsize = 14)
 plt.yticks(fontsize = 12)
 # plt.yticks(np.arange(min(X_error), max(X_error) + 0.05, 0.1), fontsize = 14)
-# plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
+plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
 # plt.savefig(fname = "C:\\Users\\rotmos\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Simulations\\%s_%d" % (dataset, tucker_rank[0]))
 plt.show()

@@ -16,13 +16,13 @@ import time
 from scipy import stats
 
 # for storing results
-dataset = "23_mvnd"
-diag = False
-a = 1
-b = 2
-tucker_rank = [16]*3
+dataset = "21_mvnd"
+diag = True
+a = 0
+b = 1
+tucker_rank = [18]*3
 dim_pc = 20
-pc_rank = 15
+pc_rank = 25
 mean = [0]*pc_rank
 compression = float(tucker_rank[0])/float(dim_pc)
 max_rank = pc_rank + 5
@@ -98,7 +98,7 @@ for i in range(number_of_runs):
 	plt.plot(diff_result[i], alpha = 0.04, color = "black")
 # seeded results
 # x = plt.plot(diff_result[0], color = "blue" ,linestyle = '-')
-x = plt.plot(diff_mean, color = "blue" ,linestyle = '-')
+x = plt.plot(diff_mean, color = "red" ,linestyle = '-')
 rank = plt.axvline(x = pc_rank, color = "black", linestyle = ":")
 # labels for axes
 plt.ylabel("Difference in Training Error", fontsize = 16)
