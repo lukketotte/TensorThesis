@@ -29,14 +29,20 @@ from tensorly.decomposition import tucker
 
 # ----------- ADD DATA ----------- #
 # TODO: fetch more data as you get home 
-adhdData = datasets.fetch_adhd(n_subjects = 40)
-func_filenames = adhdData.func
-print(func_filenames[0])
+# adhdData = datasets.fetch_adhd(n_subjects = 40)
+#func_filenames = adhdData.func
+# print(func_filenames[0])
 
 # ---------- INSTANCE of selectADHD ---------- #
-csv_loc = "C:\\Users\\lukas\\Documents\\master\\Thesis\\Python"
+# laptop
+#csv_loc = "C:\\Users\\lukas\\Documents\\master\\Thesis\\Python"
+#csv_loc = os.path.join(csv_loc, "allSubs_testSet_phenotypic_dx.csv")
+#nifty_loc = "D:\\Thesis\\Data\\Data\\adhd\\data"
+
+# stationary
+csv_loc = "F:\\Thesis\\Data\\Data\\adhd"
 csv_loc = os.path.join(csv_loc, "allSubs_testSet_phenotypic_dx.csv")
-nifty_loc = "D:\\Thesis\\Data\\Data\\adhd\\data"
+nifty_loc = "F:\\Thesis\\Data\\Data\\adhd\\data"
 
 # get list of locations for up to 5 subjects for site 1 in folder
 # nifty_loc
@@ -122,7 +128,6 @@ plt.show()
 """
 
 # Analysis, RIP
-
 # start with getting the core tensor
 # 20 % compression in all modes but the subject mode
 compression = 0.8
@@ -132,12 +137,13 @@ tucker_rank = [round(compression * tensor_cube.shape[0]),
 
 print("Tucker rank: " + str(tucker_rank[0]) + ", " + str(tucker_rank[1]))
 
-tensor_cube_tl = tl.tensor(tensor_cube)
+tl.set_backend('numpy')
+#tensor_cube_tl = tl.tensor(tensor_cube)
 
 # fit the tucker decomposition
-core, tucker_factors = tucker(tensor_cube_tl, ranks = tucker_rank,
+core, tucker_factors = tucker(tensor_cube, ranks = tucker_rank,
 	init = "random", tol = 10e-5, random_state = 1234, 
-	n_iter_max = 100, verbose = False)
+	n_iter_max = 20, verbose = False)
 
 core_cube = tl.to_numpy(core)
 print("Core shape: " + str(core_cube.shape))
