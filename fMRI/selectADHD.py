@@ -52,7 +52,7 @@ class adhd:
 	def niftyLocation(self):
 		return self._niftyLocation
 	@niftyLocation.setter
-	def csvLocation(self, strLoc):
+	def niftyLocation(self, strLoc):
 		if isinstance(strLoc, String):
 			self._niftyLocation = strLoc
 		else:

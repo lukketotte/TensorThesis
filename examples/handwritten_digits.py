@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 from sklearn import datasets
 from scipy import stats
 
+import tensorly as tl
+from tensorly.decomposition import tucker
+
 from decompositions.parafac_np import parafac
 from utils.utils_np import *
 from utils.core_parafac_analysis import *
@@ -167,7 +170,7 @@ print(stats.describe(congruence_C_tucker)[2:4])
 xint = range(0, max_rank + 1, 5)
 # plt.figure(figsize=(9,5))
 plt.figure(figsize=(7.5,5))
-plt.plot(X_error, color = "§blue" ,linestyle = '--')
+plt.plot(X_error, color = "blue" ,linestyle = '--')
 plt.plot(core_error, color = "red", linestyle = "-")
 plt.plot(core_error_2, color = "green", linestyle = "-.")
 #plt.plot(diff_1, color = "blue" ,linestyle = '-')

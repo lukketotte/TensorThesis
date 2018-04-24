@@ -10,8 +10,23 @@ import os as os
 import tensorflow as tf
 import tensorly as tl
 
+import time
+
 from tensorData import tensor as td
 from selectADHD import adhd as adhd
+
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
+from decompositions.parafac_np import parafac
+from utils.utils_np import *
+from utils.core_parafac_analysis import *
+
+import tensorly as tl
+from tensorly.decomposition import tucker
+
 # ----------- ADD DATA ----------- #
 # TODO: fetch more data as you get home 
 adhdData = datasets.fetch_adhd(n_subjects = 40)
@@ -21,7 +36,7 @@ print(func_filenames[0])
 # ---------- INSTANCE of selectADHD ---------- #
 csv_loc = "C:\\Users\\lukas\\Documents\\master\\Thesis\\Python"
 csv_loc = os.path.join(csv_loc, "allSubs_testSet_phenotypic_dx.csv")
-nifty_loc = "D:\\MasterThesis\\Data\\adhd\\data"
+nifty_loc = "D:\\Thesis\\Data\\Data\\adhd\\data"
 
 # get list of locations for up to 5 subjects for site 1 in folder
 # nifty_loc
@@ -52,12 +67,13 @@ a = tdTest.niftyList
 # print(a[0][1,1,1,:])
 # print(tdTest.idx_spatial)
 tensor_cube = tdTest.unfoldTemporal()
+print(tensor_cube.shape)
 #271633, the dimensions are correct
 # print(tensor_cube.shape)
 # print(type(tensor_cube))
 
 # works fine
-tfTensor = tf.Variable(tensor_cube)
+# tfTensor = tf.Variable(tensor_cube)
 
 
 """
@@ -104,3 +120,83 @@ plt.plot(t, xt, "r", t, wt,"b", t, yt, "g")
 plt.show()
 
 """
+
+# Analysis, RIP
+
+# start with getting the core tensor
+# 20 % compression in all modes but the subject mode
+compression = 0.8
+tucker_rank = [round(compression * tensor_cube.shape[0]),
+			   round(compression * tensor_cube.shape[1]),
+			   tensor_cube.shape[2]]
+
+print("Tucker rank: " + str(tucker_rank[0]) + ", " + str(tucker_rank[1]))
+
+tensor_cube_tl = tl.tensor(tensor_cube)
+
+# fit the tucker decomposition
+core, tucker_factors = tucker(tensor_cube_tl, ranks = tucker_rank,
+	init = "random", tol = 10e-5, random_state = 1234, 
+	n_iter_max = 100, verbose = False)
+
+core_cube = tl.to_numpy(core)
+print("Core shape: " + str(core_cube.shape))
+
+max_rank = 50
+
+start_time = time.time()
+X_error = error_parafac(tensor = tensor_cube, max_rank = max_rank,
+	init = "random", verbose = False)
+x_time = time.time() - start_time
+print("X time: " + str(x_time))
+
+start_time = time.time()
+core_error_1 = error_parafac(tensor = core_cube, max_rank = max_rank,
+	init = "random", verbose = False)
+core_1_time = time.time() - start_time
+print("Core 0.2 time: " + str(core_1_time))
+
+###
+
+compression = 0.9
+tucker_rank = [round(compression * tensor_cube.shape[0]),
+			   round(compression * tensor_cube.shape[1]),
+			   tensor_cube.shape[2]]
+
+core, tucker_factors = tucker(tensor_cube_tl, ranks = tucker_rank,
+	init = "random", tol = 10e-5, random_state = 1234, 
+	n_iter_max = 250, verbose = False)
+
+core_cube = tl.to_numpy(core)
+print("Core shape, 0.1: " + str(core_cube.shape))
+
+start_time = time.time()
+core_error_2 = error_parafac(tensor = core_cube, max_rank = max_rank,
+	init = "random", verbose = False)
+core_2_time = time.time() - start_time
+print("Core 0.2 time: " + str(core_2_time))
+
+xint = range(0, max_rank + 1, 5)
+# plt.figure(figsize=(9,5))
+plt.figure(figsize=(8,5))
+plt.plot(X_error, color = "blue" ,linestyle = '--')
+plt.plot(core_error_2, color = "red", linestyle = "-")
+plt.plot(core_error_1, color = "green", linestyle = "-.")
+#plt.plot(diff_1, color = "blue" ,linestyle = '-')
+#plt.plot(diff_2, color = "red", linestyle = '--')
+
+plt.ylabel("Training Error", fontsize = 16)
+plt.xlabel("Tensor Rank", fontsize = 16)
+# plt.title("%.2f compression" % (1-compression))
+# plt.title("$\mathcal{G} \in \Re^{%dx%dx%d}$" % (tucker_rank[0],tucker_rank[1],tucker_rank[2]), 
+# 	fontsize = 24)
+plt.title("", 
+ 	fontsize = 24)
+plt.legend(["original data","10% compression", "20% compression"], loc = "upper right",
+	fontsize = 16)
+plt.grid(True)
+plt.xticks(xint, fontsize = 14)
+plt.yticks(fontsize = 12)
+# plt.yticks(np.arange(min(X_error), max(X_error) + 0.05, 0.1), fontsize = 14)
+# plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Real\\digit%s" % compression_string)
+plt.savefig(fname = "C:\\Users\\lukas\\Dropbox\\Master Thesis\\Thesis\\Figures\\Results\\Real\\fmri_tensor")
