@@ -21,6 +21,8 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
 from decompositions.parafac_np import parafac
+from decompositions.tucker_np import tucker as tucker_np
+
 from utils.utils_np import *
 from utils.core_parafac_analysis import *
 
@@ -130,7 +132,7 @@ plt.show()
 # Analysis, RIP
 # start with getting the core tensor
 # 20 % compression in all modes but the subject mode
-compression = 0.8
+compression = 0.9
 tucker_rank = [round(compression * tensor_cube.shape[0]),
 			   round(compression * tensor_cube.shape[1]),
 			   tensor_cube.shape[2]]
@@ -142,8 +144,8 @@ tl.set_backend('numpy')
 
 # fit the tucker decomposition
 core, tucker_factors = tucker(tensor_cube, ranks = tucker_rank,
-	init = "random", tol = 10e-5, random_state = 1234, 
-	n_iter_max = 20, verbose = False)
+	init = "rand", tol = 10e-5, random_state = 123, 
+	n_iter_max = 40, verbose = False)
 
 core_cube = tl.to_numpy(core)
 print("Core shape: " + str(core_cube.shape))

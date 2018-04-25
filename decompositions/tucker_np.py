@@ -1,4 +1,9 @@
 import numpy as np
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir)
+
 from utils_np import *
 
 class tucker():
@@ -13,7 +18,7 @@ class tucker():
 	"""
 
 	def __init__(self, X_data = None, shape = None, ranks = None, epochs = 1000, 
-				 stop_thresh = 1e-12, init = 'hosvd'):
+				 stop_thresh = 1e-12, init = 'random'):
 
 		self.epochs = epochs
 		self.stop_thresh = stop_thresh
@@ -72,7 +77,7 @@ class tucker():
 			# [component mats]
 			self.A = [None] * self._order
 
-			if self.init is 'ranom':
+			if self.init is 'random':
 				# just keep it as 0,1 init
 				# nth component matrix is In by Jn (Kolda & Bader)
 				for mode in range(self._order):
